@@ -108,66 +108,82 @@
                     <tr>
                       <th scope="row">1</th>
                       <td>Perjalanan Dinas Mutasi Jabatan</td>
-                      <td>14.618.161.514</td>
-                      <td>5.780.391.502</td>
-                      <td>39,54%</td>
-                      <td>8.837.770.012</td>
+                      <td>9.776.550.000</td>
+                      <td>2.584.469.118</td>
+                      <td>26,44%</td>
+                      <td>7.192.080.882</td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
                       <td>Biaya Diklat Dikelola Unit (KP)</td>
-                      <td>16.814.837.347</td>
-                      <td>2.836.235.992</td>
-                      <td>16,87%</td>
-                      <td>13.978.601.355</td>
+                      <td>12.625.795.804</td>
+                      <td>1.020.109.013</td>
+                      <td>8,08%</td>
+                      <td>11.605.686.791</td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
-                      <td>Biaya Diklat Dikelola Pusat (total)</td>
-                      <td>348.451.244.756</td>
-                      <td>94.694.860.243</td>
-                      <td>27,18%</td>
-                      <td>253.756.384.513</td>
+                      <td>Biaya Diklat Jasdik Dikelola Pusat (total)</td>
+                      <td>357.543.766.320</td>
+                      <td>95.695.128.814</td>
+                      <td>26,76%</td>
+                      <td>261.848.637.506</td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
                       <td>a. Sub Bid Rekrutmen</td>
-                      <td>10.725.661.910</td>
-                      <td>5.721.134.813</td>
-                      <td>53,34%</td>
-                      <td>5.004.527.097</td>
+                      <td>22.110.543.702</td>
+                      <td>49.344.400</td>
+                      <td>0,22%</td>
+                      <td>22.061.199.302</td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
                       <td>b. Sub Bid Bang Keahlian</td>
-                      <td>335.663.027.846</td>
-                      <td>88.369.820.430</td>
-                      <td>26,33%</td>
-                      <td>247.293.207.416</td>
+                      <td>13.024.589.834</td>
+                      <td>811.930.995</td>
+                      <td>6,23%</td>
+                      <td>12.212.658.839</td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
                       <td>c. Sub Bid Bang Manajemen</td>
-                      <td>2.062.555.000</td>
-                      <td>603.905.000</td>
-                      <td>29,28%</td>
-                      <td>1.458.650.000</td>
+                      <td>14.070.731.402</td>
+                      <td>7.549.112.428</td>
+                      <td>53,65%</td>
+                      <td>6.521.618.974</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"></th>
+                      <td>d. Sub Bid Pendidikan Formal</td>
+                      <td>245.698.507.500</td>
+                      <td>86.378.166.326</td>
+                      <td>35,16%</td>
+                      <td>159.320.341.174</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"></th>
+                      <td>e. Sub Bid Bang Korp</td>
+                      <td>32.000.000.000</td>
+                      <td>431.464.510</td>
+                      <td>1,35%</td>
+                      <td>31.568.535.490</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"></th>
+                      <td>f. Talent Development</td>
+                      <td>30.639.393.882</td>
+                      <td>475.110.155</td>
+                      <td>1,55%</td>
+                      <td>30.164.283.727</td>
                     </tr>
                     <tr>
                       <th scope="row">4</th>
                       <td>Beban Perjalanan Dinas Diklat</td>
-                      <td>11.680.793.084</td>
-                      <td>6.214.643.831</td>
-                      <td>53,20%</td>
-                      <td>5.466.149.253</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">5</th>
-                      <td>Diklat Jasdik Pusdiklat</td>
-                      <td>350.162.323.175</td>
-                      <td>155.150.834.814</td>
-                      <td>44%</td>
-                      <td>195.011.488.361</td>
+                      <td>78.321.540.506</td>
+                      <td>7.385.093.525</td>
+                      <td>9,43%</td>
+                      <td>70.936.446.981</td>
                     </tr>
                   </tbody>
                 </table>
@@ -281,29 +297,29 @@
                         <th scope="row"></th>
                         <td>UIP3B SUMATERA</td>
                         <td>4.418.117.509</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td>223.547.000</td>
+                        <td>5,06%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
                         <td>UIP SUMBAGUT</td>
                         <td> 884.175.000</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td> 257.385.603</td>
+                        <td>29,11%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
                         <td>UIP SUMBAGTENG</td>
                         <td>627.290.625</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td>277.512.544</td>
+                        <td>44,24%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
                         <td>UIP SUMBAGSEL</td>
                         <td>237.750.000</td>
-                        <td>69.930.000</td>
-                        <td>29,41%</td>
+                        <td>108.086.250</td>
+                        <td>45,46%</td>
                       </tr>
                       <tr>
                         <th scope="row"><strong>4</strong></th>
@@ -449,15 +465,15 @@
                         <th scope="row"><strong>8</strong></th>
                         <td><strong>HTD AREA 8</strong></td>
                         <td><strong>11.887.294.071</strong></td>
-                        <td><strong>1.785.964.470</strong></td>
-                        <td><strong>15,02%</strong></td>
+                        <td><strong>2.681.449.635</strong></td>
+                        <td><strong>22,56%</strong></td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
                         <td>UIK TJB</td>
                         <td>780.656.366</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td>88.937.159</td>
+                        <td>11,39%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
@@ -484,8 +500,8 @@
                         <th scope="row"></th>
                         <td>PUSDIKLAT</td>
                         <td>1.371.125.000</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td>118.215.000</td>
+                        <td>8,62%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>
@@ -561,8 +577,8 @@
                         <th scope="row"></th>
                         <td>UIP MALUKU & PAPUA</td>
                         <td>824.544.000</td>
-                        <td></td>
-                        <td>0%</td>
+                        <td>99.999.900</td>
+                        <td>12,13%</td>
                       </tr>
                       <tr>
                         <th scope="row"></th>

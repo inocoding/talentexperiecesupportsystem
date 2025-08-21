@@ -1,17 +1,25 @@
-<!-- <li>
-    <a href="<?= site_url('dashboard') ?>">
-        <i data-cs-icon="responsive" class="icon" data-cs-size="18"></i>
-        <span class="label">e-Profile</span>
-    </a>
-</li> -->
-<!-- <li>
-    <a href="<?= site_url('dashboard/dashtd') ?>">
+<?php $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+    ?>
+<li>
+    <a href="#dashboarrd" class="<?= $uri->getSegment(1) == "dashboard" ? "active" : null ?>">
         <i data-cs-icon="dashboard-1" class="icon" data-cs-size="18"></i>
         <span class="label">Dashboards</span>
     </a>
-</li> -->
-<!-- <li>
-    <a href="#courses">
+    <ul id="dashboarrd">
+        <li>
+            <a href="<?= site_url('dashboard/dashtd') ?>" class="<?= $uri->getSegment(2) == "dashtd" ? "active" : null ?>">
+                <span class="label">Old Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('dashboard/ftkdash') ?>" class="<?= $uri->getSegment(2) == "ftkdash" ? "active" : null ?>">
+                <span class="label">Dashboard FTK</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li>
+    <a href="#courses" class="<?= $uri->getSegment(1) == "strukturorg" ? "active" : null ?>">
         <i data-cs-icon="building" class="icon" data-cs-size="18"></i>
         <span class="label">FTK & Organisasi</span>
     </a>
@@ -22,12 +30,12 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('strukturorg/monitoringftk') ?>">
+            <a href="<?= site_url('strukturorg/monitoringftk') ?>" class="<?= $uri->getSegment(2) == "monitoringftk" ? "active" : null ?>">
                 <span class="label">Monitoring FTK</span>
             </a>
         </li>
     </ul>
-</li> -->
+</li>
 <li>
     <?php $uri = new \CodeIgniter\HTTP\URI(current_url(true));
     ?>

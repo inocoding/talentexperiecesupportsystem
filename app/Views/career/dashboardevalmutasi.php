@@ -47,10 +47,10 @@
     <!-- Responsive Tabs with Line Title Start -->
     <ul class="nav nav-tabs nav-tabs-title nav-tabs-line-title responsive-tabs" id="lineTitleTabsContainer" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link " data-bs-toggle="tab" href="#firstLineTitleTab" role="tab" aria-selected="false">Unit</a>
+            <a class="nav-link active" data-bs-toggle="tab" href="#firstLineTitleTab" role="tab" aria-selected="false">Unit</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" data-bs-toggle="tab" href="#secondLineTitleTab" role="tab" aria-selected="true">Permohonan</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#secondLineTitleTab" role="tab" aria-selected="true">Permohonan</a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#thirdLineTitleTab" role="tab" aria-selected="false">SLA</a>
@@ -69,10 +69,108 @@
             <div class="tab-content">
                 <div class="tab-pane fade " id="firstLineTitleTab" role="tabpanel">
                     <h5 class="card-title">Unit</h5>
-                    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_4s3kvfcn.json" mode="bounce" background="transparent" speed="1" style="width: 1000px; height: 600px; margin-left: 165px;" loop autoplay></lottie-player>
-                    <div class="row">
+                    <div class="data-table-rows slim">
+                        <!-- Controls Start -->
+                        <form action="" method="get" autocomplete="off">
+                            <div class="row">
+                                <!-- Search Start -->
+                                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                                    <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                                        <?php $request = \Config\Services::request();  ?>
+                                        <input class="form-control datatable-search" placeholder="Search" data-datatable="#datatableRows" name="keyword" type="text" value="<?= $request->getGet('keyword') ?>" />
+                                        <span class="search-magnifier-icon">
+                                            <button class="btn btn-icon btn-icon-only btn-foreground" type="submit">
+                                                <i data-cs-icon="search" style="margin-top: -5px;"></i>
+                                            </button>
+                                        </span>
+                                        <span class="search-delete-icon d-none">
+                                            <i data-cs-icon="close"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Search End -->
 
+                                <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
+                                    <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
+                                        <!-- Add Button Start -->
+                                        <button class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" type="button" data-bs-toggle="modal" data-bs-target="#semiFullExample" data-bs-delay="0">
+                                            <i data-cs-icon="plus"></i>
+                                        </button>
+                                        <!-- Add Button End -->
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Controls End -->
+                        </form>
+                        <!-- Table Start -->
+                        <div class="data-table-responsive-wrapper">
+                            <table id="datatableRowsdeval" class="data-table nowrap hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-muted text-small text-uppercase" style="width: 3rem;">No</th>
+                                        <th class="text-muted text-small text-uppercase text-wrap" style="width: 3rem;">Nomor Surat/ND</th>
+                                        <th class="text-muted text-small text-uppercase" style="width: 3rem;">Dari</th>
+                                        <th class="text-muted text-small text-uppercase">Jml</th>
+                                        <th class="text-muted text-small text-uppercase text-wrap" style="width: 3rem;">Eval PIC</th>
+                                        <th class="text-muted text-small text-uppercase text-wrap" style="width: 3rem;">Eval MSB</th>
+                                        <th class="text-muted text-small text-uppercase text-wrap" style="width: 3rem;">Eval VP</th>
+                                        <th class="text-muted text-small text-uppercase">Lanjut</th>
+                                        <th class="text-muted text-small text-uppercase" style="width: 3rem;">Tdk Lanjut</th>
+                                        <th class="text-muted text-small text-uppercase">Jawaban</th>
+                                        <th class="text-muted text-small text-uppercase">Konfirmasi</th>
+                                        <th class="text-muted text-small text-uppercase">Disetujui</th>
+                                        <th class="text-muted text-small text-uppercase" style="width: 3rem;">Cetak SK</th>
+                                        <th class="text-muted text-small text-uppercase">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: smaller;">
+                                    <?php
+                                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                                    $no = 1 + (5 * ($page - 1));
+                                    foreach ($user as $key => $value) : ?>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td class="text-wrap text-break" style="width: 2rem;"><?= $value->no_dm ?></td>
+                                            <td class="text-wrap text-break" style="width: 2rem;"><?= $value->asal_dm ?></td>
+                                            <td><?= $value->jml_usulan ?></td>
+                                            <td id="dataa<?= $value->id_dm ?>"></td>
+                                            <td id="datab<?= $value->id_dm ?>"></td>
+                                            <td id="datac<?= $value->id_dm ?>"></td>
+                                            <td id="datad<?= $value->id_dm ?>"></td>
+                                            <td id="datae<?= $value->id_dm ?>"></td>
+                                            <td id="dataf<?= $value->id_dm ?>"></td>
+                                            <td id="datag<?= $value->id_dm ?>"></td>
+                                            <td id="datah<?= $value->id_dm ?>"></td>
+                                            <td id="datai<?= $value->id_dm ?>"></td>
+                                            <td>
+                                                <div class="d-inline-block text-center">
+                                                    <form action="<?= site_url('career/del_dm/' . $value->id_dm) ?>" method="post" class="d-inline">
+                                                        <?= csrf_field() ?>
+                                                        <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
+                                                            <i data-cs-icon="bin"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="float-right">
+                                    <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="float-right text-center">
+                                    <?= $pager->links('default', 'pagination') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Table End -->
                     </div>
                 </div>
                 <div class="tab-pane fade active show" id="secondLineTitleTab" role="tabpanel">

@@ -66,13 +66,13 @@ use CodeIgniter\Filters\CSRF;
                             <div>
                                 <div class="mb-5">
                                     <h1 class="display-3 text-white"><strong>Talent Experience Support System</strong></h1>
-                                    <h1 class="h5 text-white">by PLN Corporate Talent Development</h1>
+                                    <h1 class="h5 text-white">by Human Talent Development Division</h1>
                                 </div>
                                 <p class="h6 text-italic text-white lh-1-5 mb-5">
-                                    Create & Manage your development experience
+                                    Manage Talent Development Experiences
                                 </p>
                                 <div class="mb-5">
-                                    <a class="btn btn-lg btn-outline-white" href="#">Learn More</a>
+                                    <!-- <a class="btn btn-lg btn-outline-white" href="#">Learn More</a> -->
                                 </div>
                             </div>
                         </div>

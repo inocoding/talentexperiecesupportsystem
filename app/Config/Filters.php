@@ -73,7 +73,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            'csrf',
+            // 'csrf',
             // 'invalidchars',
         ],
         'after' => [
@@ -108,10 +108,13 @@ class Filters extends BaseFilters
      */
     public array $filters = [
         'isLoggedIn' => ['before' => [
-            'home', 'home/*',
+            'home',
+            'home/*',
             '/',
-            'dashboard', 'dashboard/*',
-            'masterdata', 'masterdata/*',
+            'dashboard',
+            'dashboard/*',
+            'masterdata',
+            'masterdata/*',
         ]]
     ];
 }

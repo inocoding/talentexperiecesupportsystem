@@ -60,6 +60,11 @@ class Dashboard extends BaseController
         return view('dashboard/dashboardhtd');
     }
 
+    public function ftkdash()
+    {
+        return view('dashboard/dashboardftk');
+    }
+
     public function getList()
     {
         $list = $this->task->get(userLogin()->nip);

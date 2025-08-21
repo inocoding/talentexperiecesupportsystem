@@ -19,3 +19,11 @@ $routes->get('/', 'Home::index');
 $routes->get('login', 'Auth::login');
 $routes->get('/', 'Home::index');
 $routes->resource('users');
+
+$routes->get('userimport', 'UserImport::index');
+$routes->post('userimport/upload', 'UserImport::upload');
+
+$routes->get('userimport', 'UserImport::index');
+$routes->post('userimport/upload', 'UserImport::upload');
+$routes->post('userimport/processChunk', 'UserImport::processChunk');
+

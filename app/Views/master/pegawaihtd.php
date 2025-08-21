@@ -84,7 +84,7 @@
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/importuser') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
+                            <a href="<?= site_url('userimport') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
