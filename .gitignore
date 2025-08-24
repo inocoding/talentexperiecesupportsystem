@@ -87,6 +87,13 @@ phpunit
 vendor/
 
 #-------------------------
+# Front End Vendor not ignore
+#-------------------------
+!public/template/css/vendor/
+!public/template/js/vendor/
+!public/template/fonts/vendor/
+
+#-------------------------
 # IDE / Development Files
 #-------------------------
 
