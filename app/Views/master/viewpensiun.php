@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data Pensiun Dini</title>
+<title>Data User HTD - <?= userLogin()->nama_org_htd ?></title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,14 +18,14 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data Pensiun Dini lho</h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data User HTD <?= userLogin()->nama_org_htd ?></h2>
                 </div>
                 <!-- Title End -->
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
                     <!-- Add New Button Start -->
-                    <!-- <a href=" <?= site_url('masterdata/pensiundini') ?> " type="button" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto add-dapeg">
+                    <!-- <a href=" <?= site_url('masterdata/addpeg') ?> " type="button" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto add-dapeg">
                         <i data-cs-icon="plus"></i>
                         <span>Add New</span>
                     </a> -->
@@ -70,11 +70,21 @@
                     </div>
                     <!-- Search End -->
 
-
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
+                        <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
+                            <!-- Add Button Start -->
+                            <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
+                                <i data-cs-icon="plus"></i>
+                            </a>
+                            <!-- Add Button End -->
+
+                            <!-- Edit Button Start -->
+
+                            <!-- Edit Button End -->
+                        </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/addpensiundini') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
+                            <a href="<?= site_url('userimport') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -114,53 +124,6 @@
                             <!-- Length End -->
                         </div>
                     </div>
-
-
-
-                    <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
-
-                        <div class="d-inline-block">
-                            <!-- Print Button Start -->
-                            <!-- <a href="<?= site_url('masterdata/addpensiundini') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data" type="button">
-                                <i data-cs-icon="upload"></i>
-                            </a> -->
-                            <!-- Print Button End -->
-
-                            <!-- Export Dropdown Start -->
-                            <!-- <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
-                                <?php
-                                $request = \Config\Services::request();
-                                $keyword = $request->getGet('keyword');
-                                if ($keyword != '') {
-                                    $param = "?keyword=" . $keyword;
-                                } else {
-                                    $param = "";
-                                }
-                                ?>
-                                <a class="btn p-0" href="<?= site_url('masterdata/exporthtd' . $param) ?>" data-bs-offset="0,3">
-                                    <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown" data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip" title="Export Excel">
-                                        <i data-cs-icon="download"></i>
-                                    </span>
-                                </a>
-                            </div> -->
-                            <!-- Export Dropdown End -->
-
-                            <!-- Length Start -->
-                            <!-- <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
-                                <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
-                                    <span class="btn btn-foreground-alternate dropdown-toggle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Item Count">
-                                        10 Items
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <a class="dropdown-item active" href="#">5 Items</a>
-                                    <a class="dropdown-item " href="#">10 Items</a>
-                                    <a class="dropdown-item" href="#">20 Items</a>
-                                </div>
-                            </div> -->
-                            <!-- Length End -->
-                        </div>
-                    </div>
                 </div>
                 <!-- Controls End -->
             </form>
@@ -172,20 +135,100 @@
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">Unit Asal 1</th>
-                            <th class="text-muted text-small text-uppercase">Unit Asal 2</th>
-                            <th class="text-muted text-small text-uppercase">Unit Asal 3</th>
-                            <th class="text-muted text-small text-uppercase">Unit Asal 4</th>
-                            <th class="text-muted text-small text-uppercase">Tanggal pengajuan</th>
-                            <th class="text-muted text-small text-uppercase">Tanggal Aktivasi</th>
-                            <th class="text-muted text-small text-uppercase">Status</th>
+                            <th class="text-muted text-small text-uppercase">HTD Area</th>
+                            <th class="text-muted text-small text-uppercase">Unit Induk</th>
+                            <th class="text-muted text-small text-uppercase">email</th>
+                            <th class="text-muted text-small text-uppercase">Role</th>
+                            <th class="text-muted text-small text-uppercase">Activation</th>
                             <th class="text-muted text-small text-uppercase">Action</th>
                         </tr>
                     </thead>
-
+                    <tbody>
+                        <?php
+                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $no = 1 + (5 * ($page - 1));
+                        foreach ($user as $key => $value) : ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td>
+                                    <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
+                                </td>
+                                <td><?= $value->nama_user ?></td>
+                                <td><?= $value->nama_org_htd ?></td>
+                                <td><?= $value->nama_org_satu ?></td>
+                                <td><?= $value->email_korpo ?> <br>
+                                    <?= $value->email_non ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
+                                        if ($value->role_admin == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
+                                        }
+                                        if ($value->role_adm_acc == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
+                                        }
+                                        if ($value->role_adm_eclinic == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
+                                        }
+                                        if ($value->role_adm_hi == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
+                                        }
+                                        if ($value->role_adm_org == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
+                                        }
+                                        if ($value->role_adm_kinerja == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
+                                        }
+                                        if ($value->role_adm_diklat == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
+                                        }
+                                        if ($value->role_adm_sertifikasi == 1) {
+                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
+                                        }
+                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
+                                        if ($value->role_peg == 1) {
+                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
+                                        } else {
+                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
+                                        }
+                                        if ($value->role_komite == 1) {
+                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
+                                <td>
+                                    <div class="d-inline-block">
+                                        <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
+                                            <i data-cs-icon="edit"></i>
+                                        </a>
+                                        <form action="<?= site_url('masterdata/del_dapeghtd/' . $value->nip) ?>" method="post" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
+                                                <i data-cs-icon="bin"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
                 </table>
             </div>
-
+            <div class="row">
+                <div class="col-6">
+                    <div class="float-right">
+                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="float-right text-center">
+                        <?= $pager->links('default', 'pagination') ?>
+                    </div>
+                </div>
+            </div>
             <!-- Table End -->
         </div>
         <!-- Content End -->
@@ -281,8 +324,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowssert.js"></script>
-<!-- <script src="<?= base_url() ?>/template/js/plugins/datatable.serverside.js"></script> -->
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->

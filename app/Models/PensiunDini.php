@@ -9,7 +9,6 @@ class PensiunDini extends Model
     protected $table = 'tb_pensiun_dini';
     protected $primaryKey = 'id_pensiun_dini';
     protected $allowedFields = [
-        'id_pensiun_dini',
         'nip',
         'unit_asal_lv1',
         'unit_asal_lv2',
