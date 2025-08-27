@@ -5,11 +5,14 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
 use App\Models\OJTModel;
+use App\Models\IdtModel;
+use App\Models\MutasiModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -26,6 +29,9 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->OJT              = new OJTModel();
+		    $this->idt	        	  = new IdtModel();
+        $this->data_mpp         = new MppModel();
+        $this->mutasi           = new MutasiModel();
     }
 
     public function index()
@@ -1071,7 +1077,7 @@ class Masterdata extends BaseController
         $jumlah = $this->db->query($sql)->getRow();
         if ($dapeg) {
             $data['dapeg']      = $dapeg;
-            $data['rjab']      = $rjab;
+            $data['rjab']       = $rjab;
             $data['rpend']      = $rpend;
             $data['rsert']      = $rsert;
             $data['jumlah']     = $jumlah;
@@ -1190,14 +1196,41 @@ class Masterdata extends BaseController
         }
     }
 
+      public function data_mpp()
+    {
+         return view('master/form_mpp');
+    }
+
+    public function view_mpp()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->data_mpp->getAllPaginated(5, $keyword);
+
+        return view('master/view_mpp',$data);
+    }
+
     public function datamutasi()
     {
          return view('master/mutasi');
     }
+
+    public function dataaps()
+    {
+         return view('master/dataaps');
+    }
+
     public function dataptb()
     {
          return view('master/ptb');
     }
+
+    public function viewmutasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        return view('master/viewmutasi', $data);
+    }
+
     public function prosesimportdatamutasi()
     {
         
@@ -1299,19 +1332,21 @@ class Masterdata extends BaseController
         }
 
     }
-    // public function dataojt()
-    // {
-    //      return view('master/ojt');
-    // }
-        public function viewojt()
+    
+    public function viewojt()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->OJT->getAllPaginated(5, $keyword);
         return view('master/viewojt', $data);
     }
+	
+	
+	public function viewidt()
+    {
+		
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->idt->getAllPaginated(5, $keyword);
+        return view('master/viewidt',$data);
+    }
 }
+
