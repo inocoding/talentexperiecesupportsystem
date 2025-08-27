@@ -1187,4 +1187,8 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
+    public function data_ptb()
+    {
+        return view('master/data_ptb');
+    }
 }
