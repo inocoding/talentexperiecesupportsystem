@@ -281,5 +281,10 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
+                <li>
+            <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
+                <span class="label">Data Resign </span>
+            </a>
+        </li>
     </ul>
 </li>

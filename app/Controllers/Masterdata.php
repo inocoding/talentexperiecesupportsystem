@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\ResignModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
@@ -24,6 +25,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->resign           = new ResignModel();
     }
 
     public function index()
@@ -1296,5 +1298,20 @@ class Masterdata extends BaseController
         } else {
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
+    }
+    public function dataresign()
+    {
+         return view('master/resign');
+    }
+    public function viewresign()
+    {
+        // $builder        = $this->users;
+        // $query          = $builder->getAll();
+        // $data['user']   = $query;
+
+        // $data['user']   = $this->users->getAll();
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->resign->getAllPaginated(10, $keyword);
+         return view('master/viewresign', $data);
     }
 }
