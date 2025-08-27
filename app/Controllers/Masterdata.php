@@ -5,11 +5,13 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
 use App\Models\IdtModel;
+use App\Models\MutasiModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -25,7 +27,9 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
-		$this->idt	        	= new IdtModel();
+		    $this->idt	        	  = new IdtModel();
+        $this->data_mpp         = new MppModel();
+        $this->mutasi           = new MutasiModel();
     }
 
     public function index()
@@ -1071,7 +1075,7 @@ class Masterdata extends BaseController
         $jumlah = $this->db->query($sql)->getRow();
         if ($dapeg) {
             $data['dapeg']      = $dapeg;
-            $data['rjab']      = $rjab;
+            $data['rjab']       = $rjab;
             $data['rpend']      = $rpend;
             $data['rsert']      = $rsert;
             $data['jumlah']     = $jumlah;
@@ -1190,13 +1194,39 @@ class Masterdata extends BaseController
         }
     }
 
+      public function data_mpp()
+    {
+         return view('master/form_mpp');
+    }
+
+    public function view_mpp()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->data_mpp->getAllPaginated(5, $keyword);
+
+        return view('master/view_mpp',$data);
+    }
+
     public function datamutasi()
     {
          return view('master/mutasi');
     }
+
+    public function dataaps()
+    {
+         return view('master/dataaps');
+    }
+
     public function dataptb()
     {
          return view('master/ptb');
+    }
+
+    public function viewmutasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        return view('master/viewmutasi', $data);
     }
 
     public function prosesimportdatamutasi()

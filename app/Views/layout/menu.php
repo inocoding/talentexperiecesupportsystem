@@ -277,20 +277,24 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/datamutasi') ?>" class="<?= $uri->getSegment(2) == "datamutasi" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/view_mpp') ?>" class="<?= $uri->getSegment(2) == "view_mpp" ? "active" : null ?>">
+                <span class="label">Data MPP </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('masterdata/viewmutasi') ?>" class="<?= $uri->getSegment(2) == "viewmutasi" ? "active" : null ?>">
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
-		<!--<li>
-            <a href="/*<?= site_url('masterdata/dataidt') ?>" class="<?= $uri->getSegment(2) == "dataidt" ? "active" : null ?>">
-                <span class="label">Data IDT</span>
-            </a>
-        </li> -->
-		<li>
+		    <li>
             <a href="<?= site_url('masterdata/viewidt') ?>" class="<?= $uri->getSegment(2) == "viewidt" ? "active" : null ?>">
                 <span class="label">Data IDT</span>
             </a>
         </li>
-		
+        <li>
+            <a href="<?= site_url('masterdata/dataaps') ?>" class="<?= $uri->getSegment(2) == "dataaps" ? "active" : null ?>">
+                <span class="label">Data APS </span>
+            </a>
+        </li>
     </ul>
 </li>
