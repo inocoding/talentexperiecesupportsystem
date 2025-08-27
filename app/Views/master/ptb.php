@@ -1,13 +1,10 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data MPP</title>
+<title>Dashboard</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
-<meta name="csrf-token-name" content="<?= csrf_token() ?>">
-<meta name="csrf-token-value" content="<?= csrf_hash() ?>">
-
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/bootstrap.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/OverlayScrollbars.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/datatables.min.css" />
@@ -19,81 +16,10 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="card shadow-lg">
-    <div class="card-body">
-        <p>Upload data mutasi</p>
-        <div class="input-group">
-            <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
-            <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
-        </div>
-        <div class="progress mt-3" style="height: 25px;">
-            <div id="progressBar" class="progress-bar" style="width: 0%;">0%</div>
-        </div>
-        <div id="status" class="mt-2"></div>
-    </div>
-</div>
+isinya disini ptb
 <?= $this->endSection() ?>
 
-
-
-
 <?= $this->section('jsfooter') ?>
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  const tokenName  = document.querySelector('meta[name="csrf-token-name"]').content;
-  let   tokenValue = document.querySelector('meta[name="csrf-token-value"]').content;
-
-  function injectCSRF(fd) { fd.append(tokenName, tokenValue); }
-
-  document.getElementById('uploadBtn').addEventListener('click', function(){
-    const file = document.getElementById('excel_file').files[0];
-    if(!file){ return alert('Pilih file terlebih dahulu'); }
-
-    const fd = new FormData();
-    fd.append('excel_file', file);
-    injectCSRF(fd);
-
-    document.getElementById('status').textContent = 'Mengunggah file...';
-
-    fetch("<?= base_url('MppImport/upload') ?>", {
-      method: 'POST', body: fd,
-      headers: {'X-Requested-With':'XMLHttpRequest'}
-    })
-    .then(r => r.json())
-    .then(res => {
-      if(res.status==='ok') {
-        document.getElementById('status').textContent = 'Proses dimulai...';
-        processNext();
-      } else {
-        document.getElementById('status').textContent = res.message || 'Gagal upload';
-      }
-      // update token kalau kamu aktifkan CSRF Regenerate
-      if (res['<?= csrf_token() ?>']) tokenValue = res['<?= csrf_token() ?>'];
-    });
-  });
-
-  function processNext(){
-    const fd = new FormData(); injectCSRF(fd);
-    fetch("<?= base_url('MppImport/processChunk') ?>", {
-      method: 'POST', body: fd,
-      headers: {'X-Requested-With':'XMLHttpRequest'}
-    })
-    .then(r => r.json())
-    .then(res => {
-      if(res.status==='ok'){
-        const bar = document.getElementById('progressBar');
-        bar.style.width = res.progress + '%';
-        bar.textContent = res.progress + '%';
-        if(res.done){ document.getElementById('status').textContent = 'Proses selesai!'; }
-        else { processNext(); }
-      } else {
-        document.getElementById('status').textContent = res.message || 'Gagal memproses';
-      }
-    });
-  }
-});
-</script>
-
 <!-- Vendor Scripts Start -->
 <script src="<?= base_url() ?>/template/js/vendor/jquery-3.5.1.min.js"></script>
 <script src="<?= base_url() ?>/template/js/vendor/bootstrap.bundle.min.js"></script>

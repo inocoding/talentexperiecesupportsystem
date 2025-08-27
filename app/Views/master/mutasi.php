@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data MPP</title>
+<title>Upload Data Mutasi</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -35,8 +35,6 @@
 <?= $this->endSection() ?>
 
 
-
-
 <?= $this->section('jsfooter') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
@@ -55,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     document.getElementById('status').textContent = 'Mengunggah file...';
 
-    fetch("<?= base_url('MppImport/upload') ?>", {
+    fetch("<?= base_url('mutasiimport/upload') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
@@ -74,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function processNext(){
     const fd = new FormData(); injectCSRF(fd);
-    fetch("<?= base_url('MppImport/processChunk') ?>", {
+    fetch("<?= base_url('mutasiimport/processChunk') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
