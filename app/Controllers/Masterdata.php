@@ -1187,4 +1187,12 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
+
+public function data_mpp()
+    {
+        $MppModel = new MppModel();
+        $data['tb_mpp'] = $MppModel -> findAll();
+        return view('master/form_mpp',$data);
+    }
+
 }

@@ -27,3 +27,5 @@ $routes->get('userimport', 'UserImport::index');
 $routes->post('userimport/upload', 'UserImport::upload');
 $routes->post('userimport/processChunk', 'UserImport::processChunk');
 
+$routes->get('/tb_mpp', 'tb_mpp::index');
+

@@ -276,5 +276,12 @@
                 <span class="label">Data Sertifikasi </span>
             </a>
         </li>
+
+        <li>
+            <a href="<?= site_url('masterdata/data_mpp') ?>" class="<?= $uri->getSegment(2) == "data_mpp" ? "active" : null ?>">
+                <span class="label">Data MPP </span>
+            </a>
+        </li>
+
     </ul>
 </li>
