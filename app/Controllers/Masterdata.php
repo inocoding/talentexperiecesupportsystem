@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\IdtModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
@@ -24,6 +25,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+		$this->idt	        	= new IdtModel();
     }
 
     public function index()
@@ -1297,4 +1299,18 @@ class Masterdata extends BaseController
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
     }
+	
+	// public function dataidt()
+   // {
+       //  return view('master/idt');
+    //}
+	
+	public function viewidt()
+    {
+		
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->idt->getAllPaginated(5, $keyword);
+        return view('master/viewidt',$data);
+    }
 }
+
