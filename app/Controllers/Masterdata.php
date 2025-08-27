@@ -318,9 +318,7 @@ class Masterdata extends BaseController
         }
     }
 
-    public function hapusduplikat()
-    {
-    }
+    public function hapusduplikat() {}
 
     public function prosesimport_rjab()
     {
@@ -838,17 +836,9 @@ class Masterdata extends BaseController
         }
     }
 
-    // public function addformdapeg()
-    // {
-    //     if ($this->request->isAJAX()) {
-    //         $msg    = [
-    //             'data'  => view('master/addmodaldapeg')
-    //         ];
-    //         echo json_encode($msg);
-    //     } else {
-    //         exit('Proses tidak bisa dilanjutkan');
-    //     }
-    // }
+
+    //hendri
+
 
     public function editdapeg($id = null)
     {
@@ -1086,6 +1076,20 @@ class Masterdata extends BaseController
         $data = $this->rsert->getAllPaginated(5, $keyword);
         return view('master/sertifikasi', $data);
     }
+
+    //hendri
+    public function pensiundini()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->rsert->getAllPaginated(5, $keyword);
+        return view('master/pensiundini', $data);
+    }
+    public function detailpensiundini($id = null)
+    { {
+            $model = new PensiunDini();
+        }
+    }
+
 
     public function addsert()
     {

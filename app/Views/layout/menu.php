@@ -1,5 +1,5 @@
 <?php $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-    ?>
+?>
 <li>
     <a href="#dashboarrd" class="<?= $uri->getSegment(1) == "dashboard" ? "active" : null ?>">
         <i data-cs-icon="dashboard-1" class="icon" data-cs-size="18"></i>
@@ -269,6 +269,11 @@
         <li>
             <a href="<?= site_url('') ?>" class="">
                 <span class="label">Data PTB </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('masterdata/pensiundini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+                <span class="label">Pensiun Dini </span>
             </a>
         </li>
         <li>
