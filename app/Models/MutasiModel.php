@@ -41,4 +41,5 @@ class MutasiModel extends Model
             'pager' => $this->pager,
         ];
     }
+
 }

@@ -277,6 +277,11 @@
             </a>
         </li>
         <li>
+            <a href="<?= site_url('masterdata/view_mpp') ?>" class="<?= $uri->getSegment(2) == "view_mpp" ? "active" : null ?>">
+                <span class="label">Data MPP </span>
+            </a>
+        </li>
+        <li>
             <a href="<?= site_url('masterdata/viewmutasi') ?>" class="<?= $uri->getSegment(2) == "viewmutasi" ? "active" : null ?>">
                 <span class="label">Data Mutasi </span>
             </a>

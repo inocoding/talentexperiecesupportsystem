@@ -82,6 +82,7 @@ class Tabelmutasi extends Migration
         $this->forge->addKey('nip');             // index bantu pencarian
 
         $this->forge->createTable('tb_mutasi', false, [
+
             'ENGINE'  => 'InnoDB',
             'COMMENT' => 'Riwayat mutasi pegawai',
             'COLLATE' => 'utf8mb4_0900_ai_ci',
