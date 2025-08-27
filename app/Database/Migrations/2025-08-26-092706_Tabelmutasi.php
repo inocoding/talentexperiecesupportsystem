@@ -81,7 +81,7 @@ class Tabelmutasi extends Migration
         $this->forge->addKey('id_data', true);   // primary key
         $this->forge->addKey('nip');             // index bantu pencarian
 
-        $this->forge->createTable('mutasi_pegawai', false, [
+        $this->forge->createTable('tb_mutasi', false, [
             'ENGINE'  => 'InnoDB',
             'COMMENT' => 'Riwayat mutasi pegawai',
             'COLLATE' => 'utf8mb4_0900_ai_ci',
@@ -90,6 +90,6 @@ class Tabelmutasi extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('mutasi_pegawai', true);
+        $this->forge->dropTable('tb_mutasi', true);
     }
 }
