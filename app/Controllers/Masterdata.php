@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\MutasiModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
@@ -26,6 +27,7 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->data_mpp         = new MppModel();
+        $this->mutasi           = new MutasiModel();
     }
 
     public function index()
@@ -1190,7 +1192,6 @@ class Masterdata extends BaseController
         }
     }
 
-
       public function data_mpp()
     {
          return view('master/form_mpp');
@@ -1209,9 +1210,21 @@ class Masterdata extends BaseController
          return view('master/mutasi');
     }
 
+    public function dataaps()
+    {
+         return view('master/dataaps');
+    }
+
     public function dataptb()
     {
          return view('master/ptb');
+    }
+
+    public function viewmutasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        return view('master/viewmutasi', $data);
     }
 
     public function prosesimportdatamutasi()
@@ -1315,3 +1328,4 @@ class Masterdata extends BaseController
         }
     }
 }
+
