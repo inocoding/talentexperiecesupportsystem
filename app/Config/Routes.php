@@ -14,6 +14,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 $routes->post('masterdata/addlist', 'masterdata::addlist');
+$routes->post('masterdata/viewmutasi', 'Masterdata::viewmutasi');
 
 $routes->get('/', 'Home::index');
 $routes->get('login', 'Auth::login');

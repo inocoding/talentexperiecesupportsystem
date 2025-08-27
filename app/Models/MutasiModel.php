@@ -7,6 +7,7 @@ class MutasiModel extends Model
 {
     protected $table = 'tb_mutasi';
     protected $primaryKey = 'id_data';
+    protected $returnType = 'object';
     protected $allowedFields = [
         'nip',
         'unit_tujuan_1',
@@ -21,4 +22,23 @@ class MutasiModel extends Model
         'jenis_mutasi',
         'status',
             ];
+
+    public function getAllPaginated($num, $keyword = null)
+    {
+        $q = $this->select('m.*,u.*')
+                  ->from($this->table.'m')
+                  ->join('user u', 'u.nip = m.nip', 'left')
+                  ->orderBy('m.id_data', 'DESC');
+
+        if (!empty($keyword)) {
+                $q->groupStart()
+                  ->like('nip', $keyword)
+                  ->groupEnd();
+        }
+
+        return [
+            'user'  => $q->paginate($num),
+            'pager' => $this->pager,
+        ];
+    }
 }
