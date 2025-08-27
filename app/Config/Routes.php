@@ -30,5 +30,6 @@ $routes->post('userimport/processChunk', 'UserImport::processChunk');
 $routes->group('mutasiimport', static function($routes) {
     $routes->post('upload', 'MutasiImport::upload');
     $routes->post('processChunk', 'MutasiImport::processChunk');
-});
+    }
+);
 

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\OJTModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
@@ -24,6 +25,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->OJT              = new OJTModel();
     }
 
     public function index()
@@ -1196,7 +1198,6 @@ class Masterdata extends BaseController
     {
          return view('master/ptb');
     }
-
     public function prosesimportdatamutasi()
     {
         
@@ -1296,5 +1297,21 @@ class Masterdata extends BaseController
         } else {
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
+
+    }
+    // public function dataojt()
+    // {
+    //      return view('master/ojt');
+    // }
+        public function viewojt()
+    {
+        // $builder        = $this->users;
+        // $query          = $builder->getAll();
+        // $data['user']   = $query;
+
+        // $data['user']   = $this->users->getAll();
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->OJT->getAllPaginated(5, $keyword);
+        return view('master/viewojt', $data);
     }
 }
