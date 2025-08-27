@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\OJTModel;
 use App\Models\IdtModel;
 use App\Models\MutasiModel;
 use App\Models\Rjab;
@@ -27,6 +28,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->OJT              = new OJTModel();
 		    $this->idt	        	  = new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
@@ -1328,12 +1330,16 @@ class Masterdata extends BaseController
         } else {
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
+
+    }
+    
+    public function viewojt()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->OJT->getAllPaginated(5, $keyword);
+        return view('master/viewojt', $data);
     }
 	
-	// public function dataidt()
-   // {
-       //  return view('master/idt');
-    //}
 	
 	public function viewidt()
     {
