@@ -286,6 +286,11 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
+		    <li>
+            <a href="<?= site_url('masterdata/viewidt') ?>" class="<?= $uri->getSegment(2) == "viewidt" ? "active" : null ?>">
+                <span class="label">Data IDT</span>
+            </a>
+        </li>
         <li>
             <a href="<?= site_url('masterdata/dataaps') ?>" class="<?= $uri->getSegment(2) == "dataaps" ? "active" : null ?>">
                 <span class="label">Data APS </span>
