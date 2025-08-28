@@ -8,6 +8,12 @@ class CreateTbOrgDiv extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_org_div')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_org_div', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_org_div' => [
                 'type'           => 'INT',

@@ -8,6 +8,12 @@ class CreateTbEvalMutasi extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_eval_mutasi')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_eval_mutasi', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_eval' => [
                 'type'           => 'INT',

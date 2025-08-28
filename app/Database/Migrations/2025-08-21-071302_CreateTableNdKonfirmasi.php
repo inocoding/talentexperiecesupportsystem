@@ -8,6 +8,12 @@ class CreateTbNdKonfirmasi extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_nd_konfirmasi')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_nd_konfirmasi', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_konfirm' => [
                 'type'           => 'INT',

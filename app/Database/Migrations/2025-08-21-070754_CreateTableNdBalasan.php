@@ -8,6 +8,12 @@ class CreateTbNdBalasan extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_nd_balasan')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_nd_balasan', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_balasan' => [
                 'type'           => 'INT',

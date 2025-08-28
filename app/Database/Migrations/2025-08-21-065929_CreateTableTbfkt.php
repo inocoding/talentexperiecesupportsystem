@@ -8,6 +8,12 @@ class CreateTbFtk extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_ftk')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_ftk', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_data_ftk' => [
                 'type'           => 'INT',

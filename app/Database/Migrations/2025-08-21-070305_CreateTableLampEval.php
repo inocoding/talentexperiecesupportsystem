@@ -8,6 +8,12 @@ class CreateTbLampEval extends Migration
 {
     public function up()
     {
+        // Kalau mau aman, cek tabel dulu
+        if (! $this->db->tableExists('tb_lamp_eval')) {
+            // ... definisi field di sini ...
+            $this->forge->createTable('tb_lamp_eval', true); // <-- parameter true = IF NOT EXISTS
+        }
+
         $this->forge->addField([
             'id_lamp' => [
                 'type'           => 'INT',
