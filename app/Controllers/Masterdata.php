@@ -1392,6 +1392,24 @@ class Masterdata extends BaseController
         $data = $this->rjab->getAllPaginated(5, $keyword);
         return view('master/viewtk', $data);
     }
+//Data Organisasi Satu
+         public function dataorgsatu()
+    {
+         return view('master/orgsatu');
+    }
+
+//Data Organisasi Dua
+         public function dataorgdua()
+    {
+         return view('master/orgdua');
+    }
+
+//Data Organisasi Tiga
+         public function dataorgtiga()
+    {
+         return view('master/orgtiga');
+    }
+
 
 }
 

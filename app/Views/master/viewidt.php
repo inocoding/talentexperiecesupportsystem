@@ -131,6 +131,7 @@
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
+                            <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
                             <th class="text-muted text-small text-uppercase">Tgl Mulai</th>
                             <th class="text-muted text-small text-uppercase">Tgl Berakhir</th>
                         </tr>
@@ -144,7 +145,8 @@
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nip ?></td>
                                 <td><?= $value->nama_user ?></td>
-                                <td><?= $value->unit_asal_1 ?></td>
+                                <td><?= $value->singkatan ?></td>
+                                <td><?= $value->singkatan ?></td>
                                 <td><?= $value->tgl_mulai ?></td>
                                 <td><?= $value->tgl_berakhir ?></td>
                             </tr>
