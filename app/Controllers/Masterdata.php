@@ -32,9 +32,9 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->tb_ptb           = new Ptb();
-        $this->tb_pensiun_dini  = new PensiunDini();
+        $this->data_pensiun_dini = new PensiunDini();
         $this->OJT              = new OJTModel();
-		    $this->idt	        	  = new IdtModel();
+        $this->idt              = new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
@@ -83,11 +83,14 @@ class Masterdata extends BaseController
         return view('master/pegawaihtd', $data);
     }
 
+
+
     //hendri
-    public function pensiundini()
+    public function data_pensiun_dini()
     {
         $keyword = $this->request->getGet('keyword');
-        $data = $this->tb_pensiun_dini->getAllPaginatedHtd(5, $keyword);
+        $data = $this->data_pensiun_dini->getAllPaginated(5, $keyword);
+
         return view('master/pensiundini', $data);
     }
 
@@ -1092,6 +1095,33 @@ class Masterdata extends BaseController
         }
     }
 
+    public function detaildapegpen($id = null)
+    {
+
+        $dapeg = $this->users->getDetail($id);
+        $rjab = $this->rjab->get($id);
+        $rpend = $this->rpend->get($id);
+        $rsert = $this->rsert->get($id);
+        $kode_nip = $dapeg->nip;
+        $kode_org_unit = $dapeg->kode_org_unit;
+        $kode_org_tiga = $dapeg->sub_unit_pelaksana;
+        $jenjab = $dapeg->jenjab;
+        $sql = "SELECT SUM(datediff(end_date, start_date)) AS jumlah\n"
+            . "FROM tb_riwayat_jabatan\n"
+            . "WHERE kode_nip = '$kode_nip' AND kode_riwayat_org_unit = '$kode_org_unit' AND kode_riwayat_org_tiga = '$kode_org_tiga' AND jenjang_jabatan = '$jenjab' AND end_date != '9999-12-31';";
+        $jumlah = $this->db->query($sql)->getRow();
+        if ($dapeg) {
+            $data['dapeg']      = $dapeg;
+            $data['rjab']       = $rjab;
+            $data['rpend']      = $rpend;
+            $data['rsert']      = $rsert;
+            $data['jumlah']     = $jumlah;
+            return view('master/detaildapegpen', $data);
+        } else {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+    }
+
     // bagian untuk master data sertifikasi
     public function sertifikasi()
     {
@@ -1217,7 +1247,7 @@ class Masterdata extends BaseController
     }
 
 
-     public function addptb()
+    public function addptb()
     {
         return view('master/addptb');
     }
@@ -1225,7 +1255,7 @@ class Masterdata extends BaseController
 
     public function data_mpp()
     {
-         return view('master/form_mpp');
+        return view('master/form_mpp');
     }
 
     public function view_mpp()
@@ -1233,39 +1263,37 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->data_mpp->getAllPaginated(5, $keyword);
 
-        return view('master/view_mpp',$data);
+        return view('master/view_mpp', $data);
     }
 
-    public function datamutasi(){
+    public function datamutasi() {}
 
-    }
-    
     public function datatk()
     {
-         return view('master/tugaskarya');
+        return view('master/tugaskarya');
     }
 
     public function dataaps()
     {
-         return view('master/dataaps');
+        return view('master/dataaps');
     }
 
     public function dataptb()
     {
-         return view('master/ptb');
-         return view('master/tugaskarya');
+        return view('master/ptb');
+        return view('master/tugaskarya');
     }
 
     public function viewmutasi()
     {
         $keyword = $this->request->getGet('keyword');
-        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        $data = $this->mutasi->getAllPaginated(5, $keyword);
         return view('master/viewmutasi', $data);
     }
 
     public function prosesimportdatamutasi()
     {
-        
+
 
         $file = $this->request->getFile('file_excel');
         $extention = $file->getClientExtension();
@@ -1362,31 +1390,28 @@ class Masterdata extends BaseController
         } else {
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
-
     }
-    
+
     public function viewojt()
     {
         $keyword = $this->request->getGet('keyword');
         $data = $this->OJT->getAllPaginated(5, $keyword);
         return view('master/viewojt', $data);
     }
-	
-	
-	  public function viewidt()
+
+
+    public function viewidt()
     {
-		
+
         $keyword = $this->request->getGet('keyword');
         $data = $this->idt->getAllPaginated(5, $keyword);
-        return view('master/viewidt',$data);
+        return view('master/viewidt', $data);
     }
-    
+
     public function viewtk()
     {
         $keyword = $this->request->getGet('keyword');
         $data = $this->rjab->getAllPaginated(5, $keyword);
         return view('master/viewtk', $data);
     }
-
 }
-

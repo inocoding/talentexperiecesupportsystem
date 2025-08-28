@@ -15,7 +15,7 @@ class MppModel extends Model
         'unit_asal_lv2',
         'unit_asal_lv3',
         'tgl_aktivasi',
-        
+
     ];
 
     protected $useTimestamps = true;
@@ -89,12 +89,12 @@ class MppModel extends Model
         $q = $this;
         if (!empty($keyword)) {
             $q = $q->groupStart()
-                    ->like('nip', $keyword)
-                    ->orlike('unit_asal_lv1', $keyword)
-                    ->orlike('unit_asal_lv2', $keyword)
-                    ->orlike('unit_asal_lv3', $keyword)
-                    ->orlike('tgl_aktivasi', $keyword)
-                    ->groupEnd();
+                ->like('nip', $keyword)
+                ->orlike('unit_asal_lv1', $keyword)
+                ->orlike('unit_asal_lv2', $keyword)
+                ->orlike('unit_asal_lv3', $keyword)
+                ->orlike('tgl_aktivasi', $keyword)
+                ->groupEnd();
         }
 
         return [
@@ -130,5 +130,4 @@ class MppModel extends Model
             'pager' => $this->pager,
         ];
     }
-
 }

@@ -273,8 +273,8 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/pensiundini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
-                <span class="label">Pensiun Dini </span>
+            <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+                <span class="label">Data Pensiun Dini </span>
             </a>
         </li>
         <li>
@@ -297,7 +297,7 @@
                 <span class="label">Data OJT </span>
             </a>
         </li>
-		    <li>
+        <li>
             <a href="<?= site_url('masterdata/viewidt') ?>" class="<?= $uri->getSegment(2) == "viewidt" ? "active" : null ?>">
                 <span class="label">Data IDT</span>
             </a>
@@ -307,7 +307,7 @@
                 <span class="label">Data APS </span>
             </a>
         </li>
-          <li>
+        <li>
             <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
                 <span class="label">Data Tugas Karya</span>
             </a>

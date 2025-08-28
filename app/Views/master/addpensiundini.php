@@ -21,6 +21,11 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
   <div class="card-body">
+    <!-- Back Button Start -->
+    <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" type="button" data-bs-delay="0">
+      <i data-cs-icon="arrow-left"></i>
+    </a>
+    <!-- Back Button End --><br><br>
     <p>Upload data Pensiun Dini</p>
     <div class="input-group">
       <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
@@ -30,6 +35,7 @@
       <div id="progressBar" class="progress-bar" style="width: 0%;">0%</div>
     </div>
     <div id="status" class="mt-2"></div>
+
   </div>
 </div>
 <?= $this->endSection() ?>
