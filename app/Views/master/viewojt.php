@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data User HTD - <?= userLogin()->nama_org_htd ?></title>
+<title>Data OJT</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,18 +18,13 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data User HTD <?= userLogin()->nama_org_htd ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data OJT</h2>
                 </div>
                 <!-- Title End -->
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
-                    <!-- Add New Button Start -->
-                    <!-- <a href=" <?= site_url('masterdata/addpeg') ?> " type="button" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto add-dapeg">
-                        <i data-cs-icon="plus"></i>
-                        <span>Add New</span>
-                    </a> -->
-                    <!-- Add New Button End -->
+                   
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -73,9 +68,9 @@
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
                             <!-- Add Button Start -->
-                            <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
+                            <!-- <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
                                 <i data-cs-icon="plus"></i>
-                            </a>
+                            </a> -->
                             <!-- Add Button End -->
 
                             <!-- Edit Button Start -->
@@ -84,7 +79,7 @@
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('userimport') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
+                            <a href="<?= site_url('masterdata/datamutasi') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data Mutasi" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -133,14 +128,16 @@
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
-                            <th class="text-muted text-small text-uppercase">NIP</th>
-                            <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">HTD Area</th>
-                            <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">email</th>
-                            <th class="text-muted text-small text-uppercase">Role</th>
-                            <th class="text-muted text-small text-uppercase">Activation</th>
-                            <th class="text-muted text-small text-uppercase">Action</th>
+                            <th class="text-muted text-small text-uppercase">NO TEST</th>
+                            <th class="text-muted text-small text-uppercase">NAMA</th>
+                            <th class="text-muted text-small text-uppercase">JENJANG</th>
+                            <th class="text-muted text-small text-uppercase">PROYEKSI JABATAN</th>
+                            <th class="text-muted text-small text-uppercase">UNIT PROYEKSI LV1</th>
+                            <th class="text-muted text-small text-uppercase">UNIT PROYEKSI LV2</th>
+                            <th class="text-muted text-small text-uppercase">UNIT PROYEKSI LV3</th>
+                            <th class="text-muted text-small text-uppercase">UNIT PROYEKSI LV4</th>
+                            <th class="text-muted text-small text-uppercase">TGL MULAI OJT</th>
+                            <th class="text-muted text-small text-uppercase">TGL SELESAI OJT</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,75 +147,21 @@
                         foreach ($user as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td>
-                                    <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
-                                </td>
-                                <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_org_htd ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
-                                <td><?= $value->email_korpo ?> <br>
-                                    <?= $value->email_non ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
-                                        if ($value->role_admin == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
-                                        }
-                                        if ($value->role_adm_acc == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
-                                        }
-                                        if ($value->role_adm_eclinic == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
-                                        }
-                                        if ($value->role_adm_hi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
-                                        }
-                                        if ($value->role_adm_org == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
-                                        }
-                                        if ($value->role_adm_kinerja == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
-                                        }
-                                        if ($value->role_adm_diklat == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
-                                        }
-                                        if ($value->role_adm_sertifikasi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
-                                        }
-                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
-                                        if ($value->role_peg == 1) {
-                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
-                                        } else {
-                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
-                                        }
-                                        if ($value->role_komite == 1) {
-                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
-                                        }
-                                    }
-                                    ?>
-                                </td>
-                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
-                                            <i data-cs-icon="edit"></i>
-                                        </a>
-                                        <form action="<?= site_url('masterdata/del_dapeghtd/' . $value->nip) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
-                                                <i data-cs-icon="bin"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td><?= $value->no_test ?></td>
+                                <td><?= $value->nama ?></td>
+                                <td><?= $value->jenjang ?></td>
+                                <td><?= $value->proyeksi_jabatan ?></td>
+                                <td><?= $value->unit_proyeksi_lv1 ?></td>
+                                <td><?= $value->unit_proyeksi_lv2 ?></td>
+                                <td><?= $value->unit_proyeksi_lv3 ?></td>
+                                <td><?= $value->unit_proyeksi_lv4 ?></td>
+                                <td><?= $value->tgl_mulai_ojt ?></td>
+                                <td><?= $value->tgl_selesai_ojt ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-
-            
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
