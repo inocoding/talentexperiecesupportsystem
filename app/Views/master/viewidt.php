@@ -257,4 +257,4 @@
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
 
-<?= $this->endSection() ?>
+<?= $this->endSection() ?>

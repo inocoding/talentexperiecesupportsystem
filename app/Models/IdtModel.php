@@ -26,12 +26,14 @@ class IdtModel extends Model
         if (!empty($keyword)) {
             $q = $q->groupStart()
                     ->like('nip', $keyword)
+                    ->like('nip', $keyword)
                     ->groupEnd();
         }
+
         return [
             'user'  => $q->paginate($num),
             'pager' => $this->pager,
-        ];
+        ];
 
     }
 		
