@@ -25,7 +25,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
-        $this->tb_pensiun_dini           = new PensiunDini();
+        $this->tb_pensiun_dini  = new PensiunDini();
     }
 
     public function index()
@@ -64,15 +64,24 @@ class Masterdata extends BaseController
 
     public function dapeghtd()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
 
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->users->getAllPaginatedHtd(5, $keyword);
 
         return view('master/pegawaihtd', $data);
+    }
+
+    //hendri
+    public function pensiundini()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_pensiun_dini->getAllPaginatedHtd(5, $keyword);
+        return view('master/pensiundini', $data);
+    }
+
+    public function addpensiundini()
+    {
+        return view('master/addpensiundini');
     }
 
     public function rjab()
@@ -839,7 +848,7 @@ class Masterdata extends BaseController
     }
 
 
-    //hendri
+
 
 
     public function editdapeg($id = null)
@@ -1079,15 +1088,7 @@ class Masterdata extends BaseController
         return view('master/sertifikasi', $data);
     }
 
-    //hendri
-    public function pensiundini()
-    {
-        return view('master/pensiundini');
-    }
-    public function addpensiundini()
-    {
-        return view('master/addpensiundini');
-    }
+
 
     public function addsert()
     {
