@@ -12,11 +12,8 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
-<<<<<<< HEAD
 use App\Models\TugaskaryaModel;
-=======
 use App\Models\MppModel;
->>>>>>> main
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -32,14 +29,11 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
-<<<<<<< HEAD
-        $this->tb_tugas_karya   = new TugaskaryaModel();
-=======
         $this->OJT              = new OJTModel();
 		    $this->idt	        	  = new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
->>>>>>> main
+        $this->tb_tugas_karya   = new TugaskaryaModel();
     }
 
     public function index()
@@ -1203,9 +1197,6 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
-<<<<<<< HEAD
-    public function datatk()
-=======
 
       public function data_mpp()
     {
@@ -1221,17 +1212,10 @@ class Masterdata extends BaseController
     }
 
     public function datamutasi()
->>>>>>> main
+    public function datatk()
     {
-         return view('master/tugaskarya');
+         return view('master/mutasi');
     }
-<<<<<<< HEAD
-    public function viewtk()
-    {
-        $keyword = $this->request->getGet('keyword');
-        $data = $this->rjab->getAllPaginated(5, $keyword);
-        return view('master/viewtk', $data);
-=======
 
     public function dataaps()
     {
@@ -1241,6 +1225,7 @@ class Masterdata extends BaseController
     public function dataptb()
     {
          return view('master/ptb');
+         return view('master/tugaskarya');
     }
 
     public function viewmutasi()
@@ -1366,7 +1351,11 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->idt->getAllPaginated(5, $keyword);
         return view('master/viewidt',$data);
->>>>>>> main
+    public function viewtk()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->rjab->getAllPaginated(5, $keyword);
+        return view('master/viewtk', $data);
     }
 }
 
