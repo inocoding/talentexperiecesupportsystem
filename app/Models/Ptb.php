@@ -1,22 +1,15 @@
 <?php
 
 namespace App\Models;
-
 use CodeIgniter\Model;
 
-class Users extends Model
+class Ptb extends Model
 {
-    // protected $DBGroup          = 'default';
-    protected $table            = 'Ptb';
-    protected $primaryKey       = 'id_ptb';
-    // protected $useAutoIncrement = true;
-    // protected $insertID         = 0;
-    protected $returnType       = 'object';
-    // protected $useSoftDeletes   = true;
-    // protected $protectFields    = true;
-    protected $allowedFields    = [
-        
-'id_ptb',
+    protected $table = 'tb_ptb';
+    protected $primaryKey = 'id_ptb';
+    protected $returnType = 'object';
+    protected $allowedFields = [
+       
 'nip', 
 'nama', 
 'sebutan_jabatan', 
@@ -38,12 +31,9 @@ class Users extends Model
 'unit_penempatan_lv1', 
 'unit_penempatan_lv2', 
 'unit_penempatan_lv3', 
-'tanggal_aktivasi',
-
-    ];
-
-    // Dates
-    protected $useTimestamps = true;
+'tanggal_aktivasi'
+            ];
+ protected $useTimestamps = true;
     // protected $dateFormat    = 'datetime';
     // protected $createdField  = 'created_at';
     // protected $updatedField  = 'updated_at';
@@ -124,8 +114,8 @@ class Users extends Model
         // $htd_area = userLogin()->htd_area;
 
         $builder    = $this->builder();
-        $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
-        $builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
+       // $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
+        $builder->join('user', 'user.nip = tb_ptb.nip');
         $builder->where('role_peg', $role_peg);
         // $builder->where('htd_area', $htd_area);
         $builder->where('role_htd <', $role_htd);
@@ -145,3 +135,4 @@ class Users extends Model
         ];
     }
 }
+

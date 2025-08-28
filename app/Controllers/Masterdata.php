@@ -9,6 +9,7 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\Ptb;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -24,6 +25,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->tb_ptb           = new Ptb();
     }
 
     public function index()
@@ -1187,8 +1189,27 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
+    // public function data_ptb()
+    // {
+    //     return view('master/ptb', $data);
+    // }
+
     public function data_ptb()
     {
-        return view('master/data_ptb');
+        // $builder        = $this->users;
+        // $query          = $builder->getAll();
+        // $data['user']   = $query;
+
+        // $data['user']   = $this->users->getAll();
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_ptb->getAllPaginatedHtd(5, $keyword);
+
+        return view('master/ptb', $data);
+    }
+
+
+     public function addptb()
+    {
+        return view('master/addptb');
     }
 }
