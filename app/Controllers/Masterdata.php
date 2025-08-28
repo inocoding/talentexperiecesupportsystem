@@ -12,6 +12,7 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\PensiunDini;
 use App\Models\TugaskaryaModel;
 use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -29,6 +30,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->tb_pensiun_dini  = new PensiunDini();
         $this->OJT              = new OJTModel();
 		    $this->idt	        	  = new IdtModel();
         $this->data_mpp         = new MppModel();
@@ -72,15 +74,24 @@ class Masterdata extends BaseController
 
     public function dapeghtd()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
 
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->users->getAllPaginatedHtd(5, $keyword);
 
         return view('master/pegawaihtd', $data);
+    }
+
+    //hendri
+    public function pensiundini()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_pensiun_dini->getAllPaginatedHtd(5, $keyword);
+        return view('master/pensiundini', $data);
+    }
+
+    public function addpensiundini()
+    {
+        return view('master/addpensiundini');
     }
 
     public function rjab()
@@ -328,9 +339,7 @@ class Masterdata extends BaseController
         }
     }
 
-    public function hapusduplikat()
-    {
-    }
+    public function hapusduplikat() {}
 
     public function prosesimport_rjab()
     {
@@ -848,17 +857,9 @@ class Masterdata extends BaseController
         }
     }
 
-    // public function addformdapeg()
-    // {
-    //     if ($this->request->isAJAX()) {
-    //         $msg    = [
-    //             'data'  => view('master/addmodaldapeg')
-    //         ];
-    //         echo json_encode($msg);
-    //     } else {
-    //         exit('Proses tidak bisa dilanjutkan');
-    //     }
-    // }
+
+
+
 
     public function editdapeg($id = null)
     {
@@ -1097,6 +1098,8 @@ class Masterdata extends BaseController
         return view('master/sertifikasi', $data);
     }
 
+
+
     public function addsert()
     {
 
@@ -1198,7 +1201,7 @@ class Masterdata extends BaseController
         }
     }
 
-      public function data_mpp()
+    public function data_mpp()
     {
          return view('master/form_mpp');
     }
@@ -1348,7 +1351,7 @@ class Masterdata extends BaseController
     }
 	
 	
-	public function viewidt()
+	  public function viewidt()
     {
 		
         $keyword = $this->request->getGet('keyword');
@@ -1362,5 +1365,6 @@ class Masterdata extends BaseController
         $data = $this->rjab->getAllPaginated(5, $keyword);
         return view('master/viewtk', $data);
     }
+
 }
 
