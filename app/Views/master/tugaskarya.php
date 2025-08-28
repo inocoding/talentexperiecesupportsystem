@@ -21,7 +21,7 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload Data Tugas Karya</p>
+        <p>Upload data tugas karya</p>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
@@ -33,7 +33,6 @@
     </div>
 </div>
 <?= $this->endSection() ?>
-
 
 <?= $this->section('jsfooter') ?>
 <script>
