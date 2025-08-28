@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data User HTD - <?= userLogin()->nama_org_htd ?></title>
+<title>Data Tugas Karya</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data User HTD <?= userLogin()->nama_org_htd ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Tugas Karya</h2>
                 </div>
                 <!-- Title End -->
 
@@ -217,8 +217,6 @@
                     </tbody>
                 </table>
             </div>
-
-            
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
