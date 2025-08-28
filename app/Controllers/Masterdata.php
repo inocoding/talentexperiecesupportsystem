@@ -1211,10 +1211,13 @@ class Masterdata extends BaseController
         return view('master/view_mpp',$data);
     }
 
-    public function datamutasi()
+    public function datamutasi(){
+
+    }
+    
     public function datatk()
     {
-         return view('master/mutasi');
+         return view('master/tugaskarya');
     }
 
     public function dataaps()
@@ -1351,6 +1354,8 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->idt->getAllPaginated(5, $keyword);
         return view('master/viewidt',$data);
+    }
+    
     public function viewtk()
     {
         $keyword = $this->request->getGet('keyword');
