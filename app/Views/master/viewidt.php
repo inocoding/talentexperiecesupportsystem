@@ -79,7 +79,7 @@
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/datamutasi') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data Mutasi" type="button">
+                            <a href="<?= site_url('masterdata/dataidt') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data IDT" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -129,7 +129,10 @@
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
-
+                            <th class="text-muted text-small text-uppercase">Nama</th>
+                            <th class="text-muted text-small text-uppercase">Unit Induk</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Mulai</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Berakhir</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,6 +143,10 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nip ?></td>
+                                <td><?= $value->nama_user ?></td>
+                                <td><?= $value->unit_asal_1 ?></td>
+                                <td><?= $value->tgl_mulai ?></td>
+                                <td><?= $value->tgl_berakhir ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -257,4 +264,4 @@
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
 
-<?= $this->endSection() ?>
+<?= $this->endSection()?>

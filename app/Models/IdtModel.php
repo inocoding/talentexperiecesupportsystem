@@ -22,16 +22,20 @@ class IdtModel extends Model
 		
 	public function getAllPaginated($num, $keyword = null)
     {
+        $builder = $this->builder();
+        $builder->join('user','user.nip=tb_idt.nip');
+    
+        
 		$q = $this;
         if (!empty($keyword)) {
             $q = $q->groupStart()
-                    ->like('nip', $keyword)
+                    ->like('tb_idt.nip', $keyword)
                     ->groupEnd();
         }
         return [
             'user'  => $q->paginate($num),
             'pager' => $this->pager,
-        ];
+    ];
 
     }
 		

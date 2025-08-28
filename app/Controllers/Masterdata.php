@@ -34,7 +34,7 @@ class Masterdata extends BaseController
         $this->tb_ptb           = new Ptb();
         $this->tb_pensiun_dini  = new PensiunDini();
         $this->OJT              = new OJTModel();
-		    $this->idt	        	  = new IdtModel();
+		$this->idt	        	= new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
@@ -1250,6 +1250,11 @@ class Masterdata extends BaseController
          return view('master/dataaps');
     }
 
+        public function dataidt()
+    {
+         return view('master/idt');
+    }
+
     public function dataptb()
     {
          return view('master/ptb');
@@ -1372,7 +1377,7 @@ class Masterdata extends BaseController
         return view('master/viewojt', $data);
     }
 	
-	
+	//View Data IDT
 	  public function viewidt()
     {
 		
