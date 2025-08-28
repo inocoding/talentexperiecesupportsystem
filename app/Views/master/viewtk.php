@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Dashboard</title>
+<title>Data Tugas Karya</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data User HTD <?= userLogin()->nama_org_htd ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Tugas Karya</h2>
                 </div>
                 <!-- Title End -->
 
@@ -84,7 +84,7 @@
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/addptb') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
+                            <a href="<?= site_url('userimport') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -154,10 +154,10 @@
                                     <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
                                 <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nip ?></td>
-                                <td><?= $value->nama ?></td>
-                                <td><?= $value->sebutan_jabatan ?> <br>
-                                    <?= $value->unit_asal_lv1 ?>
+                                <td><?= $value->nama_org_htd ?></td>
+                                <td><?= $value->nama_org_satu ?></td>
+                                <td><?= $value->email_korpo ?> <br>
+                                    <?= $value->email_non ?>
                                 </td>
                                 <td>
                                     <?php
@@ -298,7 +298,6 @@
         <div class="viewmodal" style="display: none;"></div>
     </div>
 </div>
-
 <?= $this->endSection() ?>
 
 <?= $this->section('jsfooter') ?>
@@ -311,24 +310,6 @@
 <script src="<?= base_url() ?>/template/js/vendor/bootstrap-submenu.js"></script>
 <script src="<?= base_url() ?>/template/js/vendor/datatables.min.js"></script>
 <script src="<?= base_url() ?>/template/js/vendor/mousetrap.min.js"></script>
-<script src="<?= base_url() ?>/template/js/cs/scrollspy.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/datatables.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/select2.full.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/datepicker/bootstrap-datepicker.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/jquery.validate/jquery.validate.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/jquery.validate/additional-methods.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/bootstrap-submenu.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/mousetrap.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/dropzone.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/singleimageupload.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/moment-with-locales.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/Chart.bundle.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/chartjs-plugin-rounded-bar.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/chartjs-plugin-crosshair.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/chartjs-plugin-datalabels.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/chartjs-plugin-streaming.min.js"></script>
-<script src="<?= base_url() ?>/template/js/vendor/glide.min.js"></script>
 <!-- Vendor Scripts End -->
 
 <!-- Template Base Scripts Start -->
@@ -344,17 +325,6 @@
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
 <script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
-<script src="<?= base_url() ?>/template/js/forms/genericforms.js"></script>
-<script src="<?= base_url() ?>/template/js/cs/dropzone.templates.js"></script>
-<script src="<?= base_url() ?>/template/js/forms/controls.dropzone.js"></script>
-<script src="<?= base_url() ?>/template/js/cs/charts.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/charts.js"></script>
-<script src="<?= base_url() ?>/template/js/cs/glide.custom.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/carousels.js"></script>
-<script src="<?= base_url() ?>/template/js/components/progress.js"></script>
-<script src="<?= base_url() ?>/template/js/forms/controls.select2.js"></script>
-<script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows2.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->

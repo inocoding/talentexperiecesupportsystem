@@ -4,12 +4,18 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\OJTModel;
+use App\Models\IdtModel;
+use App\Models\MutasiModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
 use App\Models\Ptb;
+use App\Models\PensiunDini;
+use App\Models\TugaskaryaModel;
+use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -26,6 +32,12 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->tb_ptb           = new Ptb();
+        $this->tb_pensiun_dini  = new PensiunDini();
+        $this->OJT              = new OJTModel();
+		    $this->idt	        	  = new IdtModel();
+        $this->data_mpp         = new MppModel();
+        $this->mutasi           = new MutasiModel();
+        $this->tb_tugas_karya   = new TugaskaryaModel();
     }
 
     public function index()
@@ -64,15 +76,24 @@ class Masterdata extends BaseController
 
     public function dapeghtd()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
 
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->users->getAllPaginatedHtd(5, $keyword);
 
         return view('master/pegawaihtd', $data);
+    }
+
+    //hendri
+    public function pensiundini()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_pensiun_dini->getAllPaginatedHtd(5, $keyword);
+        return view('master/pensiundini', $data);
+    }
+
+    public function addpensiundini()
+    {
+        return view('master/addpensiundini');
     }
 
     public function rjab()
@@ -320,9 +341,7 @@ class Masterdata extends BaseController
         }
     }
 
-    public function hapusduplikat()
-    {
-    }
+    public function hapusduplikat() {}
 
     public function prosesimport_rjab()
     {
@@ -840,17 +859,9 @@ class Masterdata extends BaseController
         }
     }
 
-    // public function addformdapeg()
-    // {
-    //     if ($this->request->isAJAX()) {
-    //         $msg    = [
-    //             'data'  => view('master/addmodaldapeg')
-    //         ];
-    //         echo json_encode($msg);
-    //     } else {
-    //         exit('Proses tidak bisa dilanjutkan');
-    //     }
-    // }
+
+
+
 
     public function editdapeg($id = null)
     {
@@ -1071,7 +1082,7 @@ class Masterdata extends BaseController
         $jumlah = $this->db->query($sql)->getRow();
         if ($dapeg) {
             $data['dapeg']      = $dapeg;
-            $data['rjab']      = $rjab;
+            $data['rjab']       = $rjab;
             $data['rpend']      = $rpend;
             $data['rsert']      = $rsert;
             $data['jumlah']     = $jumlah;
@@ -1088,6 +1099,8 @@ class Masterdata extends BaseController
         $data = $this->rsert->getAllPaginated(5, $keyword);
         return view('master/sertifikasi', $data);
     }
+
+
 
     public function addsert()
     {
@@ -1189,10 +1202,6 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
-    // public function data_ptb()
-    // {
-    //     return view('master/ptb', $data);
-    // }
 
     public function data_ptb()
     {
@@ -1212,4 +1221,172 @@ class Masterdata extends BaseController
     {
         return view('master/addptb');
     }
+
+
+    public function data_mpp()
+    {
+         return view('master/form_mpp');
+    }
+
+    public function view_mpp()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->data_mpp->getAllPaginated(5, $keyword);
+
+        return view('master/view_mpp',$data);
+    }
+
+    public function datamutasi(){
+
+    }
+    
+    public function datatk()
+    {
+         return view('master/tugaskarya');
+    }
+
+    public function dataaps()
+    {
+         return view('master/dataaps');
+    }
+
+    public function dataptb()
+    {
+         return view('master/ptb');
+         return view('master/tugaskarya');
+    }
+
+    public function viewmutasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        return view('master/viewmutasi', $data);
+    }
+
+    public function prosesimportdatamutasi()
+    {
+        
+
+        $file = $this->request->getFile('file_excel');
+        $extention = $file->getClientExtension();
+        if ($extention == 'xlsx' || $extention == 'xls') {
+            if ($extention == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+            $spreadsheet = $reader->load($file);
+            $user = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($user as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+                $data = [
+                    'nip'                   =>  $value[0],
+                    'no_sap'                =>  $value[1],
+                    'password'              =>  sha1($value[2]),
+                    'nama_user'             =>  $value[3],
+                    'foto_profile'          =>  $value[4],
+                    'tgl_lahir'             =>  $value[5],
+                    'tempat_lahir'          =>  $value[6],
+                    'jenis_kelamin'         =>  $value[7],
+                    'agama'                 =>  $value[8],
+                    'status_perkawinan'     =>  $value[9],
+                    'grade'                 =>  $value[10],
+                    'tgl_grade_terakhir'    =>  $value[11],
+                    'email_korpo'           =>  $value[12],
+                    'email_non'             =>  $value[13],
+                    'no_hp'                 =>  $value[14],
+                    'no_ktp'                =>  $value[15],
+                    'npwp'                  =>  $value[16],
+                    'alamat'                =>  $value[17],
+                    'kota_alamat'           =>  $value[18],
+                    'tgl_masuk'             =>  $value[19],
+                    'tgl_capeg'             =>  $value[20],
+                    'tgl_peg_tetap'         =>  $value[21],
+                    'sebutan_jabatan'       =>  $value[22],
+                    'jenjab'                =>  $value[23],
+                    'pog'                   =>  $value[24],
+                    'kode_org_unit'         =>  $value[25],
+                    'nama_org_unit'         =>  $value[26],
+                    'start_date_jabatan'    =>  $value[27],
+                    'profesi_jabatan'       =>  $value[28],
+                    'htd_area'              =>  kodehtd($value[29]),
+                    'unit_induk'            =>  kode_org_satu($value[30]),
+                    'unit_pelaksana'        =>  kode_org_dua($value[31]),
+                    'sub_unit_pelaksana'    =>  kode_org_tiga($value[32]),
+                    'role_peg'              =>  $value[33],
+                    'role_htd'              =>  $value[34],
+                    'role_admin'            =>  $value[35],
+                    'role_komite'           =>  $value[36],
+                    'role_adm_acc'          =>  $value[37],
+                    'role_adm_eclinic'      =>  $value[38],
+                    'role_adm_hi'           =>  $value[39],
+                    'role_adm_org'          =>  $value[40],
+                    'role_adm_kinerja'      =>  $value[41],
+                    'role_adm_diklat'       =>  $value[42],
+                    'role_adm_sertifikasi'  =>  $value[43],
+                    'ket_aktif'             =>  $value[44],
+                    'tx_esgrp'              =>  $value[45],
+                    'tx_jnsjab'             =>  $value[46],
+                    'tx_grpjab'             =>  $value[47],
+                    'kd_posisi'             =>  $value[48],
+                    'jbtn'                  =>  $value[49],
+                    'tglm_posisi'           =>  $value[50],
+                    'jn_pddkakh'            =>  $value[51],
+                    'tx_nikah'              =>  $value[52],
+                    'kd_posatsn'            =>  $value[53],
+                    'tx_posatsn'            =>  $value[54],
+                    'tx_org_01'             =>  $value[55],
+                    'tx_org_02'             =>  $value[56],
+                    'tx_org_03'             =>  $value[57],
+                    'tx_org_04'             =>  $value[58],
+                    'tx_org_05'             =>  $value[59],
+                    'tx_org_06'             =>  $value[60],
+                    'tx_org_07'             =>  $value[61],
+                    'tx_org_08'             =>  $value[62],
+                    'tx_org_09'             =>  $value[63],
+                    'jabatan_lengkap'       =>  $value[64],
+                    'hukdis'                =>  $value[65],
+                    'tgl_selesai_hukdis'    =>  $value[66],
+                    'pap'                   =>  $value[67],
+                    'regional'              =>  $value[68],
+                    'created_at'            =>  $value[69],
+                    'updated_at'            =>  $value[70],
+                    'deleted_at'            =>  $value[71],
+                ];
+                $this->users->upsert($data);
+            }
+            return redirect()->back()->with('success', 'Data Excel Berhasil DiUpload');
+        } else {
+            return redirect()->back()->with('error', 'Format File Tidak Sesuai');
+        }
+
+    }
+    
+    public function viewojt()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->OJT->getAllPaginated(5, $keyword);
+        return view('master/viewojt', $data);
+    }
+	
+	
+	  public function viewidt()
+    {
+		
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->idt->getAllPaginated(5, $keyword);
+        return view('master/viewidt',$data);
+    }
+    
+    public function viewtk()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->rjab->getAllPaginated(5, $keyword);
+        return view('master/viewtk', $data);
+    }
+
 }
+
