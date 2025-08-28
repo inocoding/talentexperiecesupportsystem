@@ -301,5 +301,10 @@
                 <span class="label">Data APS </span>
             </a>
         </li>
+          <li>
+            <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
+                <span class="label">Data Tugas Karya</span>
+            </a>
+        </li>
     </ul>
 </li>

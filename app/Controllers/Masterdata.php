@@ -12,6 +12,7 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\TugaskaryaModel;
 use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -32,6 +33,7 @@ class Masterdata extends BaseController
 		    $this->idt	        	  = new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
+        $this->tb_tugas_karya   = new TugaskaryaModel();
     }
 
     public function index()
@@ -1209,9 +1211,13 @@ class Masterdata extends BaseController
         return view('master/view_mpp',$data);
     }
 
-    public function datamutasi()
+    public function datamutasi(){
+
+    }
+    
+    public function datatk()
     {
-         return view('master/mutasi');
+         return view('master/tugaskarya');
     }
 
     public function dataaps()
@@ -1222,6 +1228,7 @@ class Masterdata extends BaseController
     public function dataptb()
     {
          return view('master/ptb');
+         return view('master/tugaskarya');
     }
 
     public function viewmutasi()
@@ -1347,6 +1354,13 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->idt->getAllPaginated(5, $keyword);
         return view('master/viewidt',$data);
+    }
+    
+    public function viewtk()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->rjab->getAllPaginated(5, $keyword);
+        return view('master/viewtk', $data);
     }
 }
 
