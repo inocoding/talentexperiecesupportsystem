@@ -267,8 +267,9 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('') ?>" class="">
+            <a href="<?= site_url('masterdata/data_ptb') ?>" class="<?= $uri->getSegment(2) == "data_ptb" ? "active" : null ?>">
                 <span class="label">Data PTB </span>
+
             </a>
         </li>
         <li>
@@ -311,5 +312,6 @@
                 <span class="label">Data Tugas Karya</span>
             </a>
         </li>
+
     </ul>
 </li>

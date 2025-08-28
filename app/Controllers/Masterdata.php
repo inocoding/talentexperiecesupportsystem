@@ -12,6 +12,7 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\Ptb;
 use App\Models\PensiunDini;
 use App\Models\TugaskaryaModel;
 use App\Models\MppModel;
@@ -30,6 +31,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->tb_ptb           = new Ptb();
         $this->tb_pensiun_dini  = new PensiunDini();
         $this->OJT              = new OJTModel();
 		    $this->idt	        	  = new IdtModel();
@@ -1200,6 +1202,26 @@ class Masterdata extends BaseController
             exit('Data tidak ditemukan');
         }
     }
+
+    public function data_ptb()
+    {
+        // $builder        = $this->users;
+        // $query          = $builder->getAll();
+        // $data['user']   = $query;
+
+        // $data['user']   = $this->users->getAll();
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_ptb->getAllPaginatedHtd(5, $keyword);
+
+        return view('master/ptb', $data);
+    }
+
+
+     public function addptb()
+    {
+        return view('master/addptb');
+    }
+
 
     public function data_mpp()
     {
