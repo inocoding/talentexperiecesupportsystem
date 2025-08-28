@@ -32,7 +32,7 @@ class Masterdata extends BaseController
         $this->orghtd           = new OrghtdModel();
         $this->tb_pensiun_dini  = new PensiunDini();
         $this->OJT              = new OJTModel();
-		    $this->idt	        	  = new IdtModel();
+		$this->idt	            = new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();

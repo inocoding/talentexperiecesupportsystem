@@ -124,14 +124,15 @@
             </form>
 
             <!-- Table Start -->
-            <div class="data-table-responsive-wrapper">
-                          
+            <div class= "table-responsive data-table-responsive-wrapper">                          
                 <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama</th>
+                            <th class="text-muted text-small text-uppercase">PEG</th>
+                            <th class="text-muted text-small text-uppercase">Jabatan</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
                             <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
                             <th class="text-muted text-small text-uppercase">Unit Layanan</th>
@@ -147,7 +148,9 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value-> nip ?></td>
-                                <td><?= $value-> nip ?></td>
+                                <td><?= $value-> nama_user ?></td>
+                                <td><?= $value-> grade ?></td>
+                                <td><?= $value-> sebutan_jabatan ?></td>
                                 <td><?= $value-> unit_asal_lv1 ?></td>
                                 <td><?= $value-> unit_asal_lv3 ?></td>
                                 <td><?= $value-> unit_asal_lv3 ?></td>
