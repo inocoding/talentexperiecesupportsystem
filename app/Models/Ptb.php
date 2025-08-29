@@ -1,24 +1,39 @@
 <?php
 
 namespace App\Models;
-
 use CodeIgniter\Model;
 
-class MppModel extends Model
+class Ptb extends Model
 {
-    protected $table            = 'tb_mpp';
-    protected $primaryKey       = 'id_mpp';
-    protected $returnType       = 'object';
-    protected $allowedFields    = [
-        'nip',
-        'unit_asal_lv1',
-        'unit_asal_lv2',
-        'unit_asal_lv3',
-        'tgl_aktivasi',
-
-    ];
-
-    protected $useTimestamps = true;
+    protected $table = 'tb_ptb';
+    protected $primaryKey = 'id_ptb';
+    protected $returnType = 'object';
+    protected $allowedFields = [
+       
+'nip', 
+'nama', 
+'sebutan_jabatan', 
+'unit_asal_lv1', 
+'unit_asal_lv2', 
+'unit_asal_lv3', 
+'angkatan', 
+'jenjang_ptb', 
+'program_pendidikan_formal', 
+'bidang', 
+'sub_bidang', 
+'on_mission', 
+'program_studi', 
+'universitas', 
+'tgl_mulai_studi', 
+'tgl_selesai_studi', 
+'status', 
+'penempatan_pasca_studi', 
+'unit_penempatan_lv1', 
+'unit_penempatan_lv2', 
+'unit_penempatan_lv3', 
+'tanggal_aktivasi'
+            ];
+ protected $useTimestamps = true;
     // protected $dateFormat    = 'datetime';
     // protected $createdField  = 'created_at';
     // protected $updatedField  = 'updated_at';
@@ -66,41 +81,28 @@ class MppModel extends Model
 
     public function getAllPaginated($num, $keyword = null)
     {
-        //$role_htd = "4";
-        //$role_peg = "1";
-        //$unit_induk = userLogin()->unit_induk;
+        $role_htd = "4";
+        $role_peg = "1";
+        $unit_induk = userLogin()->unit_induk;
 
         $builder    = $this->builder();
-        $builder->join('user', 'user.nip = tb_mpp.nip');        
-        //$builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
-        //$builder->where('role_peg', $role_peg);
-        //$builder->where('unit_asal_lv1', $unit_induk);
-        //$builder->where('role_htd', $role_htd);
-        // if ($keyword != '') {
-        //     $builder->like('nip', $keyword);
-        //     $builder->orLike('nama_user', $keyword);
-        //     $builder->orLike('nama_org_htd', $keyword);
-        //     $builder->orLike('nama_org_satu', $keyword);
-        //     $builder->orLike('email_korpo', $keyword);
-        //     $builder->orLike('email_non', $keyword);
-        //     $builder->orLike('ket_aktif', $keyword);
-        // }
- 
-        $q = $this;
-        if (!empty($keyword)) {
-            $q = $q->groupStart()
-                    ->like('tb_mpp.nip', $keyword)
-                    ->orlike('user.nama_user', $keyword)
-                    ->orlike('user.grade', $keyword)
-                    ->orlike('user.sebutan_jabatan', $keyword)
-                    ->orlike('unit_asal_lv1', $keyword)
-                    ->orlike('unit_asal_lv2', $keyword)
-                    ->orlike('unit_asal_lv3', $keyword)
-                    ->orlike('tgl_aktivasi', $keyword)
-                    ->groupEnd();
-
+        $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
+        $builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
+        $builder->where('role_peg', $role_peg);
+        // $builder->where('unit_induk', $unit_induk);
+        $builder->where('role_htd', $role_htd);
+        if ($keyword != '') {
+            $builder->where('role_htd', $role_htd);
+            $builder->like('nip', $keyword);
+            $builder->orLike('nama_user', $keyword);
+            $builder->orLike('nama_org_htd', $keyword);
+            $builder->orLike('nama_org_satu', $keyword);
+            $builder->orLike('email_korpo', $keyword);
+            $builder->orLike('email_non', $keyword);
+            $builder->orLike('ket_aktif', $keyword);
+        }
         return [
-            'user'  => $q->paginate($num),
+            'user' => $this->paginate($num),
             'pager' => $this->pager,
         ];
     }
@@ -112,8 +114,8 @@ class MppModel extends Model
         // $htd_area = userLogin()->htd_area;
 
         $builder    = $this->builder();
-        $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
-        $builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
+       // $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
+        $builder->join('user', 'user.nip = tb_ptb.nip');
         $builder->where('role_peg', $role_peg);
         // $builder->where('htd_area', $htd_area);
         $builder->where('role_htd <', $role_htd);
@@ -133,3 +135,4 @@ class MppModel extends Model
         ];
     }
 }
+

@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data Resign</title>
+<title>Upload Data Organisasi 3</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -21,7 +21,7 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload data resign</p>
+        <p>Upload Data Organisasi 3</p>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
@@ -33,6 +33,7 @@
     </div>
 </div>
 <?= $this->endSection() ?>
+
 
 <?= $this->section('jsfooter') ?>
 <script>
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     document.getElementById('status').textContent = 'Mengunggah file...';
 
-    fetch("<?= base_url('ResignImport/upload') ?>", {
+    fetch("<?= base_url('OrgTigaNewImport/upload') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function processNext(){
     const fd = new FormData(); injectCSRF(fd);
-    fetch("<?= base_url('ResignImport/processChunk') ?>", {
+    fetch("<?= base_url('OrgTigaNewImport/processChunk') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
@@ -90,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
+
+
+
 
 <!-- Vendor Scripts Start -->
 <script src="<?= base_url() ?>/template/js/vendor/jquery-3.5.1.min.js"></script>
