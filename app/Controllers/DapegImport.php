@@ -1,289 +1,295 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\DapegModel;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
+
+/**
+ * Filter baris/kolom untuk streaming XLSX.
+ */
+class ChunkReadFilter implements IReadFilter
+{
+    private int $startRow = 2;
+    private int $endRow   = 2;
+    /** @var string[]|null */
+    private ?array $columns = null;
+
+    /** @param string[]|null $columns */
+    public function setRows(int $startRow, int $chunkSize, ?array $columns = null): void
+    {
+        $this->startRow = $startRow;
+        $this->endRow   = $startRow + $chunkSize - 1;
+        $this->columns  = $columns;
+    }
+
+    public function readCell($columnAddress, $row, $worksheetName = ''): bool
+    {
+        if ($row === 1) { // header (kalau butuh nama kolom)
+            return true;
+        }
+        if ($row >= $this->startRow && $row <= $this->endRow) {
+            if ($this->columns === null) {
+                return true;
+            }
+            return in_array($columnAddress, $this->columns, true);
+        }
+        return false;
+    }
+}
 
 class DapegImport extends BaseController
 {
-    // konfigurasi chunck
-    private int $chunk = 300; //jumlah baris per hit
+    /** jumlah baris per proses */
+    private int $chunk = 100;
 
-    public function upload(){
-        // validasi file
+    /** Kolom yang benar-benar dipakai (hemat memori) */
+    private array $cols = [
+        'A','B','C','D','E','F','G','H','I','J','K','L',
+        'M','N','O','P','Q','R','S','T','U','V','W','X','Y',
+        'Z','AA','AB','AC','AD','AE','AF','AG','AH','AI',
+        'AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV',
+        'AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK'
+    ];
+
+    /**
+     * 1) Upload & siapkan sesi import (tanpa load seluruh file)
+     */
+    public function upload()
+    {
         $file = $this->request->getFile('excel_file');
         if (!$file || !$file->isValid()) {
-            return $this->response->setJSON(['status'=>'error','message'=>'file tidak valid']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'File tidak valid']);
         }
 
-        // pembatasan jenis file
         $ext = strtolower($file->getClientExtension());
-        if (!in_array($ext, ['xlsx','xls','csv'])) {
-            return $this->response->setJSON(['status'=>'error','message'=>'Format harus xlsx/xls/csv']);
+        if (!in_array($ext, ['xlsx','xls'], true)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gunakan file XLSX/XLS']);
         }
 
-        // simpan ke writable/uploads
+        // Simpan ke writable/uploads
         $newName = $file->getRandomName();
-        $path = WRITEPATH.'uploads/'.$newName;
-        $file->move(WRITEPATH.'uploads/', $newName);
+        $saveDir = WRITEPATH . 'uploads/';
+        @is_dir($saveDir) || @mkdir($saveDir, 0775, true);
+        $file->move($saveDir, $newName);
+        $path = $saveDir . $newName;
 
-        // hitung total baris (tanpa baca semua cell)
-        $spreadsheet = IOFactory::load($path);
-        $sheet = $spreadsheet->getActiveSheet();
-        $highestRow = $sheet->getHighestRow();
-
-        // baris 1 = header -> data mulai dari baris 2
-        $totalDataRows = max(0, $highestRow - 1);
-
-        // set pointer di session
-        session()->set([
-            'imp_file'      => $path,
-            'imp_pointer'   => 2,
-            'imp_total'     => $totalDataRows,
-            'imp_done'      => 0
-        ]);
-
-        return $this->response->setJSON(['status'=>'ok', 'total'=>$totalDataRows]);
-    }
-
-    public function processChunk(){
-        $file       = session('imp_file');
-        $pointer    = (int) session('imp_pointer');
-        $total      = (int) session('imp_total');
-        $done       = (int) session('imp_done');
-
-        if (!$file || !is_file($file)) {
-            return $this->response->setJSON(['status'=>'error','message'=>'Session import hilang/file tidak ditemukan']);
+        // Hitung total baris tanpa memuat seluruh spreadsheet
+        $reader = ($ext === 'xls') ? new Xls() : new Xlsx();
+        // trik hemat memori
+        if ($reader instanceof Xlsx) {
+            $info = $reader->listWorksheetInfo($path);
+            $totalRows = $info[0]['totalRows'] ?? 0;
+        } else {
+            // Xls tidak punya listWorksheetInfo seefisien Xlsx,
+            // tapi file XLS biasanya lebih kecil; fallback muat minimal lalu ambil highestRow.
+            $tmp = new ChunkReadFilter();
+            $tmp->setRows(1, 1, ['A']); // muat 1 baris 1 kolom
+            $reader->setReadDataOnly(true);
+            $reader->setReadFilter($tmp);
+            $ss = $reader->load($path);
+            $totalRows = $ss->getActiveSheet()->getHighestRow();
+            $ss->disconnectWorksheets();
+            unset($ss);
         }
 
-        if ($pointer > ($total + 1)) {
-            // selesai: bersihkan session + hapus file
-            @unlink($file);
-            session()->remove(['imp_file','imp_pointer','imp_total','imp_done']);
+        // baris 1 = header
+        $totalDataRows = max(0, $totalRows - 1);
+
+        // Simpan sesi pointer
+        session()->set([
+            'imp_file'    => $path,
+            'imp_ext'     => $ext,
+            'imp_pointer' => 2,                // mulai baris data
+            'imp_total'   => $totalDataRows,   // jumlah baris data
+            'imp_done'    => 0,
+        ]);
+
+        return $this->response->setJSON(['status' => 'ok', 'total' => $totalDataRows]);
+    }
+
+    /**
+     * 2) Proses chunk berikutnya
+     */
+    public function processChunk()
+    {
+        try{
+            $file    = (string) session('imp_file');
+            $ext     = (string) session('imp_ext');
+            $pointer = (int) session('imp_pointer');
+            $total   = (int) session('imp_total');
+            $done    = (int) session('imp_done');
+
+            if (!$file || !is_file($file)) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Session/file import tidak ditemukan']);
+            }
+
+            // selesai?
+            if ($pointer > ($total + 1)) {
+                @unlink($file);
+                session()->remove(['imp_file','imp_ext','imp_pointer','imp_total','imp_done']);
+                return $this->response->setJSON(['status' => 'ok', 'done' => true, 'progress' => 100]);
+            }
+
+            // Tentukan rentang baris chunk ini
+            $start = $pointer;
+            $end   = min($pointer + $this->chunk - 1, $total + 1); // +1 karena header baris 1
+
+            // Siapkan reader + filter baris/kolom
+            $filter = new ChunkReadFilter();
+            $filter->setRows($start, ($end - $start + 1), $this->cols);
+
+            $reader = ($ext === 'xls') ? new Xls() : new Xlsx();
+            $reader->setReadDataOnly(true);
+            $reader->setReadFilter($filter);
+
+            // Muat hanya range yang diperlukan
+            $spreadsheet = $reader->load($file);
+            $sheet       = $spreadsheet->getActiveSheet();
+
+            // Helper konversi tanggal
+            $toYmd = static function ($cellVal) {
+                if ($cellVal === null || $cellVal === '') { return null; }
+                if (is_numeric($cellVal)) {
+                    try {
+                        return ExcelDate::excelToDateTimeObject($cellVal)->format('Y-m-d');
+                    } catch (\Throwable $e) {
+                        // fallback: treat as unix timestamp seconds?
+                        return date('Y-m-d', (int)$cellVal);
+                    }
+                }
+                $ts = strtotime((string)$cellVal);
+                return $ts ? date('Y-m-d', $ts) : null;
+            };
+
+            // Helper ambil string
+            $val = static fn($sheet, $col, $row) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
+
+            $rows = [];
+            for ($row = $start; $row <= $end; $row++) {
+                $nip = $val($sheet, 'A', $row);
+                if ($nip === '') {
+                    continue; // skip baris kosong
+                }
+
+                // Tanggal-tanggal
+                $startdate        = $toYmd($sheet->getCell("P{$row}")->getValue());
+                $enddate          = $toYmd($sheet->getCell("Q{$row}")->getValue());
+                $birthdate        = $toYmd($sheet->getCell("V{$row}")->getValue());
+                $tglgradeterakhir = $toYmd($sheet->getCell("W{$row}")->getValue());
+                $tglmasuk         = $toYmd($sheet->getCell("X{$row}")->getValue());
+                $tglpegawaitetap  = $toYmd($sheet->getCell("Y{$row}")->getValue());
+                $tglskorgassg     = $toYmd($sheet->getCell("AH{$row}")->getValue());
+                $tgldata          = $toYmd($sheet->getCell("BK{$row}")->getValue());
+
+                $rows[] = [
+                    'nip'                   => $nip,
+                    'fullname'              => $val($sheet, 'B', $row),
+                    'org_satu'              => $val($sheet, 'C', $row),
+                    'org_dua'               => $val($sheet, 'D', $row),
+                    'org_tiga'              => $val($sheet, 'E', $row),
+                    'org_kp_satu'           => $val($sheet, 'F', $row),
+                    'org_kp_dua'            => $val($sheet, 'G', $row),
+                    'org_kp_tiga'           => $val($sheet, 'H', $row),
+                    'eegrp'                 => $val($sheet, 'I', $row),
+                    'esgrp'                 => $val($sheet, 'J', $row),
+                    'peg'                   => $val($sheet, 'K', $row),
+                    'jenjang_main_grp_id'   => $val($sheet, 'L', $row),
+                    'pog'                   => $val($sheet, 'M', $row),
+                    'grup_sppd'             => $val($sheet, 'N', $row),
+                    'kode_posisi'           => $val($sheet, 'O', $row),
+                    'start_date'            => $startdate,
+                    'end_date'              => $enddate,
+                    'nama_panjang_posisi'   => $val($sheet, 'R', $row),
+                    'pendidikan_terakhir'   => $val($sheet, 'S', $row),
+                    'jurusan_pendidikan'    => $val($sheet, 'T', $row),
+                    'birthplace'            => $val($sheet, 'U', $row),
+                    'birth_date'            => $birthdate,
+                    'tgl_grade_terakhir'    => $tglgradeterakhir,
+                    'tgl_masuk'             => $tglmasuk,
+                    'tgl_pegawai_tetap'     => $tglpegawaitetap,
+                    'gender'                => $val($sheet, 'Z',  $row),
+                    'marst'                 => $val($sheet, 'AA', $row),
+                    'religius'              => $val($sheet, 'AB', $row),
+                    'org_unit'              => $val($sheet, 'AC', $row),
+                    'org_unit_tx'           => $val($sheet, 'AD', $row),
+                    'kode_posisi_atasan'    => $val($sheet, 'AE', $row),
+                    'job_code'              => $val($sheet, 'AF', $row),
+                    'no_sk_org_assg'        => $val($sheet, 'AG', $row),
+                    'tgl_sk_org_assg'       => $tglskorgassg,
+                    'home_city'             => $val($sheet, 'AI', $row),
+                    'tx_org_01'             => $val($sheet, 'AJ', $row),
+                    'tx_org_02'             => $val($sheet, 'AK', $row),
+                    'tx_org_03'             => $val($sheet, 'AL', $row),
+                    'tx_org_04'             => $val($sheet, 'AM', $row),
+                    'tx_org_05'             => $val($sheet, 'AN', $row),
+                    'tx_org_06'             => $val($sheet, 'AO', $row),
+                    'tx_org_07'             => $val($sheet, 'AP', $row),
+                    'tx_org_08'             => $val($sheet, 'AQ', $row),
+                    'tx_org_09'             => $val($sheet, 'AR', $row),
+                    'tx_org_10'             => $val($sheet, 'AS', $row),
+                    'tx_org_11'             => $val($sheet, 'AT', $row),
+                    'tx_org_12'             => $val($sheet, 'AU', $row),
+                    'tx_org_13'             => $val($sheet, 'AV', $row),
+                    'kd_org_01'             => $val($sheet, 'AW', $row),
+                    'kd_org_02'             => $val($sheet, 'AX', $row),
+                    'kd_org_03'             => $val($sheet, 'AY', $row),
+                    'kd_org_04'             => $val($sheet, 'AZ', $row),
+                    'kd_org_05'             => $val($sheet, 'BA', $row),
+                    'kd_org_06'             => $val($sheet, 'BB', $row),
+                    'kd_org_07'             => $val($sheet, 'BC', $row),
+                    'kd_org_08'             => $val($sheet, 'BD', $row),
+                    'kd_org_09'             => $val($sheet, 'BE', $row),
+                    'kd_org_10'             => $val($sheet, 'BF', $row),
+                    'kd_org_11'             => $val($sheet, 'BG', $row),
+                    'kd_org_12'             => $val($sheet, 'BH', $row),
+                    'kd_org_13'             => $val($sheet, 'BI', $row),
+                    'profesi'               => $val($sheet, 'BJ', $row),
+                    'tgl_data'              => $tgldata,
+                ];
+            }
+
+            // Bebaskan memori spreadsheet segera
+            $spreadsheet->disconnectWorksheets();
+            unset($spreadsheet);
+
+            if (!empty($rows)) {
+                (new DapegModel())->insertBatch($rows, 500);
+            }
+
+            // Update pointer & progress
+            $processed = ($end - $start + 1);
+            $pointer   = $end + 1;
+            $done     += $processed;
+
+            session()->set([
+                'imp_pointer' => $pointer,
+                'imp_done'    => $done,
+            ]);
+
+            $progress = ($total > 0) ? round(min(100, ($done / $total) * 100)) : 100;
+
+            // Selesai?
+            $isDone = ($pointer > ($total + 1));
+            if ($isDone) {
+                @unlink($file);
+                session()->remove(['imp_file','imp_ext','imp_pointer','imp_total','imp_done']);
+            }
+
             return $this->response->setJSON([
-                'status'=>'ok', 'done'=>true, 'progress'=>100
+                'status'   => 'ok',
+                'done'     => $isDone,
+                'progress' => $progress,
             ]);
+        } catch (\Throwable $e) {
+            log_message('error', 'DapegImport::processChunk - '.$e->getMessage()."\n".$e->getTraceAsString());
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'Proses gagal: '.$e->getMessage(),
+            ])->setStatusCode(500);
         }
-
-        // buka file dan proses chunk
-        $spreadsheet    = IOFactory::load($file);
-        $sheet          = $spreadsheet->getActiveSheet();
-
-        $start = $pointer;
-        $end = min($pointer + $this->chunk - 1, $total + 1); // +1 karena header di baris 1
-
-        $rows = [];
-        for ($row = $start; $row <= $end ; $row++) { 
-            // mapping kolom: A..L (12 kolom)
-            $nip    = trim((string) $sheet->getCell("A{$row}")->getValue());
-            if ($nip === '') continue; //skip baris kosong
-
-            // helper ambil string
-            $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
-
-            // startdate: bisa serial excel atau string
-            $start_date = $sheet->getCell("P{$row}")->getValue();
-            if (is_numeric($start_date)) {
-                $startdate = ExcelDate::excelToDateTimeObject($start_date)->format('Y-m-d');
-            } elseif ($start_date) {
-                $startdate = date('Y-m-d', strtotime($start_date));
-            } else {
-                $startdate = null;
-            }
-            
-            // enddate: bisa serial excel atau string
-            $end_date = $sheet->getCell("Q{$row}")->getValue();
-            if (is_numeric($end_date)) {
-                $enddate = ExcelDate::excelToDateTimeObject($end_date)->format('Y-m-d');
-            } elseif ($end_date) {
-                $enddate = date('Y-m-d', strtotime($end_date));
-            } else {
-                $enddate = null;
-            }
-            
-            // birthdate: bisa serial excel atau string
-            $birth_date = $sheet->getCell("V{$row}")->getValue();
-            if (is_numeric($birth_date)) {
-                $birthdate = ExcelDate::excelToDateTimeObject($birth_date)->format('Y-m-d');
-            } elseif ($birth_date) {
-                $birthdate = date('Y-m-d', strtotime($birth_date));
-            } else {
-                $birthdate = null;
-            }
-            
-            // tglgradeterakhir: bisa serial excel atau string
-            $tgl_grade_terakhir = $sheet->getCell("W{$row}")->getValue();
-            if (is_numeric($tgl_grade_terakhir)) {
-                $tglgradeterakhir = ExcelDate::excelToDateTimeObject($tgl_grade_terakhir)->format('Y-m-d');
-            } elseif ($tgl_grade_terakhir) {
-                $tglgradeterakhir = date('Y-m-d', strtotime($tgl_grade_terakhir));
-            } else {
-                $tglgradeterakhir = null;
-            }
-
-            // tglmasuk: bisa serial excel atau string
-            $tgl_masuk = $sheet->getCell("X{$row}")->getValue();
-            if (is_numeric($tgl_masuk)) {
-                $tglmasuk = ExcelDate::excelToDateTimeObject($tgl_masuk)->format('Y-m-d');
-            } elseif ($tgl_masuk) {
-                $tglmasuk = date('Y-m-d', strtotime($tgl_masuk));
-            } else {
-                $tglmasuk = null;
-            }
-
-            // tglpegawaitetap: bisa serial excel atau string
-            $tgl_pegawai_tetap = $sheet->getCell("Y{$row}")->getValue();
-            if (is_numeric($tgl_pegawai_tetap)) {
-                $tglpegawaitetap = ExcelDate::excelToDateTimeObject($tgl_pegawai_tetap)->format('Y-m-d');
-            } elseif ($tgl_pegawai_tetap) {
-                $tglpegawaitetap = date('Y-m-d', strtotime($tgl_pegawai_tetap));
-            } else {
-                $tglpegawaitetap = null;
-            }
-
-            // tglskorgassg: bisa serial excel atau string
-            $tgl_sk_org_assg = $sheet->getCell("AH{$row}")->getValue();
-            if (is_numeric($tgl_sk_org_assg)) {
-                $tglskorgassg = ExcelDate::excelToDateTimeObject($tgl_sk_org_assg)->format('Y-m-d');
-            } elseif ($tgl_sk_org_assg) {
-                $tglskorgassg = date('Y-m-d', strtotime($tgl_sk_org_assg));
-            } else {
-                $tglskorgassg = null;
-            }
-
-            // tgldata: bisa serial excel atau string
-            $tgl_data = $sheet->getCell("BK{$row}")->getValue();
-            if (is_numeric($tgl_data)) {
-                $tgldata = ExcelDate::excelToDateTimeObject($tgl_data)->format('Y-m-d');
-            } elseif ($tgl_data) {
-                $tgldata = date('Y-m-d', strtotime($tgl_data));
-            } else {
-                $tgldata = null;
-            }
-
-            $rows[] = [
-                'nip'                   => $nip,
-                'fullname'              => $val('B'),
-                'org_satu'              => $val('C'),
-                'org_dua'               => $val('D'),
-                'org_tiga'              => $val('E'),
-                'org_kp_satu'           => $val('F'),
-                'org_kp_dua'            => $val('G'),
-                'org_kp_tiga'           => $val('H'),
-                'eegrp'                 => $val('I'),
-                'esgrp'                 => $val('J'),
-                'peg'                   => $val('K'),
-                'jenjang_main_grp_id'   => $val('L'),
-                'pog'                   => $val('M'),
-                'grup_sppd'             => $val('N'),
-                'kode_posisi'           => $val('O'),
-                'start_date'            => $startdate,
-                'end_date'              => $end_date,
-                'nama_panjang_posisi'   => $val('R'),
-                'pendidikan_terakhir'   => $val('S'),
-                'jurusan_pendidikan'    => $val('T'),
-                'birthplace'            => $val('U'),
-                'birth_date'            => $birthdate,
-                'tgl_grade_terakhir'    => $tglgradeterakhir,
-                'tgl_masuk'             => $tglmasuk,
-                'tgl_pegawai_tetap'     => $tglpegawaitetap,
-                'gender'                => $val('Z'),
-                'marst'                 => $val('AA'),
-                'religius'              => $val('AB'),
-                'org_unit'              => $val('AC'),
-                'org_unit_tx'           => $val('AD'),
-                'kode_posisi_atasan'    => $val('AE'),
-                'job_code'              => $val('AF'),
-                'no_sk_org_assg'        => $val('AG'),
-                'tgl_sk_org_assg'       => $tglskorgassg,
-                'home_city'             => $val('AI'),
-                'tx_org_01'             => $val('AJ'),
-                'tx_org_02'             => $val('AK'),
-                'tx_org_03'             => $val('AL'),
-                'tx_org_04'             => $val('AM'),
-                'tx_org_05'             => $val('AN'),
-                'tx_org_06'             => $val('AO'),
-                'tx_org_07'             => $val('AP'),
-                'tx_org_08'             => $val('AQ'),
-                'tx_org_09'             => $val('AR'),
-                'tx_org_10'             => $val('AS'),
-                'tx_org_11'             => $val('AT'),
-                'tx_org_12'             => $val('AU'),
-                'tx_org_13'             => $val('AV'),
-                'kd_org_01'             => $val('AW'),
-                'kd_org_02'             => $val('AX'),
-                'kd_org_03'             => $val('AY'),
-                'kd_org_04'             => $val('AZ'),
-                'kd_org_05'             => $val('BA'),
-                'kd_org_06'             => $val('BB'),
-                'kd_org_07'             => $val('BC'),
-                'kd_org_08'             => $val('BD'),
-                'kd_org_09'             => $val('BE'),
-                'kd_org_10'             => $val('BF'),
-                'kd_org_11'             => $val('BG'),
-                'kd_org_12'             => $val('BH'),
-                'kd_org_13'             => $val('BI'),
-                'profesi'               => $val('BJ'),
-                'tgl_data'              => $tgldata,
-            ];
-        }
-
-        // insert batch
-        if (!empty($rows)) {
-            (new DapegModel())->insertBatch($rows, 500);
-        }
-
-        // update pointer & progress
-        $processed  = ($end - $start + 1);
-        $pointer    = $end + 1;
-        $done       += $processed;
-        session()->set([
-            'imp_pointer'   => $pointer,
-            'imp_done'      => $done,
-        ]);
-
-        $progress = ($total > 0) ? round(min(100, ($done / $total) * 100)) : 100;
-
-        // selesai?
-        $isDone = ($pointer > ($total + 1));
-        if ($isDone) {
-            @unlink($file);
-            session()->remove([
-                'imp_file',
-                'imp_pointer',
-                'imp_total',
-                'imp_done'
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status'    => 'ok',
-            'done'      => $isDone,
-            'progress'  => $progress
-        ]);
     }
-
-    private function mapJenis($v): string
-    {
-        $v = strtolower(trim((string)$v));
-        if (in_array($v, ['1','promosi'])) return '1';
-        if (in_array($v, ['2','rotasi']))  return '2';
-        if (in_array($v, ['3','demosi']))  return '3';
-        return '1'; // default aman
-    }
-
-    private function mapStatus($v): string
-    {
-        $v = strtolower(trim((string)$v));
-        if (in_array($v, ['1','fit proper','fit proper tes'])) return '1';
-        if (in_array($v, ['2','evaluasi']))                     return '2';
-        if (in_array($v, ['3','cetak sk','cetak']))             return '3';
-        if (in_array($v, ['4','aktivasi','aktif']))             return '4';
-        return '4';
-    }
-
 }
-
