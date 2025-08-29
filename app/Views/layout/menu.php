@@ -278,6 +278,11 @@
             </a>
         </li>
         <li>
+            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+                <span class="label">Data Struktur Organisasi </span>
+            </a>
+        </li>
+        <li>
             <a href="<?= site_url('masterdata/sertifikasi') ?>" class="<?= $uri->getSegment(2) == "sertifikasi" ? "active" : null ?>">
                 <span class="label">Data Sertifikasi </span>
             </a>
