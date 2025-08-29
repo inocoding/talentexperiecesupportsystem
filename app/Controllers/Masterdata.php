@@ -45,7 +45,11 @@ class Masterdata extends BaseController
     public function index()
     {
         $keyword = $this->request->getGet('keyword');
-        $data = $this->dapeg->getPaginated(20, $keyword);
+        $perPage = 20;
+        $orgSatuUser = session('org_satu');
+        $roleHtd = session('role_htd');
+
+        $data = $this->dapeg->getPaginated($perPage, $keyword, $orgSatuUser, $roleHtd);
 
         return view('master/pegawai', $data);
     }

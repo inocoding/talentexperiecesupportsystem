@@ -98,18 +98,19 @@
                 <!-- Controls End -->
             </form>
             <!-- Table Start -->
-            <div class="data-table-responsive-wrapper">
+            <div class="table-responsive data-table-responsive-wrapper">
                 <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">HTD Area</th>
+                            <th class="text-muted text-small text-uppercase">Sebutan Jabatan</th>
+                            <th class="text-muted text-small text-uppercase">PeG</th>
+                            <th class="text-muted text-small text-uppercase">PoG</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">email</th>
-                            <th class="text-muted text-small text-uppercase">Role</th>
-                            <th class="text-muted text-small text-uppercase">Activation</th>
+                            <th class="text-muted text-small text-uppercase">start date</th>
+                            <th class="text-muted text-small text-uppercase">end date</th>
                             <th class="text-muted text-small text-uppercase">Action</th>
                         </tr>
                     </thead>
@@ -123,58 +124,13 @@
                                 <td>
                                     <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
-                                <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_org_htd ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
-                                <td><?= $value->email_korpo ?> <br>
-                                    <?= $value->email_non ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
-                                        if ($value->role_admin == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
-                                        }
-                                        if ($value->role_adm_acc == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
-                                        }
-                                        if ($value->role_adm_eclinic == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
-                                        }
-                                        if ($value->role_adm_hi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
-                                        }
-                                        if ($value->role_adm_org == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
-                                        }
-                                        if ($value->role_adm_kinerja == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
-                                        }
-                                        if ($value->role_adm_diklat == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
-                                        }
-                                        if ($value->role_adm_sertifikasi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
-                                        }
-                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
-                                        if ($value->role_peg == 1) {
-                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
-                                        } else {
-                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
-                                        }
-                                        if ($value->role_komite == 1) {
-                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
-                                        }
-                                    } elseif ($value->role_htd == 1 && $value->role_htd == 1) {
-                                        echo '<span class="badge bg-outline-primary">VP HTD</span><br>';
-                                    } elseif ($value->role_admin == 1 && $value->role_htd == 2) {
-                                        echo '<span class="badge bg-outline-primary">MSB HTD</span><br>';
-                                    } elseif ($value->role_komite == 1 && $value->role_htd == 3) {
-                                        echo '<span class="badge bg-outline-primary">asman HTD</span><br>';
-                                    }
-                                    ?>
-                                </td>
-                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
+                                <td><?= $value->fullname ?></td>
+                                <td><?= $value->nama_panjang_posisi ?></td>
+                                <td><?= $value->peg ?></td>
+                                <td><?= $value->pog ?></td>
+                                <td><?= $value->org_satu ?></td>
+                                <td><?= date("d.m.Y", strtotime($value->start_date)); ?></td>
+                                <td><?= date("d.m.Y", strtotime($value->end_date)); ?></td>
                                 <td>
                                     <div class="d-inline-block">
                                         <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
