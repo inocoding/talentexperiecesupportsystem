@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data Riwayat Jabatan - HTD 4</title>
+<title>Data IDT</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,10 +18,15 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h1 class="mb-0 pb-0 display-4" id="title">Master Data Riwayat Jabatanoo</h1>
+                    <h2 class="mb-0 pb-0" id="title">Master Data IDT</h2>
                 </div>
                 <!-- Title End -->
 
+                <!-- Top Buttons Start -->
+                <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
+                   
+                </div>
+                <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
                     <div class="alert alert-danger alert-dismissable show fade mt-3" role="alert">
                         <?= session()->getFlashdata('error') ?>
@@ -62,17 +67,25 @@
 
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
+                            <!-- Add Button Start -->
+                            <!-- <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
+                                <i data-cs-icon="plus"></i>
+                            </a> -->
+                            <!-- Add Button End -->
 
+                            <!-- Edit Button Start -->
+
+                            <!-- Edit Button End -->
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/import_rjab') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data" type="button">
+                            <a href="<?= site_url('masterdata/dataidt') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data IDT" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
 
                             <!-- Export Dropdown Start -->
-                            <div class="d-inline-block datatable-export" data-datatable="#datatableRows3">
+                            <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
                                 <?php
                                 $request = \Config\Services::request();
                                 $keyword = $request->getGet('keyword');
@@ -82,7 +95,7 @@
                                     $param = "";
                                 }
                                 ?>
-                                <a class="btn p-0" href="<?= site_url('masterdata/export_rjab' . $param) ?>" data-bs-offset="0,3">
+                                <a class="btn p-0" href="<?= site_url('masterdata/exporthtd' . $param) ?>" data-bs-offset="0,3">
                                     <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown" data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip" title="Export Excel">
                                         <i data-cs-icon="download"></i>
                                     </span>
@@ -91,7 +104,7 @@
                             <!-- Export Dropdown End -->
 
                             <!-- Length Start -->
-                            <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
+                            <!-- <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
                                 <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
                                     <span class="btn btn-foreground-alternate dropdown-toggle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Item Count">
                                         10 Items
@@ -102,7 +115,7 @@
                                     <a class="dropdown-item " href="#">10 Items</a>
                                     <a class="dropdown-item" href="#">20 Items</a>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Length End -->
                         </div>
                     </div>
@@ -111,58 +124,37 @@
             </form>
             <!-- Table Start -->
             <div class="data-table-responsive-wrapper">
-                <table id="datatableRows3" class="data-table nowrap hover">
+                <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
-                            <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">Sebutan Jabatan</th>
-                            <th class="text-muted text-small text-uppercase">Profesi</th>
-                            <th class="text-muted text-small text-uppercase">Jenjang Jabatan</th>
-                            <th class="text-muted text-small text-uppercase">Org Unit</th>
+                            <th class="text-muted text-small text-uppercase">Nama</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
                             <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
-                            <th class="text-muted text-small text-uppercase">Sub Unit Pelaksana</th>
-                            <th class="text-muted text-small text-uppercase">Start Date</th>
-                            <th class="text-muted text-small text-uppercase">End Date</th>
-                            <th class="text-muted text-small text-uppercase">Action</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Mulai</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Berakhir</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $no = 1 + (5 * ($page - 1));
-                        foreach ($rjab as $key => $value) : ?>
+                        foreach ($user as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td><?= $value->kode_nip ?></td>
+                                <td><?= $value->nip ?></td>
                                 <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_formasi_jabatan ?></td>
-                                <td><?= $value->kode_profesi_rjab ?> <?= $value->nama_riwayat_profesi ?></td>
-                                <td><?= $value->jenjang_jabatan ?></td>
-                                <td><?= $value->kode_riwayat_org_unit ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
-                                <td><?= $value->nama_org_dua ?></td>
-                                <td><?= $value->nama_org_tiga ?></td>
-                                <td><?= $value->start_date ?></td>
-                                <td><?= $value->end_date ?></td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        <form action="<?= site_url('masterdata/del_rjab/' . $value->id_riwayat_jabatan) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
-                                                <i data-cs-icon="bin"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td><?= $value->singkatan ?></td>
+                                <td><?= $value->singkatan ?></td>
+                                <td><?= $value->tgl_mulai ?></td>
+                                <td><?= $value->tgl_berakhir ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-            <div class="row mt-2">
+            <div class="row">
                 <div class="col-6">
                     <div class="float-right">
                         <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
@@ -178,7 +170,68 @@
         </div>
         <!-- Content End -->
 
-
+        <!-- Add Edit Modal Start -->
+        <div class="modal modal-right fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Add New</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input name="Name" type="text" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Sales</label>
+                                <input name="Sales" type="number" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Stock</label>
+                                <input name="Stock" type="number" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <div class="form-check">
+                                    <input type="radio" id="category1" name="Category" value="Whole Wheat" class="form-check-input" />
+                                    <label class="form-check-label" for="category1">Whole Wheat</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="category2" name="Category" value="Sourdough" class="form-check-input" />
+                                    <label class="form-check-label" for="category2">Sourdough</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="category3" name="Category" value="Multigrain" class="form-check-input" />
+                                    <label class="form-check-label" for="category3">Multigrain</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tag</label>
+                                <div class="form-check">
+                                    <input type="radio" id="tag1" name="Tag" value="New" class="form-check-input" />
+                                    <label class="form-check-label" for="tag1">New</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="tag2" name="Tag" value="Sale" class="form-check-input" />
+                                    <label class="form-check-label" for="tag2">Sale</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="tag3" name="Tag" value="Done" class="form-check-input" />
+                                    <label class="form-check-label" for="tag3">Done</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="addEditConfirmButton">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Edit Modal End -->
         <div class="viewmodal" style="display: none;"></div>
     </div>
 </div>
@@ -208,9 +261,9 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows3.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
 
-<?= $this->endSection() ?>
+<?= $this->endSection()?>

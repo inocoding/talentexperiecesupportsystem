@@ -17,7 +17,7 @@
     <div class="row">
         <!-- Title Start -->
         <div class="col-12">
-            <h5 class="mb-0 pb-0 text-center" id="title">Menu</h5>
+            <h5 class="mb-0 pb-0 text-center" id="title">MenuUUUU</h5>
         </div>
         <!-- Title End -->
     </div>
@@ -230,6 +230,20 @@
             </div>
         </div>
     </div>
+
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="<?= base_url() ?>/template/img/illustration/icon-platforms.png" class="theme-filter" alt="storage" />
+                    <div class="d-flex flex-column sh-5">
+                        <a href="<?= site_url('anggaran/pos54') ?>" class="heading stretched-link">POS 54</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <?= $this->endSection() ?>
 
