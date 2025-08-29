@@ -24,12 +24,6 @@
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
-                    <!-- Add New Button Start -->
-                    <a href=" <?= site_url('masterdata/addpeg') ?> " type="button" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto add-dapeg">
-                        <i data-cs-icon="plus"></i>
-                        <span>Add New</span>
-                    </a>
-                    <!-- Add New Button End -->
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -72,20 +66,11 @@
 
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
-                            <!-- Add Button Start -->
-                            <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add" type="button" data-bs-delay="0">
-                                <i data-cs-icon="plus"></i>
-                            </a>
-                            <!-- Add Button End -->
-
-                            <!-- Edit Button Start -->
-
-                            <!-- Edit Button End -->
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/import') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Check Update Data" type="button">
-                                <i data-cs-icon="gear"></i>
+                            <a href="<?= site_url('masterdata/uploaddapeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Dapeg" type="button">
+                                <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
 
@@ -107,21 +92,6 @@
                                 </a>
                             </div>
                             <!-- Export Dropdown End -->
-
-                            <!-- Length Start -->
-                            <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
-                                <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
-                                    <span class="btn btn-foreground-alternate dropdown-toggle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Item Count">
-                                        10 Items
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <a class="dropdown-item active" href="#">5 Items</a>
-                                    <a class="dropdown-item " href="#">10 Items</a>
-                                    <a class="dropdown-item" href="#">20 Items</a>
-                                </div>
-                            </div>
-                            <!-- Length End -->
                         </div>
                     </div>
                 </div>
@@ -147,7 +117,7 @@
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $no = 1 + (5 * ($page - 1));
-                        foreach ($user as $key => $value) : ?>
+                        foreach ($rows as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td>

@@ -34,10 +34,11 @@ class IdtModel extends Model
                     ->like('tb_idt.nip', $keyword)
                     ->groupEnd();
         }
+
         return [
             'user'  => $q->paginate($num),
             'pager' => $this->pager,
-    ];
+        ];
 
     }
 		

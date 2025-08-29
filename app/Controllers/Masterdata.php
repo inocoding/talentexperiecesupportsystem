@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\DapegModel;
 use App\Models\OJTModel;
 use App\Models\IdtModel;
 use App\Models\MutasiModel;
@@ -38,19 +39,20 @@ class Masterdata extends BaseController
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
+        $this->dapeg            = new DapegModel();
     }
 
     public function index()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
-        $data = $this->users->getAllPaginated(5, $keyword);
+        $data = $this->dapeg->getPaginated(20, $keyword);
 
         return view('master/pegawai', $data);
+    }
+
+    public function uploaddapeg()
+    {
+        return view('master/importdapeg');
     }
 
     public function addlist()
@@ -1377,7 +1379,8 @@ class Masterdata extends BaseController
         return view('master/viewojt', $data);
     }
 	
-	//View Data IDT
+
+	
 	  public function viewidt()
     {
 		
