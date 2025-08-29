@@ -20,8 +20,25 @@
 
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
+
+
+
+
     <div class="card-body">
-        <p>Upload data mutasi</p>
+
+        <div class="col mb-1">
+          <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
+            <!-- Back Button Start -->
+                <a href="<?= site_url('masterdata/view_mpp') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" type="button" data-bs-delay="0">
+                    <i data-cs-icon="arrow-left"></i>
+                </a>
+              <!-- Back Button End -->
+          </div>
+        </div>
+
+        <p></p>
+        <p>UPLOAD DATA PEGAWAI MPP (*.xls, .xlsx)</p>
+              
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>

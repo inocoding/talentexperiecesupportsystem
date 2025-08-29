@@ -70,8 +70,8 @@ class MppModel extends Model
         //$role_peg = "1";
         //$unit_induk = userLogin()->unit_induk;
 
-        //$builder    = $this->builder();
-        //$builder->join('user', 'user.nip = tb_mpp.nip');        
+        $builder    = $this->builder();
+        $builder->join('user', 'user.nip = tb_mpp.nip');        
         //$builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
         //$builder->where('role_peg', $role_peg);
         //$builder->where('unit_asal_lv1', $unit_induk);
@@ -85,17 +85,19 @@ class MppModel extends Model
         //     $builder->orLike('email_non', $keyword);
         //     $builder->orLike('ket_aktif', $keyword);
         // }
-
+ 
         $q = $this;
         if (!empty($keyword)) {
             $q = $q->groupStart()
-                ->like('nip', $keyword)
-                ->orlike('unit_asal_lv1', $keyword)
-                ->orlike('unit_asal_lv2', $keyword)
-                ->orlike('unit_asal_lv3', $keyword)
-                ->orlike('tgl_aktivasi', $keyword)
-                ->groupEnd();
-        }
+                    ->like('tb_mpp.nip', $keyword)
+                    ->orlike('user.nama_user', $keyword)
+                    ->orlike('user.grade', $keyword)
+                    ->orlike('user.sebutan_jabatan', $keyword)
+                    ->orlike('unit_asal_lv1', $keyword)
+                    ->orlike('unit_asal_lv2', $keyword)
+                    ->orlike('unit_asal_lv3', $keyword)
+                    ->orlike('tgl_aktivasi', $keyword)
+                    ->groupEnd();
 
         return [
             'user'  => $q->paginate($num),
