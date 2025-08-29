@@ -3,12 +3,13 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class MutasiModel extends Model
+class TugaskaryaModel extends Model
 {
-    protected $table = 'tb_mutasi';
+    protected $table = 'tb_tugas_karya';
     protected $primaryKey = 'id_data';
     protected $returnType = 'object';
     protected $allowedFields = [
+
         'nip',
         'unit_tujuan_1',
         'unit_tujuan_2',
@@ -19,22 +20,16 @@ class MutasiModel extends Model
         'unit_asal_3',
         'unit_asal_4',
         'tgl_aktivasi',
-        'jenis_mutasi',
-        'status',
+        'tgl_berakhir',
+        
             ];
-
-    public function getAllPaginated($num, $keyword = null)
+               public function getAllPaginated($num, $keyword = null)
     {
-        $q = $this->select('m.*, u.nama_user AS nama')
-                  ->from($this->table.' m')
-                  ->join('user u', 'u.nip = m.nip', 'left')
-                  ->groupBy('m.id_data')
-                  ->orderBy('m.id_data', 'DESC');
-
+        $q = $this;
         if (!empty($keyword)) {
-                $q->groupStart()
-                  ->like('nip', $keyword)
-                  ->groupEnd();
+            $q = $q->groupStart()
+                    ->like('nip', $keyword)
+                    ->groupEnd();
         }
 
         return [
@@ -42,5 +37,4 @@ class MutasiModel extends Model
             'pager' => $this->pager,
         ];
     }
-
 }

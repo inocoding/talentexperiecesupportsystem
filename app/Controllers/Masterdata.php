@@ -5,11 +5,19 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
 use App\Models\ResignModel;
+use App\Models\DapegModel;
+use App\Models\OJTModel;
+use App\Models\IdtModel;
+use App\Models\MutasiModel;
 use App\Models\Rjab;
 use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\Ptb;
+use App\Models\PensiunDini;
+use App\Models\TugaskaryaModel;
+use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -26,19 +34,31 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->resign           = new ResignModel();
+        $this->tb_ptb           = new Ptb();
+        $this->tb_pensiun_dini  = new PensiunDini();
+        $this->OJT              = new OJTModel();
+		    $this->idt	        	= new IdtModel();
+        $this->data_mpp         = new MppModel();
+        $this->mutasi           = new MutasiModel();
+        $this->tb_tugas_karya   = new TugaskaryaModel();
+        $this->dapeg            = new DapegModel();
     }
 
     public function index()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
-        $data = $this->users->getAllPaginated(5, $keyword);
+        $perPage = 20;
+        $orgSatuUser = session('org_satu');
+        $roleHtd = session('role_htd');
+
+        $data = $this->dapeg->getPaginated($perPage, $keyword, $orgSatuUser, $roleHtd);
 
         return view('master/pegawai', $data);
+    }
+
+    public function uploaddapeg()
+    {
+        return view('master/importdapeg');
     }
 
     public function addlist()
@@ -64,15 +84,24 @@ class Masterdata extends BaseController
 
     public function dapeghtd()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
 
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->users->getAllPaginatedHtd(5, $keyword);
 
         return view('master/pegawaihtd', $data);
+    }
+
+    //hendri
+    public function pensiundini()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_pensiun_dini->getAllPaginatedHtd(5, $keyword);
+        return view('master/pensiundini', $data);
+    }
+
+    public function addpensiundini()
+    {
+        return view('master/addpensiundini');
     }
 
     public function rjab()
@@ -320,9 +349,7 @@ class Masterdata extends BaseController
         }
     }
 
-    public function hapusduplikat()
-    {
-    }
+    public function hapusduplikat() {}
 
     public function prosesimport_rjab()
     {
@@ -840,17 +867,9 @@ class Masterdata extends BaseController
         }
     }
 
-    // public function addformdapeg()
-    // {
-    //     if ($this->request->isAJAX()) {
-    //         $msg    = [
-    //             'data'  => view('master/addmodaldapeg')
-    //         ];
-    //         echo json_encode($msg);
-    //     } else {
-    //         exit('Proses tidak bisa dilanjutkan');
-    //     }
-    // }
+
+
+
 
     public function editdapeg($id = null)
     {
@@ -1071,7 +1090,7 @@ class Masterdata extends BaseController
         $jumlah = $this->db->query($sql)->getRow();
         if ($dapeg) {
             $data['dapeg']      = $dapeg;
-            $data['rjab']      = $rjab;
+            $data['rjab']       = $rjab;
             $data['rpend']      = $rpend;
             $data['rsert']      = $rsert;
             $data['jumlah']     = $jumlah;
@@ -1088,6 +1107,8 @@ class Masterdata extends BaseController
         $data = $this->rsert->getAllPaginated(5, $keyword);
         return view('master/sertifikasi', $data);
     }
+
+
 
     public function addsert()
     {
@@ -1190,13 +1211,69 @@ class Masterdata extends BaseController
         }
     }
 
-    public function datamutasi()
+    public function data_ptb()
     {
-         return view('master/mutasi');
+        // $builder        = $this->users;
+        // $query          = $builder->getAll();
+        // $data['user']   = $query;
+
+        // $data['user']   = $this->users->getAll();
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->tb_ptb->getAllPaginatedHtd(5, $keyword);
+
+        return view('master/ptb', $data);
     }
+
+
+     public function addptb()
+    {
+        return view('master/addptb');
+    }
+
+
+    public function data_mpp()
+    {
+         return view('master/form_mpp');
+    }
+
+    public function view_mpp()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->data_mpp->getAllPaginated(5, $keyword);
+
+        return view('master/view_mpp',$data);
+    }
+
+    public function datamutasi(){
+
+    }
+    
+    public function datatk()
+    {
+         return view('master/tugaskarya');
+    }
+
+    public function dataaps()
+    {
+         return view('master/dataaps');
+    }
+
+        public function dataidt()
+    {
+         return view('master/idt');
+    }
+
     public function dataptb()
     {
          return view('master/ptb');
+         return view('master/tugaskarya');
+    }
+
+    public function viewmutasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->mutasi->getAllPaginated(5, $keyword); 
+        return view('master/viewmutasi', $data);
     }
 
     public function prosesimportdatamutasi()
@@ -1298,20 +1375,59 @@ class Masterdata extends BaseController
         } else {
             return redirect()->back()->with('error', 'Format File Tidak Sesuai');
         }
+
     }
+
     public function dataresign()
     {
-         return view('master/resign');
+      return view('master/resign');
     }
+    
     public function viewresign()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
         $data = $this->resign->getAllPaginated(10, $keyword);
          return view('master/viewresign', $data);
     }
+    
+    public function viewojt()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->OJT->getAllPaginated(5, $keyword);
+        return view('master/viewojt', $data);
+    }
+	
+	  public function viewidt()
+    {
+		
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->idt->getAllPaginated(5, $keyword);
+        return view('master/viewidt',$data);
+    }
+    
+    public function viewtk()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->rjab->getAllPaginated(5, $keyword);
+        return view('master/viewtk', $data);
+    }
+//Data Organisasi Satu
+         public function dataorgsatu()
+    {
+         return view('master/orgsatu');
+    }
+
+//Data Organisasi Dua
+         public function dataorgdua()
+    {
+         return view('master/orgdua');
+    }
+
+//Data Organisasi Tiga
+         public function dataorgtiga()
+    {
+         return view('master/orgtiga');
+    }
+
 }
+

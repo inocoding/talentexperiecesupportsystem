@@ -16,7 +16,7 @@ class ResignModel extends Model
         'tgl_pengajuan',
         'tgl_aktivasi',
         'status',
-            ];
+         ];
 
     public function getAllPaginated(int $perPage = 10, ?string $keyword = null):array
     {

@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data Pegawai - <?= userLogin()->nama_org_satu ?></title>
+<title>Data IDT</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,12 +18,13 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data Pegawai <?= userLogin()->nama_org_satu ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data IDT</h2>
                 </div>
                 <!-- Title End -->
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
+                   
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -66,10 +67,19 @@
 
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
+                            <!-- Add Button Start -->
+                            <!-- <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
+                                <i data-cs-icon="plus"></i>
+                            </a> -->
+                            <!-- Add Button End -->
+
+                            <!-- Edit Button Start -->
+
+                            <!-- Edit Button End -->
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/uploaddapeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Dapeg" type="button">
+                            <a href="<?= site_url('masterdata/dataidt') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data IDT" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -85,65 +95,60 @@
                                     $param = "";
                                 }
                                 ?>
-                                <a class="btn p-0" href="<?= site_url('masterdata/export' . $param) ?>" data-bs-offset="0,3">
+                                <a class="btn p-0" href="<?= site_url('masterdata/exporthtd' . $param) ?>" data-bs-offset="0,3">
                                     <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown" data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip" title="Export Excel">
                                         <i data-cs-icon="download"></i>
                                     </span>
                                 </a>
                             </div>
                             <!-- Export Dropdown End -->
+
+                            <!-- Length Start -->
+                            <!-- <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
+                                <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
+                                    <span class="btn btn-foreground-alternate dropdown-toggle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Item Count">
+                                        10 Items
+                                    </span>
+                                </button>
+                                <div class="dropdown-menu shadow dropdown-menu-end">
+                                    <a class="dropdown-item active" href="#">5 Items</a>
+                                    <a class="dropdown-item " href="#">10 Items</a>
+                                    <a class="dropdown-item" href="#">20 Items</a>
+                                </div>
+                            </div> -->
+                            <!-- Length End -->
                         </div>
                     </div>
                 </div>
                 <!-- Controls End -->
             </form>
             <!-- Table Start -->
-            <div class="table-responsive data-table-responsive-wrapper">
+            <div class="data-table-responsive-wrapper">
                 <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
-                            <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">Sebutan Jabatan</th>
-                            <th class="text-muted text-small text-uppercase">PeG</th>
-                            <th class="text-muted text-small text-uppercase">PoG</th>
+                            <th class="text-muted text-small text-uppercase">Nama</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">start date</th>
-                            <th class="text-muted text-small text-uppercase">end date</th>
-                            <th class="text-muted text-small text-uppercase">Action</th>
+                            <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Mulai</th>
+                            <th class="text-muted text-small text-uppercase">Tgl Berakhir</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $no = 1 + (5 * ($page - 1));
-                        foreach ($rows as $key => $value) : ?>
+                        foreach ($user as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td>
-                                    <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
-                                </td>
-                                <td><?= $value->fullname ?></td>
-                                <td><?= $value->nama_panjang_posisi ?></td>
-                                <td><?= $value->peg ?></td>
-                                <td><?= $value->pog ?></td>
-                                <td><?= $value->org_satu ?></td>
-                                <td><?= date("d.m.Y", strtotime($value->start_date)); ?></td>
-                                <td><?= date("d.m.Y", strtotime($value->end_date)); ?></td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
-                                            <i data-cs-icon="edit"></i>
-                                        </a>
-                                        <form action="<?= site_url('masterdata/del_dapeg/' . $value->nip) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
-                                                <i data-cs-icon="bin"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td><?= $value->nip ?></td>
+                                <td><?= $value->nama_user ?></td>
+                                <td><?= $value->singkatan ?></td>
+                                <td><?= $value->singkatan ?></td>
+                                <td><?= $value->tgl_mulai ?></td>
+                                <td><?= $value->tgl_berakhir ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -261,4 +266,4 @@
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
 
-<?= $this->endSection() ?>
+<?= $this->endSection()?>

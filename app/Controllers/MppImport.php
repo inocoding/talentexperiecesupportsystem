@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class MppImport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
@@ -84,41 +84,29 @@ class ResignImport extends BaseController
             // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
-            if (is_numeric($tgl_pengajuan)) {
-                $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
-            } elseif ($tgl_pengajuan) {
-                $tglPengajuan = date('Y-m-d', strtotime($tgl_pengajuan));
-            } else {
-                $tglPengajuan = null;
-            }
-
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
-            if (is_numeric($tgl_aktivasi)) {
-                $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
-            } elseif ($tgl_aktivasi) {
-                $tglAktivasi = date('Y-m-d', strtotime($tgl_aktivasi));
+            // tanggal: bisa serial excel atau string
+            $tglCell = $sheet->getCell("E{$row}")->getValue();
+            if (is_numeric($tglCell)) {
+                $tglAktivasi = ExcelDate::excelToDateTimeObject($tglCell)->format('Y-m-d');
+            } elseif ($tglCell) {
+                $tglAktivasi = date('Y-m-d', strtotime($tglCell));
             } else {
                 $tglAktivasi = null;
             }
 
 
             $rows[] = [
-                'nip'         => $nip,
-                'unit_asal_1' => $val('B'),
-                'unit_asal_2' => $val('C'),
-                'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
+                'nip'           => $nip,
+                'unit_asal_lv1' => $val('B'),
+                'unit_asal_lv2' => $val('C'),
+                'unit_asal_lv3' => $val('D'),
                 'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new MppModel())->insertBatch($rows, 500);
         }
 
         // update pointer & progress

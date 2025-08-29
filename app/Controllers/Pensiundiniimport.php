@@ -3,32 +3,33 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\PensiunDini;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class Pensiundiniimport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
 
-    public function upload(){
+    public function upload()
+    {
         // validasi file
         $file = $this->request->getFile('excel_file');
         if (!$file || !$file->isValid()) {
-            return $this->response->setJSON(['status'=>'error','message'=>'file tidak valid']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'file tidak valid']);
         }
 
         // pembatasan jenis file
         $ext = strtolower($file->getClientExtension());
-        if (!in_array($ext, ['xlsx','xls','csv'])) {
-            return $this->response->setJSON(['status'=>'error','message'=>'Format harus xlsx/xls/csv']);
+        if (!in_array($ext, ['xlsx', 'xls', 'csv'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Format harus xlsx/xls/csv']);
         }
 
         // simpan ke writable/uploads
         $newName = $file->getRandomName();
-        $path = WRITEPATH.'uploads/'.$newName;
-        $file->move(WRITEPATH.'uploads/', $newName);
+        $path = WRITEPATH . 'uploads/' . $newName;
+        $file->move(WRITEPATH . 'uploads/', $newName);
 
         // hitung total baris (tanpa baca semua cell)
         $spreadsheet = IOFactory::load($path);
@@ -46,25 +47,28 @@ class ResignImport extends BaseController
             'imp_done'      => 0
         ]);
 
-        return $this->response->setJSON(['status'=>'ok', 'total'=>$totalDataRows]);
+        return $this->response->setJSON(['status' => 'ok', 'total' => $totalDataRows]);
     }
 
-    public function processChunk(){
+    public function processChunk()
+    {
         $file       = session('imp_file');
         $pointer    = (int) session('imp_pointer');
         $total      = (int) session('imp_total');
         $done       = (int) session('imp_done');
 
         if (!$file || !is_file($file)) {
-            return $this->response->setJSON(['status'=>'error','message'=>'Session import hilang/file tidak ditemukan']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Session import hilang/file tidak ditemukan']);
         }
 
         if ($pointer > ($total + 1)) {
             // selesai: bersihkan session + hapus file
             @unlink($file);
-            session()->remove(['imp_file','imp_pointer','imp_total','imp_done']);
+            session()->remove(['imp_file', 'imp_pointer', 'imp_total', 'imp_done']);
             return $this->response->setJSON([
-                'status'=>'ok', 'done'=>true, 'progress'=>100
+                'status' => 'ok',
+                'done' => true,
+                'progress' => 100
             ]);
         }
 
@@ -76,7 +80,7 @@ class ResignImport extends BaseController
         $end = min($pointer + $this->chunk - 1, $total + 1); // +1 karena header di baris 1
 
         $rows = [];
-        for ($row = $start; $row <= $end ; $row++) { 
+        for ($row = $start; $row <= $end; $row++) {
             // mapping kolom: A..L (12 kolom)
             $nip    = trim((string) $sheet->getCell("A{$row}")->getValue());
             if ($nip === '') continue; //skip baris kosong
@@ -84,41 +88,40 @@ class ResignImport extends BaseController
             // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
-            if (is_numeric($tgl_pengajuan)) {
-                $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
-            } elseif ($tgl_pengajuan) {
-                $tglPengajuan = date('Y-m-d', strtotime($tgl_pengajuan));
+            // tanggal: bisa serial excel atau string
+            $tglPengajuan = $sheet->getCell("F{$row}")->getValue();
+            if (is_numeric($tglPengajuan)) {
+                $tgl_Pengajuan = ExcelDate::excelToDateTimeObject($tglPengajuan)->format('Y-m-d');
+            } elseif ($tglPengajuan) {
+                $tgl_Pengajuan = date('Y-m-d', strtotime($tglPengajuan));
             } else {
-                $tglPengajuan = null;
+                $tgl_Pengajuan = null;
             }
 
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
-            if (is_numeric($tgl_aktivasi)) {
-                $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
-            } elseif ($tgl_aktivasi) {
-                $tglAktivasi = date('Y-m-d', strtotime($tgl_aktivasi));
+            $tglAktivasi = $sheet->getCell("G{$row}")->getValue();
+            if (is_numeric($tglAktivasi)) {
+                $tgl_Aktivasi = ExcelDate::excelToDateTimeObject($tglAktivasi)->format('Y-m-d');
+            } elseif ($tglAktivasi) {
+                $tgl_Aktivasi = date('Y-m-d', strtotime($tglAktivasi));
             } else {
-                $tglAktivasi = null;
+                $tgl_Aktivasi = null;
             }
-
 
             $rows[] = [
-                'nip'         => $nip,
-                'unit_asal_1' => $val('B'),
-                'unit_asal_2' => $val('C'),
-                'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
-                'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
+                'nip' => $nip,
+                'unit_asal_lv1' => $val('B'),
+                'unit_asal_lv2' => $val('C'),
+                'unit_asal_lv3' => $val('D'),
+                'unit_asal_lv4' => $val('E'),
+                'tgl_pengajuan' => $tgl_Pengajuan,
+                'tgl_aktivasi' => $tgl_Aktivasi,
+                'status' => $val('H'),
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new PensiunDini())->insertBatch($rows, 500);
         }
 
         // update pointer & progress
@@ -150,6 +153,4 @@ class ResignImport extends BaseController
             'progress'  => $progress
         ]);
     }
-
 }
-

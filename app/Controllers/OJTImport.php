@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\OJTModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class OJTImport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
@@ -78,47 +78,49 @@ class ResignImport extends BaseController
         $rows = [];
         for ($row = $start; $row <= $end ; $row++) { 
             // mapping kolom: A..L (12 kolom)
-            $nip    = trim((string) $sheet->getCell("A{$row}")->getValue());
-            if ($nip === '') continue; //skip baris kosong
+            $noTest = trim((string) $sheet->getCell("A{$row}")->getValue());
+            if ($noTest === '') continue;
 
-            // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
-            if (is_numeric($tgl_pengajuan)) {
-                $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
-            } elseif ($tgl_pengajuan) {
-                $tglPengajuan = date('Y-m-d', strtotime($tgl_pengajuan));
+             // tgl mulai
+            $tgl_mulai_ojt = $sheet->getCell("I{$row}")->getValue();
+            if (is_numeric($tgl_mulai_ojt)) {
+                $tglMulaiOJT = ExcelDate::excelToDateTimeObject($tgl_mulai_ojt)->format('Y-m-d');
+            } elseif ($tgl_mulai_ojt) {
+                $tglMulaiOJT = date('Y-m-d', strtotime($tgl_mulai_ojt));
             } else {
-                $tglPengajuan = null;
+                $tglMulaiOJT = null;
             }
 
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
-            if (is_numeric($tgl_aktivasi)) {
-                $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
-            } elseif ($tgl_aktivasi) {
-                $tglAktivasi = date('Y-m-d', strtotime($tgl_aktivasi));
+            // tgl selesai
+            $tgl_selesai_ojt = $sheet->getCell("J{$row}")->getValue();
+            if (is_numeric($tgl_selesai_ojt)) {
+                $tglSelesaiOJT = ExcelDate::excelToDateTimeObject($tgl_selesai_ojt)->format('Y-m-d');
+            } elseif ($tgl_selesai_ojt) {
+                $tglSelesaiOJT = date('Y-m-d', strtotime($tgl_selesai_ojt));
             } else {
-                $tglAktivasi = null;
+                $tglSelesaiOJT = null;
             }
 
-
+            // normalisasi enum
             $rows[] = [
-                'nip'         => $nip,
-                'unit_asal_1' => $val('B'),
-                'unit_asal_2' => $val('C'),
-                'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
-                'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
+                'no_test'           => $noTest,
+                'nama'              => $val('B'),
+                'jenjang'           => $val('C'),
+                'proyeksi_jabatan'  => $val('D'),
+                'unit_proyeksi_lv1' => $val('E'),
+                'unit_proyeksi_lv2' => $val('F'),
+                'unit_proyeksi_lv3' => $val('G'),
+                'unit_proyeksi_lv4' => $val('H'),
+                'tgl_mulai_ojt'     => $tglMulaiOJT,
+                'tgl_selesai_ojt'   => $tglSelesaiOJT,
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new OJTModel())->insertBatch($rows, 500);
         }
 
         // update pointer & progress

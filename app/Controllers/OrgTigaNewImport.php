@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\OrgTigaNewModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class OrgTigaNewImport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
@@ -78,47 +78,43 @@ class ResignImport extends BaseController
         $rows = [];
         for ($row = $start; $row <= $end ; $row++) { 
             // mapping kolom: A..L (12 kolom)
-            $nip    = trim((string) $sheet->getCell("A{$row}")->getValue());
-            if ($nip === '') continue; //skip baris kosong
+            $KodeOrgTiga = trim((string) $sheet->getCell("A{$row}")->getValue());
+            if ($KodeOrgTiga === '') continue;
 
-            // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
-            if (is_numeric($tgl_pengajuan)) {
-                $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
-            } elseif ($tgl_pengajuan) {
-                $tglPengajuan = date('Y-m-d', strtotime($tgl_pengajuan));
-            } else {
-                $tglPengajuan = null;
-            }
+             // tgl mulai
+        //     $tgl_mulai_ojt = $sheet->getCell("I{$row}")->getValue();
+        //    if (is_numeric($tgl_mulai_ojt)) {
+        //        $tglMulaiOJT = ExcelDate::excelToDateTimeObject($tgl_mulai_ojt)->format('Y-m-d');
+        //   } elseif ($tgl_mulai_ojt) {
+        //       $tglMulaiOJT = date('Y-m-d', strtotime($tgl_mulai_ojt));
+        //   } else {
+        //       $tglMulaiOJT = null;
+        //   }
 
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
-            if (is_numeric($tgl_aktivasi)) {
-                $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
-            } elseif ($tgl_aktivasi) {
-                $tglAktivasi = date('Y-m-d', strtotime($tgl_aktivasi));
-            } else {
-                $tglAktivasi = null;
-            }
+            // tgl selesai
+        //    $tgl_selesai_ojt = $sheet->getCell("J{$row}")->getValue();
+        //    if (is_numeric($tgl_selesai_ojt)) {
+        //        $tglSelesaiOJT = ExcelDate::excelToDateTimeObject($tgl_selesai_ojt)->format('Y-m-d');
+        //    } elseif ($tgl_selesai_ojt) {
+        //        $tglSelesaiOJT = date('Y-m-d', strtotime($tgl_selesai_ojt));
+        //    } else {
+        //        $tglSelesaiOJT = null;
+        //    }
 
-
+            // normalisasi enum
             $rows[] = [
-                'nip'         => $nip,
-                'unit_asal_1' => $val('B'),
-                'unit_asal_2' => $val('C'),
-                'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
-                'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
+                'kode_org_tiga'              => $KodeOrgTiga,
+                'nama_org_tiga'              => $val('B'),
+                'singkatan'                  => $val('C'),
+                'parent_org_tiga'             => $val('D'),
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new OrgTigaNewModel())->insertBatch($rows, 500);
         }
 
         // update pointer & progress
@@ -149,6 +145,27 @@ class ResignImport extends BaseController
             'done'      => $isDone,
             'progress'  => $progress
         ]);
+		
+		
+    }
+
+    private function mapJenis($v): string
+    {
+        $v = strtolower(trim((string)$v));
+        if (in_array($v, ['1','promosi'])) return '1';
+        if (in_array($v, ['2','rotasi']))  return '2';
+        if (in_array($v, ['3','demosi']))  return '3';
+        return '1'; // default aman
+    }
+
+    private function mapStatus($v): string
+    {
+        $v = strtolower(trim((string)$v));
+        if (in_array($v, ['1','fit proper','fit proper tes'])) return '1';
+        if (in_array($v, ['2','evaluasi']))                     return '2';
+        if (in_array($v, ['3','cetak sk','cetak']))             return '3';
+        if (in_array($v, ['4','aktivasi','aktif']))             return '4';
+        return '4';
     }
 
 }

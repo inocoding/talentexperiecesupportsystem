@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\ApsModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class ApsImport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
@@ -84,8 +84,8 @@ class ResignImport extends BaseController
             // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
+            // tanggal: bisa serial excel atau string
+            $tgl_pengajuan = $sheet->getCell("J{$row}")->getValue();
             if (is_numeric($tgl_pengajuan)) {
                 $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
             } elseif ($tgl_pengajuan) {
@@ -93,9 +93,8 @@ class ResignImport extends BaseController
             } else {
                 $tglPengajuan = null;
             }
-
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
+            // tanggal: bisa serial excel atau string
+            $tgl_aktivasi = $sheet->getCell("K{$row}")->getValue();
             if (is_numeric($tgl_aktivasi)) {
                 $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
             } elseif ($tgl_aktivasi) {
@@ -105,20 +104,34 @@ class ResignImport extends BaseController
             }
 
 
+            $status = $val('L');
+            $status = $this->mapStatus($status);
+
+
+            $alasan_aps = $val('M');
+          
+
+
             $rows[] = [
-                'nip'         => $nip,
+                'nip'           => $nip,
                 'unit_asal_1' => $val('B'),
                 'unit_asal_2' => $val('C'),
                 'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
+                'unit_asal_4' => $val('E'),
+                'unit_tujuan_1'   => $val('F'),
+                'unit_tujuan_2'   => $val('G'),
+                'unit_tujuan_3'   => $val('H'),
+                'unit_tujuan_4'   => $val('I'),
+                'tgl_pengajuan'  => $tglPengajuan,
                 'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
+                'status'        => $status,
+                'alasan_aps'        => $alasan_aps,
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new ApsModel())->insertBatch($rows, 500);
         }
 
         // update pointer & progress
@@ -149,6 +162,21 @@ class ResignImport extends BaseController
             'done'      => $isDone,
             'progress'  => $progress
         ]);
+    }
+
+
+
+    private function mapStatus($v): string
+    {
+        $v = strtolower(trim((string)$v));
+        if (in_array($v, ['1','mengajukan'])) return '1';
+        if (in_array($v, ['2','evaluasi unit asal']))                     return '2';
+        if (in_array($v, ['3','evaluasi unit tujuan']))             return '3';
+        if (in_array($v, ['4','evaluasi htd korporat']))             return '4';
+        if (in_array($v, ['5','proses evaluasi mab']))             return '5';
+        if (in_array($v, ['6','diterima']))             return '6';
+        if (in_array($v, ['7','ditolak']))             return '7';
+        return '7';
     }
 
 }

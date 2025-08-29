@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ResignModel;
+use App\Models\TugaskaryaModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ResignImport extends BaseController
+class TugasKaryaImport extends BaseController
 {
     // konfigurasi chunck
     private int $chunk = 300; //jumlah baris per hit
@@ -84,41 +84,45 @@ class ResignImport extends BaseController
             // helper ambil string
             $val = fn($col) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
 
-            // tanggal pengajuan: bisa serial excel atau string
-            $tgl_pengajuan = $sheet->getCell("E{$row}")->getValue();
-            if (is_numeric($tgl_pengajuan)) {
-                $tglPengajuan = ExcelDate::excelToDateTimeObject($tgl_pengajuan)->format('Y-m-d');
-            } elseif ($tgl_pengajuan) {
-                $tglPengajuan = date('Y-m-d', strtotime($tgl_pengajuan));
-            } else {
-                $tglPengajuan = null;
-            }
-
-             // tanggal aktivasi: bisa serial excel atau string
-            $tgl_aktivasi = $sheet->getCell("F{$row}")->getValue();
-            if (is_numeric($tgl_aktivasi)) {
-                $tglAktivasi = ExcelDate::excelToDateTimeObject($tgl_aktivasi)->format('Y-m-d');
-            } elseif ($tgl_aktivasi) {
-                $tglAktivasi = date('Y-m-d', strtotime($tgl_aktivasi));
+            // tanggal aktivasi: bisa serial excel atau string
+            $tanggal_aktivasi = $sheet->getCell("J{$row}")->getValue();
+            if (is_numeric($tanggal_aktivasi)) {
+                $tglAktivasi = ExcelDate::excelToDateTimeObject($tanggal_aktivasi)->format('Y-m-d');
+            } elseif ($tanggal_aktivasi) {
+                $tglAktivasi = date('Y-m-d', strtotime($tanggal_aktivasi));
             } else {
                 $tglAktivasi = null;
             }
 
+             // tanggal berakhir: bisa serial excel atau string
+            $tanggal_berakhir = $sheet->getCell("K{$row}")->getValue();
+            if (is_numeric($tanggal_berakhir)) {
+                $tglBerakhir = ExcelDate::excelToDateTimeObject($tanggal_berakhir)->format('Y-m-d');
+            } elseif ($tanggal_berakhir) {
+                $tglBerakhir = date('Y-m-d', strtotime($tanggal_berakhir));
+            } else {
+                $tglBerakhir = null;
+            }
 
+          
             $rows[] = [
-                'nip'         => $nip,
-                'unit_asal_1' => $val('B'),
-                'unit_asal_2' => $val('C'),
-                'unit_asal_3' => $val('D'),
-                'tgl_pengajuan' => $tglPengajuan,
+                'nip'           => $nip,
+                'unit_tujuan_1' => $val('B'),
+                'unit_tujuan_2' => $val('C'),
+                'unit_tujuan_3' => $val('D'),
+                'unit_tujuan_4' => $val('E'),
+                'unit_asal_1'   => $val('F'),
+                'unit_asal_2'   => $val('G'),
+                'unit_asal_3'   => $val('H'),
+                'unit_asal_4'   => $val('I'),
                 'tgl_aktivasi'  => $tglAktivasi,
-                'status'        => $val('G'),
+                'tgl_berakhir'  => $tglBerakhir,
             ];
         }
 
         // insert batch
         if (!empty($rows)) {
-            (new ResignModel())->insertBatch($rows, 500);
+            (new TugaskaryaModel())->insertBatch($rows, 500);
         }
 
         // update pointer & progress
@@ -150,6 +154,25 @@ class ResignImport extends BaseController
             'progress'  => $progress
         ]);
     }
+
+   /*/ private function mapJenis($v): string
+    {
+        $v = strtolower(trim((string)$v));
+        if (in_array($v, ['1','promosi'])) return '1';
+        if (in_array($v, ['2','rotasi']))  return '2';
+        if (in_array($v, ['3','demosi']))  return '3';
+        return '1'; // default aman
+    }
+
+    private function mapStatus($v): string
+    {
+        $v = strtolower(trim((string)$v));
+        if (in_array($v, ['1','fit proper','fit proper tes'])) return '1';
+        if (in_array($v, ['2','evaluasi']))                     return '2';
+        if (in_array($v, ['3','cetak sk','cetak']))             return '3';
+        if (in_array($v, ['4','aktivasi','aktif']))             return '4';
+        return '4';
+    } */
 
 }
 
