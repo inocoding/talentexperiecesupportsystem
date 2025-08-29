@@ -330,7 +330,7 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/viewtk') ?>" class="<?= $uri->getSegment(2) == "viewtk" ? "active" : null ?>">
                 <span class="label">Data Tugas Karya</span>
             </a>
         </li>

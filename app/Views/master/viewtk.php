@@ -153,52 +153,19 @@
                                 <td>
                                     <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
-                                <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_org_htd ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
-                                <td><?= $value->email_korpo ?> <br>
-                                    <?= $value->email_non ?>
+                                <td><?= $value->nip ?></td>
+                                <td><?= $value->unit_tujuan_1 ?></td>
+                                <td><?= $value->unit_tujuan_2 ?></td>
+                                <td><?= $value->unit_tujuan_3 ?></td>
+                                <td><?= $value->unit_tujuan_4 ?></td>
+                                <td><?= $value->unit_asal_1 ?></td>
+                                <td><?= $value->unit_asal_2 ?></td>
+                                <td><?= $value->unit_asal_3 ?></td>
+                                <td><?= $value->unit_asal_4 ?></td>
+                                <td><?= $value->tgl_aktivasi ?> <br>
+                                    <?= $value->tgl_berakhir ?>
                                 </td>
-                                <td>
-                                    <?php
-                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
-                                        if ($value->role_admin == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
-                                        }
-                                        if ($value->role_adm_acc == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
-                                        }
-                                        if ($value->role_adm_eclinic == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
-                                        }
-                                        if ($value->role_adm_hi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
-                                        }
-                                        if ($value->role_adm_org == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
-                                        }
-                                        if ($value->role_adm_kinerja == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
-                                        }
-                                        if ($value->role_adm_diklat == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
-                                        }
-                                        if ($value->role_adm_sertifikasi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
-                                        }
-                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
-                                        if ($value->role_peg == 1) {
-                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
-                                        } else {
-                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
-                                        }
-                                        if ($value->role_komite == 1) {
-                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
-                                        }
-                                    }
-                                    ?>
-                                </td>
-                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
+                               
                                 <td>
                                     <div class="d-inline-block">
                                         <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
