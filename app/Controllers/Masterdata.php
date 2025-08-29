@@ -1435,7 +1435,7 @@ class Masterdata extends BaseController
     public function viewtk()
     {
         $keyword = $this->request->getGet('keyword');
-        $data = $this->rjab->getAllPaginated(5, $keyword);
+        $data = $this->tb_tugas_karya->getAllPaginated(5, $keyword);
         return view('master/viewtk', $data);
     }
 
