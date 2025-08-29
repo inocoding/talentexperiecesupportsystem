@@ -79,30 +79,58 @@ class Ptb extends Model
         return $query->getRow();
     }
 
-    public function getAllPaginated($num, $keyword = null)
+public function getAllPaginated($num, $keyword = null)
     {
-        $role_htd = "4";
-        $role_peg = "1";
-        $unit_induk = userLogin()->unit_induk;
+        //$role_htd = "4";
+        //$role_peg = "1";
+        //$unit_induk = userLogin()->unit_induk;
 
-        $builder    = $this->builder();
-        $builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
-        $builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
-        $builder->where('role_peg', $role_peg);
-        // $builder->where('unit_induk', $unit_induk);
-        $builder->where('role_htd', $role_htd);
-        if ($keyword != '') {
-            $builder->where('role_htd', $role_htd);
-            $builder->like('nip', $keyword);
-            $builder->orLike('nama_user', $keyword);
-            $builder->orLike('nama_org_htd', $keyword);
-            $builder->orLike('nama_org_satu', $keyword);
-            $builder->orLike('email_korpo', $keyword);
-            $builder->orLike('email_non', $keyword);
-            $builder->orLike('ket_aktif', $keyword);
+        //$builder    = $this->builder();
+        //$builder->join('user', 'user.nip = tb_mpp.nip');        
+        //$builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
+        //$builder->where('role_peg', $role_peg);
+        //$builder->where('unit_asal_lv1', $unit_induk);
+        //$builder->where('role_htd', $role_htd);
+        // if ($keyword != '') {
+        //     $builder->like('nip', $keyword);
+        //     $builder->orLike('nama_user', $keyword);
+        //     $builder->orLike('nama_org_htd', $keyword);
+        //     $builder->orLike('nama_org_satu', $keyword);
+        //     $builder->orLike('email_korpo', $keyword);
+        //     $builder->orLike('email_non', $keyword);
+        //     $builder->orLike('ket_aktif', $keyword);
+        // }
+
+        $q = $this;
+        if (!empty($keyword)) {
+            $q = $q->groupStart()
+                ->like('nip', $keyword)
+                ->orlike('nama', $keyword)
+                ->orlike('sebutan_jabatan', $keyword)
+                ->orlike('unit_asal_lv1', $keyword)
+                ->orlike('unit_asal_lv2', $keyword)
+                ->orlike('unit_asal_lv3', $keyword)
+                ->orlike('angkatan', $keyword)
+                ->orlike('jenjang_ptb', $keyword)
+                ->orlike('program_pendidikan_formal', $keyword)
+                ->orlike('bidang', $keyword)
+                ->orlike('sub_bidang', $keyword)
+                ->orlike('on_mission', $keyword)
+                ->orlike('program_studi', $keyword)
+                ->orlike('universitas', $keyword)
+                ->orlike('tgl_mulai_studi', $keyword)
+                ->orlike('tgl_selesai_studi', $keyword)
+                ->orlike('status', $keyword)
+                ->orlike('penempatan_pasca_studi', $keyword)
+                ->orlike('unit_penempatan_lv1', $keyword)
+                ->orlike('unit_penempatan_lv2', $keyword)
+                ->orlike('unit_penempatan_lv3', $keyword)
+                ->orlike('tanggal_aktivasi', $keyword)
+                ->groupEnd();
         }
+
         return [
-            'user' => $this->paginate($num),
+            'user'  => $q->paginate($num),
             'pager' => $this->pager,
         ];
     }

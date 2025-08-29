@@ -1249,7 +1249,7 @@ class Masterdata extends BaseController
 
         // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
-        $data = $this->tb_ptb->getAllPaginatedHtd(5, $keyword);
+        $data = $this->data_ptb->getAllPaginated(5, $keyword);
 
         return view('master/ptb', $data);
     }
