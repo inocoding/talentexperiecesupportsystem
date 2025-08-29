@@ -16,6 +16,7 @@ use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
 use App\Models\Ptb;
 use App\Models\PensiunDini;
+use App\Models\StrukturOrganisasi;
 use App\Models\TugaskaryaModel;
 use App\Models\MppModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -36,6 +37,7 @@ class Masterdata extends BaseController
         $this->resign           = new ResignModel();
         $this->tb_ptb           = new Ptb();
         $this->data_pensiun_dini = new PensiunDini();
+        $this->data_strukturorganisasi = new StrukturOrganisasi();
         $this->OJT              = new OJTModel();
 		    $this->idt	            = new IdtModel();
         $this->data_mpp         = new MppModel();
@@ -105,6 +107,19 @@ class Masterdata extends BaseController
     public function addpensiundini()
     {
         return view('master/addpensiundini');
+    }
+
+    public function data_struktur_organisasi()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->data_strukturorganisasi->getAllPaginated(5, $keyword);
+
+        return view('master/view_strukturorganisasi', $data);
+    }
+
+    public function addstrukturorganisasi()
+    {
+        return view('master/add_strukturorganisasi');
     }
 
     public function rjab()
@@ -601,6 +616,85 @@ class Masterdata extends BaseController
             $sheet->setCellValue('Z' . $column, $value->nama_org_satu);
             $sheet->setCellValue('AA' . $column, $value->nama_org_dua);
             $sheet->setCellValue('AB' . $column, $value->nama_org_tiga);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Dispotition: attachment;filename=datapegawai.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+
+    public function exportstrukturorganisasai()
+    {
+        //$user = $this->users->getAll();
+        //$role_htd = "4";
+        //$role_peg = "1";
+        //$htd_area = userLogin()->htd_area;
+
+        $keyword = $this->request->getGet('keyword');
+        $db = \Config\Database::connect();
+        $builder    = $db->table('tb_struktur_org');
+        //$builder->where('role_peg', $role_peg);
+        //$builder->where('htd_area', $htd_area);
+        //$builder->where('role_htd !=', $role_htd);
+        //$builder->join('tb_org_htd', 'tb_org_htd.kode_org_htd = user.htd_area');
+        //$builder->join('tb_org_satu', 'tb_org_satu.kode_org_satu = user.unit_induk');
+        //$builder->join('tb_org_dua', 'tb_org_dua.kode_org_dua = user.unit_pelaksana');
+        //$builder->join('tb_org_tiga', 'tb_org_tiga.kode_org_tiga = user.sub_unit_pelaksana');
+        if ($keyword != '') {
+            $builder->like('kode_posisi', $keyword);
+            $builder->orLike('nama_fj', $keyword);
+            $builder->orLike('jenjang', $keyword);
+            $builder->orLike('org_unit', $keyword);
+            $builder->orLike('company_code', $keyword);
+            $builder->orLike('personel_area', $keyword);
+            $builder->orLike('personel_sub_srea', $keyword);
+            $builder->orLike('tx_org_satu', $keyword);
+            $builder->orLike('tx_org_dua', $keyword);
+            $builder->orLike('tx_org_tiga', $keyword);
+            $builder->orLike('kode_org_satu', $keyword);
+            $builder->orLike('kode_org_dua', $keyword);
+            $builder->orLike('kode_org_tiga', $keyword);
+        }
+        $query =  $builder->get();
+        $user = $query->getResult();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'no');
+        $sheet->setCellValue('B1', 'kode_posisi');
+        $sheet->setCellValue('C1', 'nama_fj');
+        $sheet->setCellValue('D1', 'jenjang');
+        $sheet->setCellValue('E1', 'org_unit');
+        $sheet->setCellValue('F1', 'company_code');
+        $sheet->setCellValue('G1', 'personel_area');
+        $sheet->setCellValue('H1', 'personel_sub_srea');
+        $sheet->setCellValue('I1', 'tx_org_satu');
+        $sheet->setCellValue('J1', 'tx_org_dua');
+        $sheet->setCellValue('K1', 'tx_org_tiga');
+        $sheet->setCellValue('L1', 'kode_org_satu');
+        $sheet->setCellValue('M1', 'kode_org_dua');
+        $sheet->setCellValue('N1', 'kode_org_tiga');
+
+        $column = 2;
+        foreach ($user as $key => $value) {
+            $sheet->setCellValue('A' . $column, ($column - 1));
+            $sheet->setCellValue('B' . $column, $value->kode_posisi);
+            $sheet->setCellValue('C' . $column, $value->nama_fj);
+            $sheet->setCellValue('D' . $column, $value->jenjang);
+            $sheet->setCellValue('E' . $column, $value->org_unit);
+            $sheet->setCellValue('F' . $column, $value->company_code);
+            $sheet->setCellValue('G' . $column, $value->personel_area);
+            $sheet->setCellValue('H' . $column, $value->personel_sub_srea);
+            $sheet->setCellValue('I' . $column, $value->tx_org_satu);
+            $sheet->setCellValue('J' . $column, $value->tx_org_dua);
+            $sheet->setCellValue('K' . $column, $value->tx_org_tiga);
+            $sheet->setCellValue('L' . $column, $value->kode_org_satu);
+            $sheet->setCellValue('M' . $column, $value->kode_org_dua);
+            $sheet->setCellValue('N' . $column, $value->kode_org_tiga);
             $column++;
         }
 
