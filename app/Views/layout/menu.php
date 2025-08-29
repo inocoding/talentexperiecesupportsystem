@@ -307,6 +307,13 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
+
+        <li>
+            <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
+                <span class="label">Data Resign </span>
+            </a>
+        </li>
+
         <li>
             <a href="<?= site_url('masterdata/viewojt') ?>" class="<?= $uri->getSegment(2) == "viewojt" ? "active" : null ?>">
                 <span class="label">Data OJT </span>
@@ -327,6 +334,5 @@
                 <span class="label">Data Tugas Karya</span>
             </a>
         </li>
-
     </ul>
 </li>

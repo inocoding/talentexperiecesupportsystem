@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\ResignModel;
 use App\Models\DapegModel;
 use App\Models\OJTModel;
 use App\Models\IdtModel;
@@ -32,10 +33,11 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->resign           = new ResignModel();
         $this->tb_ptb           = new Ptb();
         $this->tb_pensiun_dini  = new PensiunDini();
         $this->OJT              = new OJTModel();
-		$this->idt	        	= new IdtModel();
+		    $this->idt	        	= new IdtModel();
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
@@ -1375,6 +1377,18 @@ class Masterdata extends BaseController
         }
 
     }
+
+    public function dataresign()
+    {
+      return view('master/resign');
+    }
+    
+    public function viewresign()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->resign->getAllPaginated(10, $keyword);
+         return view('master/viewresign', $data);
+    }
     
     public function viewojt()
     {
@@ -1382,8 +1396,6 @@ class Masterdata extends BaseController
         $data = $this->OJT->getAllPaginated(5, $keyword);
         return view('master/viewojt', $data);
     }
-	
-
 	
 	  public function viewidt()
     {
@@ -1416,7 +1428,6 @@ class Masterdata extends BaseController
     {
          return view('master/orgtiga');
     }
-
 
 }
 
