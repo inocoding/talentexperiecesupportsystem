@@ -46,15 +46,22 @@ class DapegModel extends Model
      * Ambil data dengan pencarian & paginate sederhana.
      * $keyword akan mencocokkan fullname, kode_posisi, atau org_unit_tx.
      */
-    public function getPaginated(int $perPage = 20, ?string $keyword = null)
+    public function getPaginated(int $perPage = 20, ?string $keyword = null, ?string $orgSatuUser = null, ?int $roleHtd = null)
     {
         $builder = $this->orderBy('id_peg', 'DESC');
+
+        // batasi berdasarkan org_satu user (kecuali admin)
+        if ($orgSatuUser && $roleHtd > 3) {
+            $builder->where('org_satu', $orgSatuUser);
+            // kalau user bisa punya banyak org: whereIn('org_satu', $orgList)
+        }
 
         if (!empty($keyword)) {
             $builder = $builder->groupStart()
                 ->like('fullname', $keyword)
-                ->orLike('kode_posisi', $keyword)
-                ->orLike('org_unit_tx', $keyword)
+                ->orLike('nip', $keyword)
+                ->orLike('org_satu', $keyword)
+                ->orLike('nama_panjang_posisi', $keyword)
                 ->groupEnd();
         }
 
@@ -63,4 +70,23 @@ class DapegModel extends Model
             'pager' => $this->pager,
         ];
     }
+
+    public function getLatestOrgSatuByNip(string $nip): ?string
+    {
+        // Jika MySQL 5.x: pakai subquery MAX(tgl_data)
+        $row = $this->db->query("
+            SELECT d.org_satu
+            FROM tb_dapeg d
+            JOIN (
+            SELECT nip, MAX(tgl_data) AS max_tgl
+            FROM tb_dapeg
+            WHERE nip = :nip:
+            ) last ON last.nip = d.nip AND last.max_tgl = d.tgl_data
+            ORDER BY d.id_peg DESC
+            LIMIT 1
+        ", ['nip' => $nip])->getFirstRow();
+
+        return $row->org_satu ?? null;
+    }
+
 }
