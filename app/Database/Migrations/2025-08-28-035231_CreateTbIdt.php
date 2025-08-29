@@ -4,8 +4,9 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Tabelmutasi extends Migration
+class CreateTbIdt extends Migration
 {
+    protected $DBGroup = 'default';
     public function up()
     {
         $this->forge->addField([
@@ -81,16 +82,14 @@ class Tabelmutasi extends Migration
         $this->forge->addKey('id_data', true);   // primary key
         $this->forge->addKey('nip');             // index bantu pencarian
 
-        $this->forge->createTable('tb_mutasi', false, [
-
+        $this->forge->createTable('tb_idt', false, [
             'ENGINE'  => 'InnoDB',
             'COMMENT' => 'Riwayat mutasi pegawai',
-            'COLLATE' => 'utf8mb4_0900_ai_ci',
         ]);
     }
 
     public function down()
     {
-        $this->forge->dropTable('tb_mutasi', true);
+        $this->forge->dropTable('tb_idt', true);
     }
 }

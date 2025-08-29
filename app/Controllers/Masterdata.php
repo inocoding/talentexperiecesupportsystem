@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\Users;
+use App\Models\ResignModel;
+use App\Models\DapegModel;
 use App\Models\OJTModel;
 use App\Models\IdtModel;
 use App\Models\MutasiModel;
@@ -31,6 +33,7 @@ class Masterdata extends BaseController
         $this->rpend            = new Rpend();
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
+        $this->resign           = new ResignModel();
         $this->tb_ptb           = new Ptb();
         $this->data_pensiun_dini = new PensiunDini();
         $this->OJT              = new OJTModel();
@@ -38,19 +41,24 @@ class Masterdata extends BaseController
         $this->data_mpp         = new MppModel();
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
+        $this->dapeg            = new DapegModel();
     }
 
     public function index()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
-        $data = $this->users->getAllPaginated(5, $keyword);
+        $perPage = 20;
+        $orgSatuUser = session('org_satu');
+        $roleHtd = session('role_htd');
+
+        $data = $this->dapeg->getPaginated($perPage, $keyword, $orgSatuUser, $roleHtd);
 
         return view('master/pegawai', $data);
+    }
+
+    public function uploaddapeg()
+    {
+        return view('master/importdapeg');
     }
 
     public function addlist()
@@ -1278,6 +1286,11 @@ class Masterdata extends BaseController
         return view('master/dataaps');
     }
 
+        public function dataidt()
+    {
+         return view('master/idt');
+    }
+
     public function dataptb()
     {
         return view('master/ptb');
@@ -1392,15 +1405,26 @@ class Masterdata extends BaseController
         }
     }
 
+    public function dataresign()
+    {
+      return view('master/resign');
+    }
+    
+    public function viewresign()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->resign->getAllPaginated(10, $keyword);
+         return view('master/viewresign', $data);
+    }
+    
     public function viewojt()
     {
         $keyword = $this->request->getGet('keyword');
         $data = $this->OJT->getAllPaginated(5, $keyword);
         return view('master/viewojt', $data);
     }
-
-
-    public function viewidt()
+	
+	  public function viewidt()
     {
 
         $keyword = $this->request->getGet('keyword');
@@ -1414,4 +1438,23 @@ class Masterdata extends BaseController
         $data = $this->rjab->getAllPaginated(5, $keyword);
         return view('master/viewtk', $data);
     }
+
+//Data Organisasi Satu
+         public function dataorgsatu()
+    {
+         return view('master/orgsatu');
+    }
+
+//Data Organisasi Dua
+         public function dataorgdua()
+    {
+         return view('master/orgdua');
+    }
+
+//Data Organisasi Tiga
+         public function dataorgtiga()
+    {
+         return view('master/orgtiga');
+    }
+
 }

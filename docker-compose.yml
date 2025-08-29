@@ -11,6 +11,7 @@ services:
       - ./app:/var/www/html/app
       - ./public:/var/www/html/public
       - ./writable:/var/www/html/writable
+      - ./docker/php/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     ports:
       - "8080:80"
     environment:

@@ -246,6 +246,21 @@
                 <span class="label">User</span>
             </a>
         </li>
+         <li>
+            <a href="<?= site_url('masterdata/dataorgsatu') ?>" class="<?= $uri->getSegment(2) == "dataorgsatu" ? "active" : null ?>">
+                <span class="label">Data Organisasi 1</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('masterdata/dataorgdua') ?>" class="<?= $uri->getSegment(2) == "dataorgdua" ? "active" : null ?>">
+                <span class="label">Data Organisasi 2</span>
+            </a>
+        </li>
+          <li>
+            <a href="<?= site_url('masterdata/dataorgtiga') ?>" class="<?= $uri->getSegment(2) == "dataorgtiga" ? "active" : null ?>">
+                <span class="label">Data Organisasi 3</span>
+            </a>
+        </li>
         <li>
             <a href="<?= site_url('masterdata') ?>" class="<?= $uri->getSegment(1) == "masterdata" and $uri->getSegment(2) == null ? "active" : null ?>">
                 <span class="label">Data Pegawai</span>
@@ -292,6 +307,13 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
+
+        <li>
+            <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
+                <span class="label">Data Resign </span>
+            </a>
+        </li>
+
         <li>
             <a href="<?= site_url('masterdata/viewojt') ?>" class="<?= $uri->getSegment(2) == "viewojt" ? "active" : null ?>">
                 <span class="label">Data OJT </span>
@@ -312,6 +334,5 @@
                 <span class="label">Data Tugas Karya</span>
             </a>
         </li>
-
     </ul>
 </li>
