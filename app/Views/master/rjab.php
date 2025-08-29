@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h1 class="mb-0 pb-0 display-4" id="title">Master Data Riwayat Jabatan</h1>
+                    <h1 class="mb-0 pb-0 display-4" id="title">Master Data Riwayat Jabatanoo</h1>
                 </div>
                 <!-- Title End -->
 

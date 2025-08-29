@@ -130,6 +130,11 @@
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama</th>
+                            <th class="text-muted text-small text-uppercase">Unit Tujuan</th>
+                            <th class="text-muted text-small text-uppercase">Unit Asal</th>
+                            <th class="text-muted text-small text-uppercase">Tanggal Aktivasi</th>
+                            <th class="text-muted text-small text-uppercase">Jenis Mutasi</th>
+                            <th class="text-muted text-small text-uppercase">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +145,31 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nip ?></td>
-                                <td><?= $value->nip ?></td>
+                                <td><?= $value->nama ?></td>
+                                <td><?= $value->unit_tujuan_1 ?> <?= $value->unit_tujuan_2 ?></br><?= $value->unit_tujuan_3 ?></td>
+                                <td><?= $value->unit_asal_1 ?> <?= $value->unit_asal_2 ?></br><?= $value->unit_asal_3 ?></td>
+                                <td><?= $value->tgl_aktivasi ?></td>
+                                <td>
+                                    <?php
+                                        $result = match($value->jenis_mutasi) {
+                                        '1' => "promosi",
+                                        '2' => "rotasi",
+                                        '3' => "demosi",
+                                        };
+                                    echo $result;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                        $result = match($value->status) {
+                                        '1' => "fit proper tes",
+                                        '2' => "evaluasi",
+                                        '3' => "cetak sk",
+                                        '4' => "aktivasi",
+                                    };
+                                    echo $result;
+                                    ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

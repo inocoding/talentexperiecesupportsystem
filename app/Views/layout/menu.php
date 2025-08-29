@@ -246,6 +246,21 @@
                 <span class="label">User</span>
             </a>
         </li>
+         <li>
+            <a href="<?= site_url('masterdata/dataorgsatu') ?>" class="<?= $uri->getSegment(2) == "dataorgsatu" ? "active" : null ?>">
+                <span class="label">Data Organisasi 1</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('masterdata/dataorgdua') ?>" class="<?= $uri->getSegment(2) == "dataorgdua" ? "active" : null ?>">
+                <span class="label">Data Organisasi 2</span>
+            </a>
+        </li>
+          <li>
+            <a href="<?= site_url('masterdata/dataorgtiga') ?>" class="<?= $uri->getSegment(2) == "dataorgtiga" ? "active" : null ?>">
+                <span class="label">Data Organisasi 3</span>
+            </a>
+        </li>
         <li>
             <a href="<?= site_url('masterdata') ?>" class="<?= $uri->getSegment(1) == "masterdata" and $uri->getSegment(2) == null ? "active" : null ?>">
                 <span class="label">Data Pegawai</span>
@@ -273,8 +288,8 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/pensiundini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
-                <span class="label">Pensiun Dini </span>
+            <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+                <span class="label">Data Pensiun Dini </span>
             </a>
         </li>
         <li>
@@ -292,12 +307,22 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
+          <li>
+            <a href="<?= site_url('masterdata/viewtk') ?>" class="<?= $uri->getSegment(2) == "viewtk" ? "active" : null ?>">
+          </li>
+
+        <li>
+            <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
+                <span class="label">Data Resign </span>
+            </a>
+        </li>
+
         <li>
             <a href="<?= site_url('masterdata/viewojt') ?>" class="<?= $uri->getSegment(2) == "viewojt" ? "active" : null ?>">
                 <span class="label">Data OJT </span>
             </a>
         </li>
-		    <li>
+        <li>
             <a href="<?= site_url('masterdata/viewidt') ?>" class="<?= $uri->getSegment(2) == "viewidt" ? "active" : null ?>">
                 <span class="label">Data IDT</span>
             </a>
@@ -307,11 +332,11 @@
                 <span class="label">Data APS </span>
             </a>
         </li>
-          <li>
+        <li>
             <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
+
                 <span class="label">Data Tugas Karya</span>
             </a>
         </li>
-
     </ul>
 </li>

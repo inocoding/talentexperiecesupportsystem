@@ -34,7 +34,6 @@
 </div>
 <?= $this->endSection() ?>
 
-
 <?= $this->section('jsfooter') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function(){

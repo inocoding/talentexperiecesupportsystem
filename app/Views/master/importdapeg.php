@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data Tugas Karya</title>
+<title>Upload Data Pegawai</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -21,7 +21,7 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload data tugas karya</p>
+        <p>Upload data pegawai</p>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
@@ -33,6 +33,7 @@
     </div>
 </div>
 <?= $this->endSection() ?>
+
 
 <?= $this->section('jsfooter') ?>
 <script>
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     document.getElementById('status').textContent = 'Mengunggah file...';
 
-    fetch("<?= base_url('TugasKaryaImport/upload') ?>", {
+    fetch("<?= base_url('DapegImport/upload') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function processNext(){
     const fd = new FormData(); injectCSRF(fd);
-    fetch("<?= base_url('TugasKaryaImport/processChunk') ?>", {
+    fetch("<?= base_url('DapegImport/processChunk') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })

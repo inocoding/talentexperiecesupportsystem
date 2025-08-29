@@ -27,7 +27,19 @@ class Auth extends BaseController
         if ($user) {
             if ($user->ket_aktif == 1) {
                 if (SHA1($post['password']) == $user->password) {
-                    $params = ['user_id' => $user->nip];
+
+                    // Ambil org_satu terbaru dari tb_dapeg
+                    $dapegModel = new \App\Models\DapegModel();
+                    $orgSatu = $dapegModel->getLatestOrgSatuByNip($user->nip); // method sesuai yang kita buat tadi
+
+                // Simpan semua data penting ke session
+
+                    $params = [
+                        'user_id'   => $user->nip,
+                        'nama'      => $user->nama,
+                        'role_htd'  => $user->role_htd,
+                        'org_satu'  => $orgSatu,
+                    ];
                     session()->set($params);
 
                     return redirect()->to(site_url('home'));
@@ -35,7 +47,7 @@ class Auth extends BaseController
                     return redirect()->back()->with('error', 'Password tidak sesuai!');
                 }
             } else {
-                return redirect()->back()->with('error', 'Akun Sinergi Borneo Anda Belum di Aktivasi. <br> Silahkan lakukan aktivasi terlebih dahulu');
+                return redirect()->back()->with('error', 'Akun Anda Belum di Aktivasi. <br> Silahkan lakukan aktivasi terlebih dahulu');
             }
         } else {
             return redirect()->back()->with('error', 'NIP tidak ditemukan!. <br> Silahkan hubungi HTD Area Anda');

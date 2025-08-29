@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data Pensiun Dini <?= userLogin()->nama_org_htd ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Pensiun Dini</h2>
                 </div>
                 <!-- Title End -->
 
@@ -71,17 +71,7 @@
                     <!-- Search End -->
 
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
-                        <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
-                            <!-- Add Button Start -->
-                            <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
-                                <i data-cs-icon="plus"></i>
-                            </a>
-                            <!-- Add Button End -->
 
-                            <!-- Edit Button Start -->
-
-                            <!-- Edit Button End -->
-                        </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
                             <a href="<?= site_url('masterdata/addpensiundini') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
@@ -128,19 +118,20 @@
                 <!-- Controls End -->
             </form>
             <!-- Table Start -->
-            <div class="data-table-responsive-wrapper">
+            <div class=" table-responsive data-table-responsive-wrapper">
                 <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">HTD Area</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">email</th>
-                            <th class="text-muted text-small text-uppercase">Role</th>
-                            <th class="text-muted text-small text-uppercase">Activation</th>
-                            <th class="text-muted text-small text-uppercase">Action</th>
+                            <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
+                            <th class="text-muted text-small text-uppercase">Unit Layanan</th>
+                            <th class="text-muted text-small text-uppercase">Kantor Pelayanan</th>
+                            <th class="text-muted text-small text-uppercase">Tanggal Pengajuan</th>
+                            <th class="text-muted text-small text-uppercase">Tanggal Aktivsi</th>
+                            <th class="text-muted text-small text-uppercase">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -151,67 +142,16 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td>
-                                    <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
+                                    <a href="<?= site_url('masterdata/detaildapegpen/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
                                 <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nip ?></td>
                                 <td><?= $value->unit_asal_lv1 ?></td>
-                                <td><?= $value->unit_asal_lv2 ?> <br>
-                                    <?= $value->unit_asal_lv3 ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
-                                        if ($value->role_admin == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
-                                        }
-                                        if ($value->role_adm_acc == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
-                                        }
-                                        if ($value->role_adm_eclinic == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
-                                        }
-                                        if ($value->role_adm_hi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
-                                        }
-                                        if ($value->role_adm_org == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
-                                        }
-                                        if ($value->role_adm_kinerja == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
-                                        }
-                                        if ($value->role_adm_diklat == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
-                                        }
-                                        if ($value->role_adm_sertifikasi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
-                                        }
-                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
-                                        if ($value->role_peg == 1) {
-                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
-                                        } else {
-                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
-                                        }
-                                        if ($value->role_komite == 1) {
-                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
-                                        }
-                                    }
-                                    ?>
-                                </td>
-                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
-                                            <i data-cs-icon="edit"></i>
-                                        </a>
-                                        <form action="<?= site_url('masterdata/del_dapeghtd/' . $value->nip) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
-                                                <i data-cs-icon="bin"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td><?= $value->unit_asal_lv2 ?> </td>
+                                <td> <?= $value->unit_asal_lv3 ?></td>
+                                <td> <?= $value->unit_asal_lv4 ?></td>
+                                <td> <?= $value->tgl_pengajuan ?></td>
+                                <td> <?= $value->tgl_aktivasi ?></td>
+                                <td> <?= $value->status ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

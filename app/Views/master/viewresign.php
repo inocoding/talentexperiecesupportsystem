@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data Masa Persiapan Pensiun (MPP)</title>
+<title>Data Resign</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,13 +18,13 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Data Masa Persiapan Pensiun (MPP)</h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Resign</h2>
                 </div>
                 <!-- Title End -->
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
-
+                   
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/data_mpp') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data MPP" type="button">
+                            <a href="<?= site_url('masterdata/dataresign') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data Resign" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -122,23 +122,22 @@
                 </div>
                 <!-- Controls End -->
             </form>
-
             <!-- Table Start -->
             <div class="data-table-responsive-wrapper">
-
                 <table id="datatableRows" class="data-table nowrap hover">
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama</th>
-                            <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
-                            <th class="text-muted text-small text-uppercase">Unit Layanan</th>
+                            <th class="text-muted text-small text-uppercase">Unit Level 1</th>
+                            <th class="text-muted text-small text-uppercase">Unit Level 2</th>
+                            <th class="text-muted text-small text-uppercase">Unit Level 3</th>
+                            <th class="text-muted text-small text-uppercase">Tanggal Pengajuan</th>
                             <th class="text-muted text-small text-uppercase">Tanggal Aktivasi</th>
+                            <th class="text-muted text-small text-uppercase">Status</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -147,16 +146,17 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nip ?></td>
-                                <td><?= $value->nip ?></td>
-                                <td><?= $value->unit_asal_lv1 ?></td>
-                                <td><?= $value->unit_asal_lv3 ?></td>
-                                <td><?= $value->unit_asal_lv3 ?></td>
+                                <td><?= $value->nama_user ?></td>
+                                <td><?= $value->unit_asal_1 ?></td>
+                                <td><?= $value->unit_asal_2 ?></td>
+                                <td><?= $value->unit_asal_3 ?></td>
+                                <td><?= $value->tgl_pengajuan ?></td>
                                 <td><?= $value->tgl_aktivasi ?></td>
+                                <td><?= $value->status ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-
             </div>
             <div class="row">
                 <div class="col-6">
@@ -172,7 +172,6 @@
             </div>
             <!-- Table End -->
         </div>
-
         <!-- Content End -->
 
         <!-- Add Edit Modal Start -->
