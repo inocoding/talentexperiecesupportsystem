@@ -258,12 +258,12 @@
         </li>
         <hr style="border-top: 1px solid white; margin: 5px 0;">
         <li>
-            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "data_struktur_organisasi" ? "active" : null ?>">
                 <span class="label">Data Formasi Jabatan</span>
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/viewdataorghtd') ?>" class="<?= $uri->getSegment(2) == "dataorghtd" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/viewdataorghtd') ?>" class="<?= $uri->getSegment(2) == "viewdataorghtd" ? "active" : null ?>">
                 <span class="label">Data Organisasi HTD</span>
             </a>
         </li>
