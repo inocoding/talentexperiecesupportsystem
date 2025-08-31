@@ -11,7 +11,7 @@ class OrgDuaNewModel extends Model
     protected $allowedFields = [
         'kode_org_dua',
         'nama_org_dua',
-        'singkatan',
+        'singkatan_dua',
 		'parent_org_dua',
         ];
 	

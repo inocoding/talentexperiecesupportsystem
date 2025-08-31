@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data Organisasi 3</title>
+<title>Upload Data Organisasi KP Satu</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -22,10 +22,10 @@
 <div class="card shadow-lg">
     <div class="card-body">
       <div class="btn-group">
-        <a href="<?= site_url('masterdata/viewdataorgtiga') ?>" class="btn-link">
+        <a href="<?= site_url('masterdata/viewdataorgkpsatu') ?>" class="btn-link">
             <i data-cs-icon="chevron-left" class="mt-2 me-2" data-cs-size="15"></i>
         </a>
-        <h2 class="small-title mt-2">Upload Data Organisasi Level #3</h2>
+        <h2 class="small-title mt-2">Upload Data Organisasi Kantor Pusat Level #1</h2>
       </div>  
       <div class="input-group">
           <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     document.getElementById('status').textContent = 'Mengunggah file...';
 
-    fetch("<?= base_url('OrgTigaNewImport/upload') ?>", {
+    fetch("<?= base_url('OrgKpSatuImport/upload') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function processNext(){
     const fd = new FormData(); injectCSRF(fd);
-    fetch("<?= base_url('OrgTigaNewImport/processChunk') ?>", {
+    fetch("<?= base_url('OrgKpSatuImport/processChunk') ?>", {
       method: 'POST', body: fd,
       headers: {'X-Requested-With':'XMLHttpRequest'}
     })

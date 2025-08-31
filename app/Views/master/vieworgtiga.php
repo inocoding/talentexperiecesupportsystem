@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data Org Level Dua</title>
+<title>Data Org Level Tiga</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data Organisasi Level #2</h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Organisasi Level #3</h2>
                 </div>
                 <!-- Title End -->
 
@@ -68,7 +68,7 @@
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block">
                             <!-- Print Button Start -->
-                            <a href="<?= site_url('masterdata/dataorgdua') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data Organisasi Level #2" type="button">
+                            <a href="<?= site_url('masterdata/dataorgtiga') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data Organisasi Level #3" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
@@ -114,7 +114,8 @@
                             <th class="text-muted text-small text-uppercase">No</th>
                             <th class="text-muted text-small text-uppercase">Kode Organisasi</th>
                             <th class="text-muted text-small text-uppercase">Nama Organisasi</th>
-                            <th class="text-muted text-small text-uppercase">Parent</th>
+                            <th class="text-muted text-small text-uppercase">Parent #2</th>
+                            <th class="text-muted text-small text-uppercase">Parent #3</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,9 +125,10 @@
                         foreach ($rows as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td><?= $value->kode_org_dua ?></td>
+                                <td><?= $value->kode_org_tiga ?></td>
+                                <td><?= $value->singkatan_tiga ?></td>
                                 <td><?= $value->singkatan_dua ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
+                                <td><?= $value->singkatan_satu ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -239,7 +241,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsorgdua.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsorgtiga.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->

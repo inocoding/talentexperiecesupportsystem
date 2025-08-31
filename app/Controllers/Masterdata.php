@@ -16,6 +16,8 @@ use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
 use App\Models\OrgSatuNewModel;
 use App\Models\OrgDuaNewModel;
+use App\Models\OrgTigaNewModel;
+use App\Models\OrgKpSatuModel;
 use App\Models\Ptb;
 use App\Models\PensiunDini;
 use App\Models\StrukturOrganisasi;
@@ -38,6 +40,8 @@ class Masterdata extends BaseController
         $this->orghtd           = new OrghtdModel();
         $this->orgsatu           = new OrgSatuNewModel();
         $this->orgdua           = new OrgDuaNewModel();
+        $this->orgtiga           = new OrgTigaNewModel();
+        $this->orgkpsatu           = new OrgKpSatuModel();
         $this->resign           = new ResignModel();
         $this->tb_ptb           = new Ptb();
         $this->data_pensiun_dini = new PensiunDini();
@@ -1559,6 +1563,11 @@ class Masterdata extends BaseController
     {
         return view('master/orghtd');
     }
+
+    public function dataorgkpsatu()
+    {
+        return view('master/orgsatukp');
+    }
     
     public function viewdataorghtd()
     {
@@ -1579,6 +1588,20 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->orgdua->getAllPaginated(15, $keyword);
         return view('master/vieworgdua',$data);
+    }
+
+    public function viewdataorgtiga()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->orgtiga->getAllPaginated(15, $keyword);
+        return view('master/vieworgtiga',$data);
+    }
+
+    public function viewdataorgkpsatu()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->orgkpsatu->getAllPaginated(15, $keyword);
+        return view('master/vieworgkpsatu',$data);
     }
 
 }

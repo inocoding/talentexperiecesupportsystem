@@ -257,13 +257,18 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/viewdataorgdua') ?>" class="<?= $uri->getSegment(2) == "dataorgdua" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/viewdataorgdua') ?>" class="<?= $uri->getSegment(2) == "viewdataorgdua" ? "active" : null ?>">
                 <span class="label">Data Organisasi Level #2</span>
             </a>
         </li>
-          <li>
-            <a href="<?= site_url('masterdata/dataorgtiga') ?>" class="<?= $uri->getSegment(2) == "dataorgtiga" ? "active" : null ?>">
-                <span class="label">Data Organisasi 3</span>
+        <li>
+            <a href="<?= site_url('masterdata/viewdataorgtiga') ?>" class="<?= $uri->getSegment(2) == "viewdataorgtiga" ? "active" : null ?>">
+                <span class="label">Data Organisasi Level #3</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('masterdata/viewdataorgkpsatu') ?>" class="<?= $uri->getSegment(2) == "viewdataorgkpsatu" ? "active" : null ?>">
+                <span class="label">Data Organisasi KP #1</span>
             </a>
         </li>
         <li>
