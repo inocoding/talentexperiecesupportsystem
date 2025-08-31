@@ -239,7 +239,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsorgsatu.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsorgdua.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
