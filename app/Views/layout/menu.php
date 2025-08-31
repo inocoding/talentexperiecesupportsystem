@@ -247,8 +247,13 @@
             </a>
         </li>
          <li>
-            <a href="<?= site_url('masterdata/dataorgsatu') ?>" class="<?= $uri->getSegment(2) == "dataorgsatu" ? "active" : null ?>">
-                <span class="label">Data Organisasi 1</span>
+            <a href="<?= site_url('masterdata/viewdataorghtd') ?>" class="<?= $uri->getSegment(2) == "dataorghtd" ? "active" : null ?>">
+                <span class="label">Data Organisasi HTD</span>
+            </a>
+        </li>
+         <li>
+            <a href="<?= site_url('masterdata/viewdataorgsatu') ?>" class="<?= $uri->getSegment(2) == "viewdataorgsatu" ? "active" : null ?>">
+                <span class="label">Data Organisasi Level #1</span>
             </a>
         </li>
         <li>
@@ -312,10 +317,11 @@
                 <span class="label">Data Mutasi </span>
             </a>
         </li>
-          <li>
+        <li>
             <a href="<?= site_url('masterdata/viewtk') ?>" class="<?= $uri->getSegment(2) == "viewtk" ? "active" : null ?>">
-          </li>
-
+                <span class="label">Data Tugas Karya </span>
+            </a>
+        </li>
         <li>
             <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
                 <span class="label">Data Resign </span>
@@ -337,11 +343,10 @@
                 <span class="label">Data APS </span>
             </a>
         </li>
-        <li>
+        <!-- <li>
             <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
-
                 <span class="label">Data Tugas Karya</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 </li>

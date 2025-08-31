@@ -104,8 +104,9 @@ class MppModel extends Model
             'pager' => $this->pager,
         ];
     }
+}
 
-    public function getAllPaginatedHtd($num, $keyword = null)
+    public function getAllPaginatedHtd($num, $keyword = null) 
     {
         $role_htd = "4";
         $role_peg = "1";
@@ -131,5 +132,6 @@ class MppModel extends Model
             'user' => $this->paginate($num),
             'pager' => $this->pager,
         ];
-    }
+     }
+
 }

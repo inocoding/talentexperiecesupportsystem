@@ -17,7 +17,7 @@
     <div class="row">
         <!-- Title Start -->
         <div class="col-12">
-            <h5 class="mb-0 pb-0 text-center" id="title">MenuUUUU</h5>
+            <h5 class="mb-0 pb-0 text-center" id="title">Menu</h5>
         </div>
         <!-- Title End -->
     </div>

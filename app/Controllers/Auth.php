@@ -36,7 +36,7 @@ class Auth extends BaseController
 
                     $params = [
                         'user_id'   => $user->nip,
-                        'nama'      => $user->nama,
+                        'nama'      => $user->nama_user,
                         'role_htd'  => $user->role_htd,
                         'org_satu'  => $orgSatu,
                     ];

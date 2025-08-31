@@ -21,21 +21,20 @@ class OrgSatuNewModel extends Model
 		
 	public function getAllPaginated($num, $keyword = null)
     {
-        $builder = $this->builder();
-        $builder->join('user','user.nip=tb_idt.nip');
-    
-        
-		$q = $this;
-        if (!empty($keyword)) {
-            $q = $q->groupStart()
-                    ->like('tb_idt.nip', $keyword)
-                    ->groupEnd();
-        }
-        return [
-            'user'  => $q->paginate($num),
-            'pager' => $this->pager,
-    ];
+        $q = $this->select('*')
+                  ->orderBy('parent_htd', 'ASC');
 
+        if (!empty($keyword)) {
+                $q->groupStart()
+                  ->like('nama_org_satu', $keyword)
+                  ->orLike('nama_parent_org_satu', $keyword)
+                  ->groupEnd();
+        }
+
+        return [
+            'rows'  => $q->paginate($num),
+            'pager' => $this->pager,
+        ];
     }
 		
 }
