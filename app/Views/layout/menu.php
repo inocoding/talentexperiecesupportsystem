@@ -246,7 +246,23 @@
                 <span class="label">User</span>
             </a>
         </li>
-         <li>
+        <li>
+            <a href="<?= site_url('masterdata') ?>" class="<?= $uri->getSegment(1) == "masterdata" and $uri->getSegment(2) == null ? "active" : null ?>">
+                <span class="label">Data Pegawai</span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('') ?>" class="">
+                <span class="label">Data Talent </span>
+            </a>
+        </li>
+        <hr style="border-top: 1px solid white; margin: 5px 0;">
+        <li>
+            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+                <span class="label">Data Formasi Jabatan</span>
+            </a>
+        </li>
+        <li>
             <a href="<?= site_url('masterdata/viewdataorghtd') ?>" class="<?= $uri->getSegment(2) == "dataorghtd" ? "active" : null ?>">
                 <span class="label">Data Organisasi HTD</span>
             </a>
@@ -272,10 +288,11 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata') ?>" class="<?= $uri->getSegment(1) == "masterdata" and $uri->getSegment(2) == null ? "active" : null ?>">
-                <span class="label">Data Pegawai</span>
+            <a href="<?= site_url('masterdata/viewdataorgkpdua') ?>" class="<?= $uri->getSegment(2) == "viewdataorgkpdua" ? "active" : null ?>">
+                <span class="label">Data Organisasi KP #2</span>
             </a>
         </li>
+        <hr style="border-top: 1px solid white; margin: 5px 0;">
         <li>
             <a href="<?= site_url('masterdata/rjab') ?>" class="<?= $uri->getSegment(2) == "rjab" ? "active" : null ?>">
                 <span class="label">Data Riwayat Jabatan </span>
@@ -287,10 +304,11 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('') ?>" class="">
-                <span class="label">Data Talent </span>
+            <a href="<?= site_url('masterdata/sertifikasi') ?>" class="<?= $uri->getSegment(2) == "sertifikasi" ? "active" : null ?>">
+                <span class="label">Data Riwayat Sertifikasi </span>
             </a>
         </li>
+        <hr style="border-top: 1px solid white; margin: 5px 0;">
         <li>
             <a href="<?= site_url('masterdata/data_ptb') ?>" class="<?= $uri->getSegment(2) == "data_ptb" ? "active" : null ?>">
                 <span class="label">Data PTB </span>
@@ -300,16 +318,6 @@
         <li>
             <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
                 <span class="label">Data Pensiun Dini </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
-                <span class="label">Data Struktur Organisasi </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/sertifikasi') ?>" class="<?= $uri->getSegment(2) == "sertifikasi" ? "active" : null ?>">
-                <span class="label">Data Sertifikasi </span>
             </a>
         </li>
         <li>
