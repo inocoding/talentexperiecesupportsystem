@@ -15,6 +15,7 @@ use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
 use App\Models\OrgSatuNewModel;
+use App\Models\OrgDuaNewModel;
 use App\Models\Ptb;
 use App\Models\PensiunDini;
 use App\Models\StrukturOrganisasi;
@@ -36,6 +37,7 @@ class Masterdata extends BaseController
         $this->rsert            = new Rsertifikasi();
         $this->orghtd           = new OrghtdModel();
         $this->orgsatu           = new OrgSatuNewModel();
+        $this->orgdua           = new OrgDuaNewModel();
         $this->resign           = new ResignModel();
         $this->tb_ptb           = new Ptb();
         $this->data_pensiun_dini = new PensiunDini();
@@ -1570,6 +1572,13 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->orgsatu->getAllPaginated(15, $keyword);
         return view('master/vieworgsatu',$data);
+    }
+    
+    public function viewdataorgdua()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->orgdua->getAllPaginated(15, $keyword);
+        return view('master/vieworgdua',$data);
     }
 
 }

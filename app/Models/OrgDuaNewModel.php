@@ -17,23 +17,33 @@ class OrgDuaNewModel extends Model
 	
 
     //pagination
-	public function getAllPaginated($num, $keyword = null)
-    {
-        $builder = $this->builder();
-        $builder->join('user','user.nip=tb_idt.nip');
-    
-        
-		$q = $this;
-        if (!empty($keyword)) {
-            $q = $q->groupStart()
-                    ->like('tb_idt.nip', $keyword)
-                    ->groupEnd();
-        }
-        return [
-            'user'  => $q->paginate($num),
-            'pager' => $this->pager,
-    ];
 
+    public function getAllPaginated($num, $keyword = null)
+    {
+        // Bangun query lewat proxy Model, bukan $this->db->table()
+        $q = $this->select(
+                'm.*, ' .
+                'ANY_VALUE(u.nama_org_satu) AS nama_org_satu, ' .
+                'ANY_VALUE(u.singkatan_satu)     AS singkatan_satu',  // ambil kolom singkatan dari u
+                false // jangan di-escape agar ANY_VALUE() tidak dipetik
+            )
+            ->from($this->table . ' m')
+            ->join('tb_org_satu_new u', 'u.kode_org_satu = m.parent_org_dua', 'left')
+            ->groupBy('m.id_org_dua')
+            ->orderBy('m.parent_org_dua', 'ASC');
+
+        if (!empty($keyword)) {
+            $q->groupStart()
+                ->like('m.nama_org_dua', $keyword)
+                ->orLike('u.nama_org_satu', $keyword)
+                ->orLike('u.singkatan_satu', $keyword)
+            ->groupEnd();
+        }
+
+        return [
+            'rows'  => $q->paginate($num),  // sekarang $q masih merupakan Model proxy -> OK
+            'pager' => $this->pager,
+        ];
     }
 		
 }

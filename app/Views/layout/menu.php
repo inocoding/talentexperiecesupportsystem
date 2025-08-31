@@ -257,8 +257,8 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/dataorgdua') ?>" class="<?= $uri->getSegment(2) == "dataorgdua" ? "active" : null ?>">
-                <span class="label">Data Organisasi 2</span>
+            <a href="<?= site_url('masterdata/viewdataorgdua') ?>" class="<?= $uri->getSegment(2) == "dataorgdua" ? "active" : null ?>">
+                <span class="label">Data Organisasi Level #2</span>
             </a>
         </li>
           <li>

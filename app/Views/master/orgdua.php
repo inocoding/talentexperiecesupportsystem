@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Upload Data Organisasi 2</title>
+<title>Upload Data Organisasi Level #2</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -21,7 +21,12 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload Data Organisasi 2</p>
+      <div class="btn-group">
+        <a href="<?= site_url('masterdata/viewdataorgdua') ?>" class="btn-link">
+            <i data-cs-icon="chevron-left" class="mt-2 me-2" data-cs-size="15"></i>
+        </a>
+        <h2 class="small-title mt-2">Upload Data Organisasi Level #2</h2>
+      </div>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
