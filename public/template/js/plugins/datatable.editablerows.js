@@ -46,7 +46,7 @@
       buttons: ['copy', 'excel', 'csv', 'print'],
       info: false,
       order: [], // Clearing default order
-      sDom: '<"row"<"col-sm-12"<"table-container"t>r>>', // Hiding all other dom elements except table and pagination
+      dom: '<"row"<"col-sm-12"<"table-container"t>r>>', // Hiding all other dom elements except table and pagination
       pageLength: 5,
       columns: [{data: 'no'}, {data: 'nip'}, {data: 'nama_user'}, {data: 'htd_area'}, {data: 'unit_induk'}, {data: 'email'}, {data: 'role'}, {data: 'activation'}, {data: 'Check'} ],
       language: {
@@ -60,26 +60,26 @@
       },
       columnDefs: [
         // Adding Name content as an anchor with a target #
-        // {
-        //   targets: 1,
-        //   render: function (data, type, row, meta) {
-        //     return '<a class="" href="<?= site_url("masterdata/detaildapeg".$value->user_id)?>">' + data + '</a>';
-        //   },
-        // },
+        {
+          targets: 1,
+          render: function (data, type, row, meta) {
+            return '<a href="/masterdata/detaildapeg/' + row.user_id + '">' + data + '</a>';
+          },
+        },
         // Adding Tag content as a span with a badge class
-        // {
-        //   targets: 6,
-        //   render: function (data, type, row, meta) {
-        //     return '<span class="badge bg-outline-primary">' + data + '</span>';
-        //   },
-        // },
+        {
+          targets: 6,
+          render: function (data, type, row, meta) {
+            return '<span class="badge bg-outline-primary">' + data + '</span>';
+          },
+        },
         // Adding checkbox for Check column
-        // {
-        //   targets: 8,
-        //   render: function (data, type, row, meta) {
-        //     return '<div class="form-check float-end mt-1"><input type="checkbox" class="form-check-input"></div>';
-        //   },
-        // },
+        {
+          targets: 8,
+          render: function (data, type, row, meta) {
+            return '<div class="form-check float-end mt-1"><input type="checkbox" class="form-check-input"></div>';
+          },
+        },
       ],
     });
     _this._setInlineHeight();
@@ -153,11 +153,11 @@
   }
 
   // Direct click from row title
-  // _onEditRowClick(rowToEdit) {
-  //   this._rowToEdit = rowToEdit; // Passed from DatatableExtend via callback from settings
-  //   this._showModal('edit', 'Edit', 'Done');
-  //   this._setForm();
-  // }
+  _onEditRowClick(rowToEdit) {
+    this._rowToEdit = rowToEdit; // Passed from DatatableExtend via callback from settings
+    this._showModal('edit', 'Edit', 'Done');
+    this._setForm();
+  }
 
   // Edit button inside th modal click
   _editRowFromModal() {

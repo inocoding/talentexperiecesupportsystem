@@ -48,7 +48,7 @@
       order: [], // Clearing default order
       sDom: '<"row"<"col-sm-12"<"table-container"t>r>>', // Hiding all other dom elements except table and pagination
       pageLength: 15,
-      columns: [{data: 'no'}, {data: 'Kode Organisasi'}, {data: 'Nama Organisasi'}, {data: 'Singkatan'}, {data: 'Parent'} ],
+      columns: [{data: 'no'}, {data: 'Kode Organisasi'}, {data: 'Nama Organisasi'}, {data: 'Singkatan'}, {data: 'Parent'}, {data: 'Action'} ],
       language: {
         paginate: false,
       },

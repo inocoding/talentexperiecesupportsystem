@@ -116,6 +116,7 @@
                             <th class="text-muted text-small text-uppercase">Nama Organisasi</th>
                             <th class="text-muted text-small text-uppercase">Singkatan</th>
                             <th class="text-muted text-small text-uppercase">Parent</th>
+                            <th class="text-muted text-small text-uppercase">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,6 +130,19 @@
                                 <td><?= $value->nama_org_kp_dua ?></td>
                                 <td><?= $value->singkatan_kp_dua ?></td>
                                 <td><?= $value->singkatan_kp_satu ?></td>
+                                <td>
+                                    <div class="d-inline-block">
+                                        <a href="<?= site_url() ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
+                                            <i data-cs-icon="edit"></i>
+                                        </a>
+                                        <form action="<?= site_url('masterdata/del_dapeghtd/' . $value->nip) ?>" method="post" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
+                                                <i data-cs-icon="bin"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

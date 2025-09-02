@@ -36,3 +36,10 @@ $routes->group('mutasiimport', static function($routes) {
     $routes->post('processChunk', 'MutasiImport::processChunk');
 });
 
+$routes->group('users', ['namespace' => 'App\Controllers'], static function($routes){
+    $routes->get('list', 'UsersApi::list'); // get unt datatables
+    $routes->post('store', 'UsersApi::store'); // POST tambah
+    $routes->post('update/(:segment)', 'UsersApi::update/$1'); // POST edit (PK = nip, string)
+    $routes->post('delete', 'UsersApi::delete'); //POST hapus (bulk)
+});
+

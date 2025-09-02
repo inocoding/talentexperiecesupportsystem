@@ -6,14 +6,19 @@
         <span class="label">Dashboards</span>
     </a>
     <ul id="dashboarrd">
-        <li>
+        <!-- <li>
             <a href="<?= site_url('dashboard/dashtd') ?>" class="<?= $uri->getSegment(2) == "dashtd" ? "active" : null ?>">
                 <span class="label">Old Dashboard</span>
+            </a>
+        </li> -->
+        <li>
+            <a href="<?= site_url('dashboard/ftkdash') ?>" class="<?= $uri->getSegment(2) == "ftkdash" ? "active" : null ?>">
+                <span class="label">Dashboard FTK</span>
             </a>
         </li>
         <li>
             <a href="<?= site_url('dashboard/ftkdash') ?>" class="<?= $uri->getSegment(2) == "ftkdash" ? "active" : null ?>">
-                <span class="label">Dashboard FTK</span>
+                <span class="label">Dashboard APS</span>
             </a>
         </li>
     </ul>
