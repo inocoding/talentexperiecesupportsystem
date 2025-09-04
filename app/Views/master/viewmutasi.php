@@ -145,7 +145,7 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nip ?></td>
-                                <td><?= $value->nama ?></td>
+                                <td><?= $value->fullname ?></td>
                                 <td><?= $value->unit_tujuan_1 ?> <?= $value->unit_tujuan_2 ?></br><?= $value->unit_tujuan_3 ?></td>
                                 <td><?= $value->unit_asal_1 ?> <?= $value->unit_asal_2 ?></br><?= $value->unit_asal_3 ?></td>
                                 <td><?= $value->tgl_aktivasi ?></td>
@@ -282,7 +282,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsmutasi.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->
