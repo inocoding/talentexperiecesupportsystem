@@ -14,6 +14,7 @@ use App\Models\Tasklist;
 use App\Models\Rpend;
 use App\Models\Rsertifikasi;
 use App\Models\OrghtdModel;
+use App\Models\ApsModel;
 use App\Models\OrgSatuNewModel;
 use App\Models\OrgDuaNewModel;
 use App\Models\OrgTigaNewModel;
@@ -54,6 +55,7 @@ class Masterdata extends BaseController
         $this->mutasi           = new MutasiModel();
         $this->tb_tugas_karya   = new TugaskaryaModel();
         $this->dapeg            = new DapegModel();
+        $this->aps              = new ApsModel();
     }
 
     public function index()
@@ -1611,6 +1613,13 @@ class Masterdata extends BaseController
         $keyword = $this->request->getGet('keyword');
         $data = $this->orgkpdua->getAllPaginated(15, $keyword);
         return view('master/vieworgkpdua',$data);
+    }
+
+    public function viewdataaps()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $data = $this->aps->getAllPaginated(15, $keyword);
+        return view('master/viewaps', $data);
     }
 
 }

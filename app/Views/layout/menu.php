@@ -357,7 +357,7 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/dataaps') ?>" class="<?= $uri->getSegment(2) == "dataaps" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/viewdataaps') ?>" class="<?= $uri->getSegment(2) == "viewdataaps" ? "active" : null ?>">
                 <span class="label">Data APS </span>
             </a>
         </li>

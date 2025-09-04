@@ -22,17 +22,23 @@ class IdtModel extends Model
 		
 	public function getAllPaginated($num, $keyword = null)
     {
-        $builder = $this->builder();
-        $builder->join('user','user.nip=tb_idt.nip');
-        $builder->join('tb_org_satu_new','tb_org_satu_new.kode_org_satu=tb_idt.unit_asal_1');
-        
-    
-        
-		$q = $this;
+        $fields = [
+            'm.*',
+            'ANY_VALUE(dp.nip)  AS nip_dp',
+            'ANY_VALUE(dp.peg) AS peg',
+            'ANY_VALUE(dp.fullname) AS fullname',
+        ];
+
+        $q = $this->select($fields, false)
+                  ->from($this->table.' m')
+                  ->join('tb_dapeg dp', 'dp.nip = m.nip', 'left')
+                  ->groupBy('m.id_data')
+                  ->orderBy('m.id_data', 'ASC');
+
         if (!empty($keyword)) {
-            $q = $q->groupStart()
-                    ->like('tb_idt.nip', $keyword)
-                    ->groupEnd();
+                $q->groupStart()
+                  ->like('nip', $keyword)
+                  ->groupEnd();
         }
 
         return [
