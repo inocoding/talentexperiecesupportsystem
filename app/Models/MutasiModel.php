@@ -25,9 +25,17 @@ class MutasiModel extends Model
 
     public function getAllPaginated($num, $keyword = null)
     {
-        $q = $this->select('m.*, dp.nip AS nip_dp, dp.fullname')
+        $fields = [
+            'm.*',
+            'ANY_VALUE(dp.nip)  AS nip_dp',
+            'ANY_VALUE(dp.peg) AS peg',
+            'ANY_VALUE(dp.fullname) AS fullname',
+        ];
+
+        $q = $this->select($fields, false)
                   ->from($this->table.' m')
                   ->join('tb_dapeg dp', 'dp.nip = m.nip', 'left')
+                  ->groupBy('m.id_data')
                   ->orderBy('m.id_data', 'ASC');
 
         if (!empty($keyword)) {
