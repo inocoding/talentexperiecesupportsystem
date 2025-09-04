@@ -1347,13 +1347,8 @@ class Masterdata extends BaseController
 
     public function data_ptb()
     {
-        // $builder        = $this->users;
-        // $query          = $builder->getAll();
-        // $data['user']   = $query;
-
-        // $data['user']   = $this->users->getAll();
         $keyword = $this->request->getGet('keyword');
-        $data = $this->data_ptb->getAllPaginated(5, $keyword);
+        $data = $this->tb_ptb->getAllPaginated(5, $keyword);
 
         return view('master/ptb', $data);
     }

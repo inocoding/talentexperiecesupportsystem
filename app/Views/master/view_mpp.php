@@ -86,20 +86,7 @@
 
                             <!-- Export Dropdown Start -->
                             <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
-                                <?php
-                                $request = \Config\Services::request();
-                                $keyword = $request->getGet('keyword');
-                                if ($keyword != '') {
-                                    $param = "?keyword=" . $keyword;
-                                } else {
-                                    $param = "";
-                                }
-                                ?>
-                                <a class="btn p-0" href="<?= site_url('masterdata/exporthtd' . $param) ?>" data-bs-offset="0,3">
-                                    <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown" data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip" title="Export Excel">
-                                        <i data-cs-icon="download"></i>
-                                    </span>
-                                </a>
+                               
                             </div>
                             <!-- Export Dropdown End -->
 
@@ -132,7 +119,6 @@
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama</th>
                             <th class="text-muted text-small text-uppercase">PEG</th>
-                            <th class="text-muted text-small text-uppercase">Jabatan</th>
                             <th class="text-muted text-small text-uppercase">Unit Induk</th>
                             <th class="text-muted text-small text-uppercase">Unit Pelaksana</th>
                             <th class="text-muted text-small text-uppercase">Unit Layanan</th>
@@ -144,13 +130,12 @@
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $no = 1 + (5 * ($page - 1));
-                        foreach ($user as $key => $value) : ?>
+                        foreach ($rows as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value-> nip ?></td>
-                                <td><?= $value-> nama_user ?></td>
-                                <td><?= $value-> grade ?></td>
-                                <td><?= $value-> sebutan_jabatan ?></td>
+                                <td><?= $value-> fullname ?></td>
+                                <td><?= $value-> peg ?></td>
                                 <td><?= $value-> unit_asal_lv1 ?></td>
                                 <td><?= $value-> unit_asal_lv3 ?></td>
                                 <td><?= $value-> unit_asal_lv3 ?></td>
@@ -269,7 +254,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsmpp.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->

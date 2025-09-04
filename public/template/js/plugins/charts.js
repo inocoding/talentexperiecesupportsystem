@@ -1953,10 +1953,10 @@ class Charts {
   // Small line charts
   _initSmallLineCharts() {
     this._smallLineChart1 = ChartsExtend.SmallLineChart('smallLineChart1', {
-      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
       datasets: [
         {
-          label: 'BTC / USD',
+          label: '',
           data: [9415.1, 9430.3, 9436.8, 9471.5, 9467.2],
           icons: ['chevron-bottom', 'chevron-top', 'chevron-top', 'chevron-top', 'chevron-bottom'],
           borderColor: Globals.primary,

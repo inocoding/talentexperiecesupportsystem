@@ -303,11 +303,11 @@
                 <span class="label">Data Riwayat Jabatan </span>
             </a>
         </li>
-        <li>
-            <a href="<?= site_url('') ?>" class="">
+        <!-- <li>
+            <a href="" class="">
                 <span class="label">Data Riwayat Pendidikan </span>
             </a>
-        </li>
+        </li> -->
         <li>
             <a href="<?= site_url('masterdata/sertifikasi') ?>" class="<?= $uri->getSegment(2) == "sertifikasi" ? "active" : null ?>">
                 <span class="label">Data Riwayat Sertifikasi </span>
@@ -321,7 +321,7 @@
             </a>
         </li>
         <li>
-            <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "pensiundini" ? "active" : null ?>">
+            <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "data_pensiun_dini" ? "active" : null ?>">
                 <span class="label">Data Pensiun Dini </span>
             </a>
         </li>
