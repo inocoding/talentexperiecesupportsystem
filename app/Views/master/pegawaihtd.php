@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Data User HTD - <?= userLogin()->nama_org_htd ?></title>
+<title>Data User</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -18,7 +18,7 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data User HTD <?= userLogin()->nama_org_htd ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data User</h2>
                 </div>
                 <!-- Title End -->
 
@@ -136,8 +136,7 @@
                             <th class="text-muted text-small text-uppercase">NIP</th>
                             <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
                             <th class="text-muted text-small text-uppercase">HTD Area</th>
-                            <th class="text-muted text-small text-uppercase">Unit Induk</th>
-                            <th class="text-muted text-small text-uppercase">email</th>
+                            <th class="text-muted text-small text-uppercase">Role HTD</th>
                             <th class="text-muted text-small text-uppercase">Role</th>
                             <th class="text-muted text-small text-uppercase">Activation</th>
                             <th class="text-muted text-small text-uppercase">Action</th>
@@ -154,49 +153,39 @@
                                     <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
                                 <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_org_htd ?></td>
-                                <td><?= $value->nama_org_satu ?></td>
-                                <td><?= $value->email_korpo ?> <br>
-                                    <?= $value->email_non ?>
-                                </td>
+                                <td><?= $value->nama_htd ?></td>
                                 <td>
                                     <?php
-                                    if ($value->role_peg == 1 && $value->role_htd == 0) {
-                                        if ($value->role_admin == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin fit proper</span><br>';
+                                        $role = $value->role_htd;
+                                        switch ($role) {
+                                            case 0: $label = "Staf HTD"; break;
+                                            case 1: $label = "Asman HTD"; break;
+                                            case 2: $label = "MSB HTD"; break;
+                                            case 3: $label = "VP HTD"; break;
+                                            case 4: $label = "EVP HTD"; break;
+                                            case 5: $label = "Non HTD"; break;
+                                            default: $label = "-";
                                         }
-                                        if ($value->role_adm_acc == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin access</span><br>';
-                                        }
-                                        if ($value->role_adm_eclinic == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin e-clinic</span><br>';
-                                        }
-                                        if ($value->role_adm_hi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin hi</span><br>';
-                                        }
-                                        if ($value->role_adm_org == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin organisasi</span><br>';
-                                        }
-                                        if ($value->role_adm_kinerja == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin kinerja</span><br>';
-                                        }
-                                        if ($value->role_adm_diklat == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin diklat</span><br>';
-                                        }
-                                        if ($value->role_adm_sertifikasi == 1) {
-                                            echo '<span class="badge bg-outline-primary">admin sertifikasi</span><br>';
-                                        }
-                                    } elseif ($value->role_peg == 1 && $value->role_htd == 4) {
-                                        if ($value->role_peg == 1) {
-                                            echo '<span class="badge bg-outline-primary">Pegawai</span><br>';
-                                        } else {
-                                            echo '<span class="badge bg-outline-primary">Pensiun</span><br>';
-                                        }
-                                        if ($value->role_komite == 1) {
-                                            echo '<span class="badge bg-outline-primary">Komite Talenta</span><br>';
-                                        }
-                                    }
+                                        echo $label;
                                     ?>
+                                </td>
+                                <td style="max-width: 200px; white-space: normal;">
+                                    <span class="badge bg-outline-primary <?= $value->role_organisasi == 1 ? "" : "d-none" ?>">Role Organisasi</span>
+                                    <span class="badge bg-outline-success <?= $value->role_user == 1 ? "" : "d-none" ?>">Role User</span>
+                                    <span class="badge bg-outline-secondary <?= $value->role_mutasi == 1 ? "" : "d-none" ?>">Role Mutasi</span>
+                                    <span class="badge bg-outline-tertiary <?= $value->role_komite == 1 ? "" : "d-none" ?>">Role Komite</span>
+                                    <span class="badge bg-outline-info <?= $value->role_dapeg == 1 ? "" : "d-none" ?>">Role Dapeg</span>
+                                    <span class="badge bg-outline-success <?= $value->role_tugas_karya == 1 ? "" : "d-none" ?>">Role Tugas Karya</span>
+                                    <span class="badge bg-outline-danger <?= $value->role_ptb == 1 ? "" : "d-none" ?>">Role PTB</span>
+                                    <span class="badge bg-outline-warning <?= $value->role_pensiun_dini == 1 ? "" : "d-none" ?>">Role Pensiun Dini</span>
+                                    <span class="badge bg-outline-info <?= $value->role_resign == 1 ? "" : "d-none" ?>">Role Resign</span>
+                                    <span class="badge bg-outline-warning <?= $value->role_mpp == 1 ? "" : "d-none" ?>">Role Mpp</span>
+                                    <span class="badge bg-outline-dark <?= $value->role_ojt == 1 ? "" : "d-none" ?>">Role Ojt</span>
+                                    <span class="badge bg-outline-primary <?= $value->role_idt == 1 ? "" : "d-none" ?>">Role IDT</span>
+                                    <span class="badge bg-outline-secondary <?= $value->role_aps == 1 ? "" : "d-none" ?>">Role APS</span>
+                                    <span class="badge bg-outline-tertiary <?= $value->role_fnp_admin == 1 ? "" : "d-none" ?>">Role Adm FnP</span>
+                                    <span class="badge bg-outline-success <?= $value->role_fnp_penguji == 1 ? "" : "d-none" ?>">Role Penguji FnP</span>
+                                    <span class="badge bg-outline-danger <?= $value->role_admin_komite == 1 ? "" : "d-none" ?>">Role Admin TCM</span>
                                 </td>
                                 <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
                                 <td>
@@ -326,7 +315,7 @@
 
 <!-- Page Specific Scripts Start -->
 <script src="<?= base_url() ?>/template/js/cs/datatable.extend.js"></script>
-<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerows.js"></script>
+<script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowsuser.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <!-- Page Specific Scripts End -->

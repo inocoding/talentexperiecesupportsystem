@@ -22,6 +22,7 @@ class Users extends Model
         'sub_unit_pelaksana',
         'role_organisasi',
         'role_htd',
+        'role_user',
         'role_mutasi',
         'role_komite',
         'role_dapeg',
@@ -52,11 +53,13 @@ class Users extends Model
             'ANY_VALUE(dp.nip)  AS nip_dp',
             'ANY_VALUE(dp.peg) AS peg',
             'ANY_VALUE(dp.fullname) AS fullname',
+            'ANY_VALUE(htd.nama_org_htd) AS nama_htd',
         ];
 
         $q = $this->select($fields, false)
                   ->from($this->table.' m')
                   ->join('tb_dapeg dp', 'dp.nip = m.nip', 'left')
+                  ->join('tb_org_htd_new htd', 'htd.kode_org_htd = m.htd_area', 'left')
                   ->groupBy('m.nip')
                   ->orderBy('m.nip', 'ASC');
 
