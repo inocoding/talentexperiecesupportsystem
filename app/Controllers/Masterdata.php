@@ -1622,4 +1622,167 @@ class Masterdata extends BaseController
         return view('master/viewaps', $data);
     }
 
+    // code ajax user
+    // === JSON LIST untuk DataTables ===
+    public function users_json()
+    {
+        $request = $this->request;
+        $length  = (int)($request->getGet('length') ?? 5);
+        $start   = (int)($request->getGet('start') ?? 0);
+        $draw    = (int)($request->getGet('draw') ?? 1);
+        $search  = trim($request->getGet('search')['value'] ?? '');
+
+        // Base query: mirror getAllPaginatedHtd tapi tanpa paginate CI, kita handle sendiri
+        $db = \Config\Database::connect();
+        $builder = $db->table('user m')
+            ->select([
+                'm.*',
+                'ANY_VALUE(dp.nip) AS nip_dp',
+                'ANY_VALUE(dp.fullname) AS fullname',
+                'ANY_VALUE(htd.nama_org_htd) AS nama_htd',
+            ], false)
+            ->join('tb_dapeg dp', 'dp.nip = m.nip', 'left')
+            ->join('tb_org_htd_new htd', 'htd.kode_org_htd = m.htd_area', 'left')
+            ->groupBy('m.nip');
+
+        // total all
+        $totalBuilder = clone $builder;
+        $recordsTotal = $totalBuilder->countAllResults(false); // false agar tidak reset
+
+        // filter
+        if ($search !== '') {
+            $builder->groupStart()
+                    ->like('m.nip', $search)
+                    ->orLike('m.nama_user', $search)
+                    ->orLike('dp.fullname', $search)
+                    ->orLike('htd.nama_org_htd', $search)
+                    ->groupEnd();
+        }
+
+        // total filtered
+        $countBuilder = clone $builder;
+        $recordsFiltered = $countBuilder->countAllResults(false);
+
+        // order & limit
+        $builder->orderBy('m.nip', 'ASC')
+                ->limit($length, $start);
+
+        $rows = $builder->get()->getResult();
+
+        // map ke data yang view butuh
+        $data = array_map(function($u){
+            return [
+                'nip'       => $u->nip,
+                'nama_user' => $u->nama_user,
+                'nama_htd'  => $u->nama_htd,
+                'role_htd'  => (string)$u->role_htd,
+                // semua role boolean untuk badges kolom "Role"
+                'role_organisasi'   => (int)($u->role_organisasi ?? 0),
+                'role_user'         => (int)($u->role_user ?? 0),
+                'role_mutasi'       => (int)($u->role_mutasi ?? 0),
+                'role_komite'       => (int)($u->role_komite ?? 0),
+                'role_dapeg'        => (int)($u->role_dapeg ?? 0),
+                'role_tugas_karya'  => (int)($u->role_tugas_karya ?? 0),
+                'role_ptb'          => (int)($u->role_ptb ?? 0),
+                'role_pensiun_dini' => (int)($u->role_pensiun_dini ?? 0),
+                'role_resign'       => (int)($u->role_resign ?? 0),
+                'role_mpp'          => (int)($u->role_mpp ?? 0),
+                'role_ojt'          => (int)($u->role_ojt ?? 0),
+                'role_idt'          => (int)($u->role_idt ?? 0),
+                'role_aps'          => (int)($u->role_aps ?? 0),
+                'role_fnp_admin'    => (int)($u->role_fnp_admin ?? 0),
+                'role_fnp_penguji'  => (int)($u->role_fnp_penguji ?? 0),
+                'role_admin_komite' => (int)($u->role_admin_komite ?? 0),
+                'ket_aktif' => (int)($u->ket_aktif ?? 0),
+            ];
+        }, $rows);
+
+        return $this->response->setJSON([
+            'draw'            => $draw,
+            'recordsTotal'    => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data'            => $data,
+        ]);
+    }
+
+    // === SHOW satu user (untuk form edit) ===
+    public function user_show($nip)
+    {
+        $u = $this->users->where('nip',$nip)->first();
+        if (!$u) return $this->response->setStatusCode(404)->setJSON(['message'=>'Not found']);
+        return $this->response->setJSON($u);
+    }
+
+    // === STORE (tambah) ===
+    public function user_store()
+    {
+        $rules = [
+            'nip'       => 'required|is_unique[user.nip]',
+            'nama_user' => 'required',
+            'htd_area'  => 'required',
+            'role_htd'  => 'required|in_list[0,1,2,3,4,5]',
+        ];
+        if (!$this->validate($rules)) {
+            return $this->response->setStatusCode(422)->setJSON(['errors'=>$this->validator->getErrors()]);
+        }
+
+        $data = [
+            'nip'                => $this->request->getPost('nip'),
+            'no_sap'             => $this->request->getPost('no_sap'),
+            'nama_user'          => $this->request->getPost('nama_user'),
+            'htd_area'           => $this->request->getPost('htd_area'),
+            'unit_induk'         => $this->request->getPost('unit_induk'),
+            'unit_pelaksana'     => $this->request->getPost('unit_pelaksana'),
+            'sub_unit_pelaksana' => $this->request->getPost('sub_unit_pelaksana'),
+            'role_htd'           => $this->request->getPost('role_htd'),
+            'ket_aktif'          => $this->request->getPost('ket_aktif') ?? 1,
+            'password'           => sha1($this->request->getPost('password') ?: $this->request->getPost('nip')),
+        ];
+
+        $this->users->insert($data);
+        return $this->response->setJSON(['message'=>'created']);
+    }
+
+    // === UPDATE (edit) ===
+    public function user_update($nip)
+    {
+        $u = $this->users->where('nip',$nip)->first();
+        if (!$u) return $this->response->setStatusCode(404)->setJSON(['message'=>'Not found']);
+
+        $rules = [
+            'nama_user' => 'required',
+            'htd_area'  => 'required',
+            'role_htd'  => 'required|in_list[0,1,2,3,4,5]',
+        ];
+        if (!$this->validate($rules)) {
+            return $this->response->setStatusCode(422)->setJSON(['errors'=>$this->validator->getErrors()]);
+        }
+
+        $data = [
+            'nama_user'          => $this->request->getPost('nama_user'),
+            'htd_area'           => $this->request->getPost('htd_area'),
+            'unit_induk'         => $this->request->getPost('unit_induk'),
+            'unit_pelaksana'     => $this->request->getPost('unit_pelaksana'),
+            'sub_unit_pelaksana' => $this->request->getPost('sub_unit_pelaksana'),
+            'role_htd'           => $this->request->getPost('role_htd'),
+            'ket_aktif'          => $this->request->getPost('ket_aktif') ?? 1,
+        ];
+        if ($this->request->getPost('password')) {
+            $data['password'] = sha1($this->request->getPost('password'));
+        }
+
+        $this->users->update($nip, $data);
+        return $this->response->setJSON(['message'=>'updated']);
+    }
+
+    // === DELETE ===
+    public function user_delete($nip)
+    {
+        $u = $this->users->where('nip',$nip)->first();
+        if (!$u) return $this->response->setStatusCode(404)->setJSON(['message'=>'Not found']);
+        $this->users->delete($nip);
+        return $this->response->setJSON(['message'=>'deleted']);
+    }
+
+
 }

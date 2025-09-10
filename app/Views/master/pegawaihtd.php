@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/bootstrap.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/OverlayScrollbars.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/datatables.min.css" />
+<meta name="csrf-token-name" content="<?= csrf_token() ?>">
+<meta name="csrf-token-value" content="<?= csrf_hash() ?>">
+
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -57,7 +60,7 @@
                     <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                         <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
                             <?php $request = \Config\Services::request();  ?>
-                            <input class="form-control datatable-search" placeholder="Search" data-datatable="#datatableRows" name="keyword" type="text" value="<?= $request->getGet('keyword') ?>" />
+                            <input class="form-control datatable-search" placeholder="Search" data-datatable="" name="keyword" type="text" value="<?= $request->getGet('keyword') ?>" />
                             <span class="search-magnifier-icon">
                                 <button class="btn btn-icon btn-icon-only btn-foreground" type="submit">
                                     <i data-cs-icon="search" style="margin-top: -5px;"></i>
@@ -143,66 +146,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                        $no = 1 + (5 * ($page - 1));
-                        foreach ($user as $key => $value) : ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td>
-                                    <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
-                                </td>
-                                <td><?= $value->nama_user ?></td>
-                                <td><?= $value->nama_htd ?></td>
-                                <td>
-                                    <?php
-                                        $role = $value->role_htd;
-                                        switch ($role) {
-                                            case 0: $label = "Staf HTD"; break;
-                                            case 1: $label = "Asman HTD"; break;
-                                            case 2: $label = "MSB HTD"; break;
-                                            case 3: $label = "VP HTD"; break;
-                                            case 4: $label = "EVP HTD"; break;
-                                            case 5: $label = "Non HTD"; break;
-                                            default: $label = "-";
-                                        }
-                                        echo $label;
-                                    ?>
-                                </td>
-                                <td style="max-width: 200px; white-space: normal;">
-                                    <span class="badge bg-outline-primary <?= $value->role_organisasi == 1 ? "" : "d-none" ?>">Role Organisasi</span>
-                                    <span class="badge bg-outline-success <?= $value->role_user == 1 ? "" : "d-none" ?>">Role User</span>
-                                    <span class="badge bg-outline-secondary <?= $value->role_mutasi == 1 ? "" : "d-none" ?>">Role Mutasi</span>
-                                    <span class="badge bg-outline-tertiary <?= $value->role_komite == 1 ? "" : "d-none" ?>">Role Komite</span>
-                                    <span class="badge bg-outline-info <?= $value->role_dapeg == 1 ? "" : "d-none" ?>">Role Dapeg</span>
-                                    <span class="badge bg-outline-success <?= $value->role_tugas_karya == 1 ? "" : "d-none" ?>">Role Tugas Karya</span>
-                                    <span class="badge bg-outline-danger <?= $value->role_ptb == 1 ? "" : "d-none" ?>">Role PTB</span>
-                                    <span class="badge bg-outline-warning <?= $value->role_pensiun_dini == 1 ? "" : "d-none" ?>">Role Pensiun Dini</span>
-                                    <span class="badge bg-outline-info <?= $value->role_resign == 1 ? "" : "d-none" ?>">Role Resign</span>
-                                    <span class="badge bg-outline-warning <?= $value->role_mpp == 1 ? "" : "d-none" ?>">Role Mpp</span>
-                                    <span class="badge bg-outline-dark <?= $value->role_ojt == 1 ? "" : "d-none" ?>">Role Ojt</span>
-                                    <span class="badge bg-outline-primary <?= $value->role_idt == 1 ? "" : "d-none" ?>">Role IDT</span>
-                                    <span class="badge bg-outline-secondary <?= $value->role_aps == 1 ? "" : "d-none" ?>">Role APS</span>
-                                    <span class="badge bg-outline-tertiary <?= $value->role_fnp_admin == 1 ? "" : "d-none" ?>">Role Adm FnP</span>
-                                    <span class="badge bg-outline-success <?= $value->role_fnp_penguji == 1 ? "" : "d-none" ?>">Role Penguji FnP</span>
-                                    <span class="badge bg-outline-danger <?= $value->role_admin_komite == 1 ? "" : "d-none" ?>">Role Admin TCM</span>
-                                </td>
-                                <td><?= $value->ket_aktif == 1 ? 'Activated' : 'Unactivated' ?></td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">
-                                            <i data-cs-icon="edit"></i>
-                                        </a>
-                                        <form action="<?= site_url('masterdata/del_dapeghtd/' . $value->nip) ?>" method="post" class="d-inline">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-icon btn-icon-only btn-foreground-alternate" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
-                                                <i data-cs-icon="bin"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                        
                     </tbody>
                 </table>
             </div>
@@ -211,7 +155,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
-                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                        <i></i>
                     </div>
                 </div>
                 <div class="col-6">
@@ -233,50 +177,50 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="userForm">
+                            <input type="hidden" name="mode" value="add">
                             <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input name="Name" type="text" class="form-control" />
+                                <label class="form-label">NIP</label>
+                                <input name="nip" type="text" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Sales</label>
-                                <input name="Sales" type="number" class="form-control" />
+                                <label class="form-label">Nama Pegawai</label>
+                                <input name="nama_user" type="text" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Stock</label>
-                                <input name="Stock" type="number" class="form-control" />
+                                <label class="form-label">HTD Area (kode)</label>
+                                <input name="htd_area" type="text" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Category</label>
-                                <div class="form-check">
-                                    <input type="radio" id="category1" name="Category" value="Whole Wheat" class="form-check-input" />
-                                    <label class="form-check-label" for="category1">Whole Wheat</label>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                <label class="form-label">Unit Induk</label>
+                                <input name="unit_induk" type="text" class="form-control">
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="category2" name="Category" value="Sourdough" class="form-check-input" />
-                                    <label class="form-check-label" for="category2">Sourdough</label>
+                                <div class="col-md-4">
+                                <label class="form-label">Unit Pelaksana</label>
+                                <input name="unit_pelaksana" type="text" class="form-control">
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="category3" name="Category" value="Multigrain" class="form-check-input" />
-                                    <label class="form-check-label" for="category3">Multigrain</label>
+                                <div class="col-md-4">
+                                <label class="form-label">Sub Unit Pelaksana</label>
+                                <input name="sub_unit_pelaksana" type="text" class="form-control">
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tag</label>
-                                <div class="form-check">
-                                    <input type="radio" id="tag1" name="Tag" value="New" class="form-check-input" />
-                                    <label class="form-check-label" for="tag1">New</label>
+                            <div class="row g-3 mt-0">
+                                <div class="col-md-4">
+                                <label class="form-label">Role HTD (0–5)</label>
+                                <input name="role_htd" type="number" min="0" max="5" class="form-control" required>
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="tag2" name="Tag" value="Sale" class="form-check-input" />
-                                    <label class="form-check-label" for="tag2">Sale</label>
+                                <div class="col-md-4">
+                                <label class="form-label">Aktif (1/0)</label>
+                                <input name="ket_aktif" type="number" min="0" max="1" class="form-control" value="1">
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="tag3" name="Tag" value="Done" class="form-check-input" />
-                                    <label class="form-check-label" for="tag3">Done</label>
+                                <div class="col-md-4 add-only">
+                                <label class="form-label">Password (opsional)</label>
+                                <input name="password" type="text" class="form-control" placeholder="default = NIP">
                                 </div>
                             </div>
                         </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
