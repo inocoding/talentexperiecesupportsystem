@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/bootstrap.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/OverlayScrollbars.min.css" />
 <link rel="stylesheet" href="<?= base_url() ?>/template/css/vendor/datatables.min.css" />
-<meta name="csrf-token-name" content="<?= csrf_token() ?>">
-<meta name="csrf-token-value" content="<?= csrf_hash() ?>">
-
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -27,12 +24,7 @@
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
-                    <!-- Add New Button Start -->
-                    <!-- <a href=" <?= site_url('masterdata/addpeg') ?> " type="button" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto add-dapeg">
-                        <i data-cs-icon="plus"></i>
-                        <span>Add New</span>
-                    </a> -->
-                    <!-- Add New Button End -->
+                   
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -60,7 +52,7 @@
                     <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                         <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
                             <?php $request = \Config\Services::request();  ?>
-                            <input class="form-control datatable-search" placeholder="Search" data-datatable="" name="keyword" type="text" value="<?= $request->getGet('keyword') ?>" />
+                            <input class="form-control datatable-search" placeholder="Search" data-datatable="#datatableRows" name="keyword" type="text" value="<?= $request->getGet('keyword') ?>" />
                             <span class="search-magnifier-icon">
                                 <button class="btn btn-icon btn-icon-only btn-foreground" type="submit">
                                     <i data-cs-icon="search" style="margin-top: -5px;"></i>
@@ -75,24 +67,12 @@
 
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block me-0 me-sm-3 float-start float-md-none">
-                            <!-- Add Button Start -->
-                            <a href="<?= site_url('masterdata/addpeg') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-dapeg" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User" type="button" data-bs-delay="0">
-                                <i data-cs-icon="plus"></i>
-                            </a>
-                            <!-- Add Button End -->
-
-                            <!-- Edit Button Start -->
-
-                            <!-- Edit Button End -->
+                            
                         </div>
                         <div class="d-inline-block">
-                            <!-- Print Button Start -->
-                            <a href="<?= site_url('userimport') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
+                            <a href="<?= site_url('masterdata/datauser') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
-                            <!-- Print Button End -->
-
-                            <!-- Export Dropdown Start -->
                             <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
                                 <?php
                                 $request = \Config\Services::request();
@@ -103,28 +83,7 @@
                                     $param = "";
                                 }
                                 ?>
-                                <a class="btn p-0" href="<?= site_url('masterdata/exporthtd' . $param) ?>" data-bs-offset="0,3">
-                                    <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown" data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip" title="Export Excel">
-                                        <i data-cs-icon="download"></i>
-                                    </span>
-                                </a>
                             </div>
-                            <!-- Export Dropdown End -->
-
-                            <!-- Length Start -->
-                            <!-- <div class="dropdown-as-select d-inline-block datatable-length" data-datatable="#datatableRows" data-childSelector="span">
-                                <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
-                                    <span class="btn btn-foreground-alternate dropdown-toggle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Item Count">
-                                        10 Items
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <a class="dropdown-item active" href="#">5 Items</a>
-                                    <a class="dropdown-item " href="#">10 Items</a>
-                                    <a class="dropdown-item" href="#">20 Items</a>
-                                </div>
-                            </div> -->
-                            <!-- Length End -->
                         </div>
                     </div>
                 </div>
@@ -136,26 +95,59 @@
                     <thead>
                         <tr>
                             <th class="text-muted text-small text-uppercase">No</th>
+                            <th class="text-muted text-small text-uppercase">Foto</th>
                             <th class="text-muted text-small text-uppercase">NIP</th>
-                            <th class="text-muted text-small text-uppercase">Nama Pegawai</th>
-                            <th class="text-muted text-small text-uppercase">HTD Area</th>
+                            <th class="text-muted text-small text-uppercase">Nama</th>
+                            <th class="text-muted text-small text-uppercase">Unit</th>
                             <th class="text-muted text-small text-uppercase">Role HTD</th>
-                            <th class="text-muted text-small text-uppercase">Role</th>
+                            <th class="text-muted text-small text-uppercase">All Role</th>
                             <th class="text-muted text-small text-uppercase">Activation</th>
                             <th class="text-muted text-small text-uppercase">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php
+                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $no = 1 + (5 * ($page - 1));
+                        foreach ($user as $key => $value) : ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td>
+                                    <img src="<?=base_url()?><?=$value->foto_profile?>" class="card-img rounded-xl sh-6 sw-6" alt="thumb" />
+                                </td>
+                                <td><?= $value->nip ?></td>
+                                <td><?= $value->nama_user ?></td>
+                                <td><?= $value->nama_htd ?></td>
+                                <td><?= $value->role_htd ?></td>
+                                <td style="max-width: 200px; white-space: normal;">
+                                    <span class="badge bg-outline-primary <?= $value->role_user == 1 ? "" : "d-none" ?>">Role User</span>
+                                    <span class="badge bg-outline-secondary <?= $value->role_organisasi == 1 ? "" : "d-none" ?>">Role Organisasi</span>
+                                    <span class="badge bg-outline-success <?= $value->role_mutasi == 1 ? "" : "d-none" ?>">Role Mutasi</span>
+                                    <span class="badge bg-outline-danger <?= $value->role_komite == 1 ? "" : "d-none" ?>">Role Komite</span>
+                                    <span class="badge bg-outline-warning <?= $value->role_dapeg == 1 ? "" : "d-none" ?>">Role Dapeg</span>
+                                    <span class="badge bg-outline-info <?= $value->role_tugas_karya == 1 ? "" : "d-none" ?>">Role Tugas Karya</span>
+                                    <span class="badge bg-outline-dark <?= $value->role_ptb == 1 ? "" : "d-none" ?>">Role PTB</span>
+                                    <span class="badge bg-outline-muted <?= $value->role_pensiun_dini == 1 ? "" : "d-none" ?>">Role Pensiun Dini</span>
+                                    <span class="badge bg-outline-primary <?= $value->role_resign == 1 ? "" : "d-none" ?>">Role Resign</span>
+                                    <span class="badge bg-outline-secondary <?= $value->role_mpp == 1 ? "" : "d-none" ?>">Role MPP</span>
+                                    <span class="badge bg-outline-tertiary <?= $value->role_ojt == 1 ? "" : "d-none" ?>">Role OJT</span>
+                                    <span class="badge bg-outline-success <?= $value->role_idt == 1 ? "" : "d-none" ?>">Role IDT</span>
+                                    <span class="badge bg-outline-danger <?= $value->role_aps == 1 ? "" : "d-none" ?>">Role APS</span>
+                                    <span class="badge bg-outline-warning <?= $value->role_fnp_admin == 1 ? "" : "d-none" ?>">Role Admin FnP</span>
+                                    <span class="badge bg-outline-info <?= $value->role_admin_komite == 1 ? "" : "d-none" ?>">Role Admin Komite</span>
+                                    <span class="badge bg-outline-dark <?= $value->role_fnp_penguji == 1 ? "" : "d-none" ?>">Role Penguji FnP</span>
+                                </td>
+                                <td><?= $value->ket_aktif == 1 ? "Aktif": "Belum Aktif" ?></td>
+                                <td></td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-
-            
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
-                        <i></i>
+                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
                     </div>
                 </div>
                 <div class="col-6">
@@ -177,50 +169,50 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="userForm">
-                            <input type="hidden" name="mode" value="add">
+                        <form>
                             <div class="mb-3">
-                                <label class="form-label">NIP</label>
-                                <input name="nip" type="text" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nama Pegawai</label>
-                                <input name="nama_user" type="text" class="form-control" required>
+                                <label class="form-label">Name</label>
+                                <input name="Name" type="text" class="form-control" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">HTD Area (kode)</label>
-                                <input name="htd_area" type="text" class="form-control" required>
+                                <label class="form-label">Sales</label>
+                                <input name="Sales" type="number" class="form-control" />
                             </div>
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                <label class="form-label">Unit Induk</label>
-                                <input name="unit_induk" type="text" class="form-control">
+                            <div class="mb-3">
+                                <label class="form-label">Stock</label>
+                                <input name="Stock" type="number" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <div class="form-check">
+                                    <input type="radio" id="category1" name="Category" value="Whole Wheat" class="form-check-input" />
+                                    <label class="form-check-label" for="category1">Whole Wheat</label>
                                 </div>
-                                <div class="col-md-4">
-                                <label class="form-label">Unit Pelaksana</label>
-                                <input name="unit_pelaksana" type="text" class="form-control">
+                                <div class="form-check">
+                                    <input type="radio" id="category2" name="Category" value="Sourdough" class="form-check-input" />
+                                    <label class="form-check-label" for="category2">Sourdough</label>
                                 </div>
-                                <div class="col-md-4">
-                                <label class="form-label">Sub Unit Pelaksana</label>
-                                <input name="sub_unit_pelaksana" type="text" class="form-control">
+                                <div class="form-check">
+                                    <input type="radio" id="category3" name="Category" value="Multigrain" class="form-check-input" />
+                                    <label class="form-check-label" for="category3">Multigrain</label>
                                 </div>
                             </div>
-                            <div class="row g-3 mt-0">
-                                <div class="col-md-4">
-                                <label class="form-label">Role HTD (0–5)</label>
-                                <input name="role_htd" type="number" min="0" max="5" class="form-control" required>
+                            <div class="mb-3">
+                                <label class="form-label">Tag</label>
+                                <div class="form-check">
+                                    <input type="radio" id="tag1" name="Tag" value="New" class="form-check-input" />
+                                    <label class="form-check-label" for="tag1">New</label>
                                 </div>
-                                <div class="col-md-4">
-                                <label class="form-label">Aktif (1/0)</label>
-                                <input name="ket_aktif" type="number" min="0" max="1" class="form-control" value="1">
+                                <div class="form-check">
+                                    <input type="radio" id="tag2" name="Tag" value="Sale" class="form-check-input" />
+                                    <label class="form-check-label" for="tag2">Sale</label>
                                 </div>
-                                <div class="col-md-4 add-only">
-                                <label class="form-label">Password (opsional)</label>
-                                <input name="password" type="text" class="form-control" placeholder="default = NIP">
+                                <div class="form-check">
+                                    <input type="radio" id="tag3" name="Tag" value="Done" class="form-check-input" />
+                                    <label class="form-check-label" for="tag3">Done</label>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>

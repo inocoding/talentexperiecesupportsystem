@@ -93,7 +93,7 @@
                     <a href="#" class="d-flex user position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?php
                         if (userLogin()->foto_profile != null) {
-                            echo '<img class="profile" alt="profile" src="' . base_url() . '/template/img/profile/' . userLogin()->foto_profile . '" />';
+                            echo '<img class="profile" alt="profile" src="' . base_url() . userLogin()->foto_profile . '" />';
                         } else {
                             echo '<img class="profile" alt="profile" src="' . base_url() . '/template/img/profile/profile-11.jpg" />';
                         }
