@@ -35,10 +35,11 @@ class Auth extends BaseController
                 // Simpan semua data penting ke session
 
                     $params = [
-                        'user_id'   => $user->nip,
-                        'nama'      => $user->nama_user,
-                        'role_htd'  => $user->role_htd,
-                        'org_satu'  => $orgSatu,
+                        'user_id'       => $user->nip,
+                        'nama'          => $user->nama_user,
+                        'role_htd'      => $user->role_htd,
+                        'org_satu'      => $orgSatu,
+                        'foto_profile'  => $user->foto_profile,
                     ];
                     session()->set($params);
 

@@ -73,6 +73,9 @@
                             <a href="<?= site_url('masterdata/datauser') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
+                            <a href="" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Tambah Data User" type="button">
+                                <i data-cs-icon="plus"></i>
+                            </a>
                             <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
                                 <?php
                                 $request = \Config\Services::request();
@@ -138,7 +141,14 @@
                                     <span class="badge bg-outline-dark <?= $value->role_fnp_penguji == 1 ? "" : "d-none" ?>">Role Penguji FnP</span>
                                 </td>
                                 <td><?= $value->ket_aktif == 1 ? "Aktif": "Belum Aktif" ?></td>
-                                <td></td>
+                                <td>
+                                    <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="button">
+                                        <i data-cs-icon="edit"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="button">
+                                        <i data-cs-icon="bin"></i>
+                                    </button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

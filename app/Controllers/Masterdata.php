@@ -1375,7 +1375,15 @@ class Masterdata extends BaseController
         return view('master/view_mpp', $data);
     }
 
-    public function datamutasi() {}
+    public function datamutasi() 
+    {
+        return view('master/mutasi');
+    }
+
+    public function datauser() 
+    {
+        return view('master/uploaduser');
+    }
 
     public function datatk()
     {

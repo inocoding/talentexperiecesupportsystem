@@ -11,6 +11,7 @@ class Users extends Model
     protected $primaryKey       = 'nip';
     protected $returnType       = 'object';
     protected $allowedFields    = [
+        'nip',
         'no_sap',
         'password',
         'nama_user',
