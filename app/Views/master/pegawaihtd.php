@@ -73,7 +73,7 @@
                             <a href="<?= site_url('masterdata/datauser') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Upload Data User" type="button">
                                 <i data-cs-icon="upload"></i>
                             </a>
-                            <a href="" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Tambah Data User" type="button">
+                            <a href="<?= site_url('masterdata/adduser') ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Tambah Data User" type="button">
                                 <i data-cs-icon="plus"></i>
                             </a>
                             <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
@@ -121,8 +121,20 @@
                                 <td><?= $value->nip ?></td>
                                 <td><?= $value->nama_user ?></td>
                                 <td><?= $value->nama_htd ?></td>
-                                <td><?= $value->role_htd ?></td>
-                                <td style="max-width: 200px; white-space: normal;">
+                                <td>
+                                    <?php
+                                        switch ($value->role_htd) {
+                                            case 0: echo "Staf"; break;
+                                            case 1: echo "Asman"; break;
+                                            case 2: echo "MSB"; break;
+                                            case 3: echo "VP"; break;
+                                            case 4: echo "EVP"; break;
+                                            case 5: echo "Non HTD"; break;
+                                            default: echo "Unknown";
+                                        }
+                                    ?>
+                                </td>
+                                <td style="max-width: 250px; white-space: normal;">
                                     <span class="badge bg-outline-primary <?= $value->role_user == 1 ? "" : "d-none" ?>">Role User</span>
                                     <span class="badge bg-outline-secondary <?= $value->role_organisasi == 1 ? "" : "d-none" ?>">Role Organisasi</span>
                                     <span class="badge bg-outline-success <?= $value->role_mutasi == 1 ? "" : "d-none" ?>">Role Mutasi</span>
@@ -157,7 +169,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
-                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                        <i>Showing <?= 1 + (10 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
                     </div>
                 </div>
                 <div class="col-6">

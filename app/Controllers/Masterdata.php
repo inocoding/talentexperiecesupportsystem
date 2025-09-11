@@ -100,7 +100,7 @@ class Masterdata extends BaseController
     {
 
         $keyword = $this->request->getGet('keyword');
-        $data = $this->users->getAllPaginatedHtd(5, $keyword);
+        $data = $this->users->getAllPaginatedHtd(10, $keyword);
 
         return view('master/pegawaihtd', $data);
     }
@@ -1790,6 +1790,71 @@ class Masterdata extends BaseController
         if (!$u) return $this->response->setStatusCode(404)->setJSON(['message'=>'Not found']);
         $this->users->delete($nip);
         return $this->response->setJSON(['message'=>'deleted']);
+    }
+
+    public function adduser()
+    {
+        return view('master/formadduser');
+    }
+
+    public function simpanuser()
+    {
+        // VALIDASI
+        $rules = [
+            'nip'              => 'required|is_unique[user.nip]',
+            'nama_user'        => 'required',
+            'tgl_lahir'        => 'required|valid_date',
+            'password'         => 'required|min_length[6]',
+            'password_confirm' => 'required|matches[password]',
+            'role_htd'         => 'required|in_list[0,1,2,3,4,5]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // SIAPKAN DATA
+        $p = $this->request;
+
+        // Helper kecil untuk checkbox -> 0/1
+        $cb = function (string $name) use ($p) {
+            return $p->getPost($name) ? 1 : 0;
+        };
+
+        $data = [
+            'nip'               => strtoupper($p->getPost('nip')),
+            'nama_user'         => $p->getPost('nama_user'),
+            'tgl_lahir'         => $p->getPost('tgl_lahir'),
+            'password'          => sha1($p->getPost('password')), // mengikuti pola di Auth Anda
+            'role_htd'          => (int) $p->getPost('role_htd'),
+
+            // checkbox roles (0/1)
+            'role_organisasi'   => $cb('role_organisasi'),
+            'role_user'         => $cb('role_user'),
+            'role_mutasi'       => $cb('role_mutasi'),
+            'role_komite'       => $cb('role_komite'),
+            'role_dapeg'        => $cb('role_dapeg'),
+            'role_tugas_karya'  => $cb('role_tugas_karya'),
+            'role_ptb'          => $cb('role_ptb'),
+            'role_pensiun_dini' => $cb('role_pensiun_dini'),
+            'role_resign'       => $cb('role_resign'),
+            'role_mpp'          => $cb('role_mpp'),
+            'role_ojt'          => $cb('role_ojt'),
+            'role_idt'          => $cb('role_idt'),
+            'role_aps'          => $cb('role_aps'),
+            'role_fnp_admin'    => $cb('role_fnp_admin'),
+            'role_admin_komite' => $cb('role_admin_komite'),
+            'role_fnp_penguji'  => $cb('role_fnp_penguji'),
+            'ket_aktif'         => $cb('ket_aktif'),
+        ];
+
+        // SIMPAN
+        $model = new Users();
+        $model->insert($data);
+
+        return redirect()->to(site_url('masterdata/dapeghtd'))
+                         ->with('success', 'User berhasil ditambahkan.');
+
     }
 
 
