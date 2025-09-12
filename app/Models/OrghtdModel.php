@@ -18,6 +18,11 @@ class OrghtdModel extends Model
     // Dates
     protected $useTimestamps = true;
 
+    public function getAll()
+    {
+        return $this->orderBy('kode_org_htd', 'ASC')->findAll();
+    }
+
     public function getAllPaginated($num, $keyword = null)
     {
         $q = $this->select('*')

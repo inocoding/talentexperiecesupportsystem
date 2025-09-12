@@ -154,12 +154,15 @@
                                 </td>
                                 <td><?= $value->ket_aktif == 1 ? "Aktif": "Belum Aktif" ?></td>
                                 <td>
-                                    <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="button">
+                                    <a href="<?= site_url('masterdata/users/'.$value->nip.'/edit') ?>" class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="button">
                                         <i data-cs-icon="edit"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="button">
-                                        <i data-cs-icon="bin"></i>
-                                    </button>
+                                    </a>
+                                    <form action="<?= site_url('masterdata/users/'.$value->nip.'/delete') ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin akan menghapus user ini?')">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1">
+                                            <i data-cs-icon="bin"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

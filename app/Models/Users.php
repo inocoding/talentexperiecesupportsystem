@@ -46,6 +46,7 @@ class Users extends Model
     ];
 
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
 
     public function getAllPaginatedHtd($num, $keyword = null)
     {

@@ -45,3 +45,7 @@ $routes->group('masterdata', static function ($r) {
     $r->post('user_delete/(:segment)','Masterdata::user_delete/$1'); // hapus (by nip)
 });
 
+$routes->get('masterdata/users/(:segment)/edit', 'Masterdata::editUser/$1');
+$routes->post('masterdata/users/(:segment)', 'Masterdata::updateUser/$1');
+$routes->post('masterdata/users/(:segment)/delete', 'Masterdata::deleteUser/$1');
+
