@@ -159,7 +159,7 @@
                                     </a>
                                     <form action="<?= site_url('masterdata/users/'.$value->nip.'/delete') ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin akan menghapus user ini?')">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1">
+                                        <button class="btn btn-icon btn-icon-only btn-foreground hover-outline mb-1" type="submit">
                                             <i data-cs-icon="bin"></i>
                                         </button>
                                     </form>
@@ -172,7 +172,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="float-right">
-                        <i>Showing <?= 1 + (10 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
                     </div>
                 </div>
                 <div class="col-6">

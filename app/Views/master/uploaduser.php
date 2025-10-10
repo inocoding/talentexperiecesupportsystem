@@ -21,7 +21,12 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload data user</p>
+        <div class="btn-group">
+            <a href="<?= site_url('masterdata/dapeghtd') ?>" class="btn-link">
+                <i data-cs-icon="chevron-left" class="mt-2 me-2" data-cs-size="15"></i>
+            </a>
+            <h2 class="small-title mt-2">Upload data user</h2>
+        </div>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>

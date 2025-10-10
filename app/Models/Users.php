@@ -46,7 +46,8 @@ class Users extends Model
     ];
 
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $deletedField   = 'deleted_at'; 
 
     public function getAllPaginatedHtd($num, $keyword = null)
     {
@@ -60,16 +61,33 @@ class Users extends Model
 
         $q = $this->select($fields, false)
                   ->from($this->table.' m')
+                  ->where('m.deleted_at', null)
                   ->join('tb_dapeg dp', 'dp.nip = m.nip', 'left')
                   ->join('tb_org_htd_new htd', 'htd.kode_org_htd = m.htd_area', 'left')
                   ->groupBy('m.nip')
                   ->orderBy('m.nip', 'ASC');
 
         if (!empty($keyword)) {
+                $map = [
+                    'staf'  => 0,
+                    'asman' => 1,
+                    'msb'   => 2,
+                    'vp'    => 3,
+                    'evp'   => 4,
+                    'non'   => 5,
+                    'non htd' => 5
+                ];
+
+                $k = strtolower($keyword);
+
                 $q->groupStart()
-                  ->like('nip', $keyword)
-                  ->orLike('fullname', $keyword)
-                  ->groupEnd();
+                  ->like('m.nip', $keyword)
+                  ->orLike('m.nama_user', $keyword)
+                  ->orLike('htd.nama_org_htd', $keyword);
+                  if (isset($map[$k])) {
+                        $q->orWhere('m.role_htd', $map[$k]);
+                    }
+                  $q->groupEnd();
         }
 
         return [
