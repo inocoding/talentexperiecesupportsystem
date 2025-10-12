@@ -111,7 +111,7 @@
                     <tbody>
                         <?php
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                        $no = 1 + (5 * ($page - 1));
+                        $no = 1 + (10 * ($page - 1));
                         foreach ($user as $key => $value) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
@@ -169,10 +169,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-6">
                     <div class="float-right">
-                        <i>Showing <?= 1 + (5 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
+                        <i>Showing <?= 1 + (10 * ($page - 1)); ?> to <?= $no - 1 ?> of <?= $pager->getTotal() ?> entries</i>
                     </div>
                 </div>
                 <div class="col-6">

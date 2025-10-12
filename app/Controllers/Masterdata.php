@@ -100,7 +100,7 @@ class Masterdata extends BaseController
     {
 
         $keyword = $this->request->getGet('keyword');
-        $data = $this->users->getAllPaginatedHtd(5, $keyword);
+        $data = $this->users->getAllPaginatedHtd(10, $keyword);
 
         return view('master/pegawaihtd', $data);
     }

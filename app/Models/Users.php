@@ -38,6 +38,8 @@ class Users extends Model
         'role_fnp_admin',
         'role_admin_komite',
         'role_fnp_penguji',
+        'role_anggaran',
+        'role_adm_anggaran',
         'ket_aktif',
         'created_at',
         'updated_at',

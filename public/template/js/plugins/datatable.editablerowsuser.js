@@ -47,7 +47,7 @@
       info: false,
       order: [], // Clearing default order
       sDom: '<"row"<"col-sm-12"<"table-container"t>r>>', // Hiding all other dom elements except table and pagination
-      pageLength: 5,
+      pageLength: 10,
       columns: [{data: 'no'}, {data: 'foto'}, {data: 'nip'}, {data: 'nama'}, {data: 'unit'}, {data: 'role htd'}, {data: 'all role'}, {data: 'activation'}, {data: 'action'} ],
       language: {
         paginate: false,

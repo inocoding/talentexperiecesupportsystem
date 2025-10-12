@@ -21,43 +21,60 @@ class Auth extends BaseController
     public function proseslogin()
     {
         $post   = $this->request->getPost();
-        $query  = $this->db->table('user')->getWhere(['nip' => $post['nip']]);
-        $user   = $query->getRow();
+        $user   = $this->db->table('user')->getWhere(['nip' => $post['nip']])->getRow();
 
-        if ($user) {
-            if ($user->ket_aktif == 1) {
-                if (SHA1($post['password']) == $user->password) {
-
-                    // Ambil org_satu terbaru dari tb_dapeg
-                    $dapegModel = new \App\Models\DapegModel();
-                    $orgSatu = $dapegModel->getLatestOrgSatuByNip($user->nip); // method sesuai yang kita buat tadi
-
-                // Simpan semua data penting ke session
-
-                    $params = [
-                        'user_id'       => $user->nip,
-                        'nama'          => $user->nama_user,
-                        'role_htd'      => $user->role_htd,
-                        'org_satu'      => $orgSatu,
-                        'foto_profile'  => $user->foto_profile,
-                    ];
-                    session()->set($params);
-
-                    return redirect()->to(site_url('home'));
-                } else {
-                    return redirect()->back()->with('error', 'Password tidak sesuai!');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Akun Anda Belum di Aktivasi. <br> Silahkan lakukan aktivasi terlebih dahulu');
-            }
-        } else {
+        if (!$user) {
             return redirect()->back()->with('error', 'NIP tidak ditemukan!. <br> Silahkan hubungi HTD Area Anda');
         }
+        if ((int)$user->ket_aktif !== 1) {
+            return redirect()->back()->with('error', 'Akun Anda Belum di Aktivasi. <br> Silahkan lakukan aktivasi terlebih dahulu');
+        }
+        if (sha1($post['password']) !== $user->password) {
+            return redirect()->back()->with('error', 'Password tidak sesuai!');
+        }
+
+        // Ambil org_satu terbaru dari tb_dapeg
+        $dapegModel = new \App\Models\DapegModel();
+        $orgSatu = $dapegModel->getLatestOrgSatuByNip($user->nip);
+
+        // Helper kecil untuk normalisasi 0/1 dari properti user
+        $f = fn($k) => (int)($user->$k ?? 0);
+
+        // SIMPAN KE SESSION (IDENTITAS + SEMUA ROLE)
+        session()->set([
+            'user_id'           => $user->nip,
+            'nama'              => $user->nama_user,
+            'role_htd'          => (string)$user->role_htd,   // biarkan string '0'..'5' jika dipakai di UI
+            'org_satu'          => $orgSatu,
+            'foto_profile'      => $user->foto_profile,
+
+            // === FLAG ROLE (0/1) ===
+            'role_user'         => $f('role_user'),
+            'role_organisasi'   => $f('role_organisasi'),
+            'role_mutasi'       => $f('role_mutasi'),
+            'role_komite'       => $f('role_komite'),
+            'role_dapeg'        => $f('role_dapeg'),
+            'role_tugas_karya'  => $f('role_tugas_karya'),
+            'role_ptb'          => $f('role_ptb'),
+            'role_pensiun_dini' => $f('role_pensiun_dini'),
+            'role_resign'       => $f('role_resign'),
+            'role_mpp'          => $f('role_mpp'),
+            'role_ojt'          => $f('role_ojt'),
+            'role_idt'          => $f('role_idt'),
+            'role_aps'          => $f('role_aps'),
+            'role_fnp_admin'    => $f('role_fnp_admin'),
+            'role_admin_komite' => $f('role_admin_komite'),
+            'role_fnp_penguji'  => $f('role_fnp_penguji'),
+            'role_anggaran'     => $f('role_anggaran'),
+            'role_adm_anggaran' => $f('role_adm_anggaran'),
+        ]);
+
+        return redirect()->to(site_url('home'));
     }
 
     public function logout()
     {
-        session()->remove('user_id');
+        session()->destroy();
         return redirect()->to(site_url('login'));
     }
 

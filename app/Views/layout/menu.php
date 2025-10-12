@@ -1,5 +1,6 @@
-<?php $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-?>
+<?php helper('auth'); ?>
+<?php $uri = new \CodeIgniter\HTTP\URI(current_url(true)); ?>
+
 <li>
     <a href="#dashboarrd" class="<?= $uri->getSegment(1) == "dashboard" ? "active" : null ?>">
         <i data-cs-icon="dashboard-1" class="icon" data-cs-size="18"></i>
@@ -203,29 +204,17 @@
     </a>
 </li> -->
 <li>
-    <a href="#miscellaneous" class="<?= $uri->getSegment(1) == "anggaran" ? "active" : null ?>">
-        <i data-cs-icon="wallet" class="icon" data-cs-size="18"></i>
+    <a href="#miscellaneous" class="<?= isActive([1=>'anggaran']) ?>">
+        <i data-cs-icon="wallet" class="icon" data-cs-size="15"></i>
         <span class="label">Anggaran</span>
     </a>
     <ul id="miscellaneous">
-        <li>
-            <a href="<?= site_url('anggaran') ?>" class="<?= $uri->getSegment(1) == "anggaran" ? "active" : null ?>">
-                <i data-cs-icon="dashboard-1" class="icon" data-cs-size="12"></i>
-                <span class="label">D-Anggaran</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('anggaran') ?>">
-                <i data-cs-icon="leaf" class="icon" data-cs-size="12"></i>
-                <span class="label">Pos 52</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('anggaran/pos53') ?>">
-                <i data-cs-icon="leaf" class="icon" data-cs-size="12"></i>
-                <span class="label">Pos 53</span>
-            </a>
-        </li>
+        <?php
+            menuItem('D-Anggaran', 'anggaran', 'role_anggaran', 'dashboard-1', [1=>'anggaran',2=>null]);
+            menuItem('Pos 52', 'anggaran', 'role_adm_anggaran', 'leaf', [1=>'anggaran',2=>'pos52']);
+            menuItem('Pos 53', 'anggaran/pos53', 'role_adm_anggaran', 'leaf', [1=>'anggaran',2=>'pos53']);
+        ?>
+        
         <li>
             <a href="<?= site_url('anggaran/pos54') ?>">
                 <i data-cs-icon="leaf" class="icon" data-cs-size="12"></i>
@@ -234,137 +223,43 @@
         </li>
     </ul>
 </li>
-<!-- <li>
-    <a href="#paths">
-        <i data-cs-icon="tv" class="icon" data-cs-size="18"></i>
-        <span class="label">Wasnaker</span>
-    </a>
-</li> -->
+
 <li>
-    <a href="#miscellaneous2" class="<?= $uri->getSegment(1) == "masterdata" ? "active" : null ?>">
-        <i data-cs-icon="database" class="icon" data-cs-size="15"></i>
-        <span class="label">Master Data</span>
-    </a>
-    <ul id="miscellaneous2">
-        <li>
-            <a href="<?= site_url('masterdata/dapeghtd') ?>" class="<?= $uri->getSegment(2) == "dapeghtd" ? "active" : null ?>">
-                <span class="label">User</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata') ?>" class="<?= $uri->getSegment(1) == "masterdata" and $uri->getSegment(2) == null ? "active" : null ?>">
-                <span class="label">Data Pegawai</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('') ?>" class="">
-                <span class="label">Data Talent </span>
-            </a>
-        </li>
-        <hr style="border-top: 1px solid white; margin: 5px 0;">
-        <li>
-            <a href="<?= site_url('masterdata/data_struktur_organisasi') ?>" class="<?= $uri->getSegment(2) == "data_struktur_organisasi" ? "active" : null ?>">
-                <span class="label">Data Formasi Jabatan</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataorghtd') ?>" class="<?= $uri->getSegment(2) == "viewdataorghtd" ? "active" : null ?>">
-                <span class="label">Data Organisasi HTD</span>
-            </a>
-        </li>
-         <li>
-            <a href="<?= site_url('masterdata/viewdataorgsatu') ?>" class="<?= $uri->getSegment(2) == "viewdataorgsatu" ? "active" : null ?>">
-                <span class="label">Data Organisasi Level #1</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataorgdua') ?>" class="<?= $uri->getSegment(2) == "viewdataorgdua" ? "active" : null ?>">
-                <span class="label">Data Organisasi Level #2</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataorgtiga') ?>" class="<?= $uri->getSegment(2) == "viewdataorgtiga" ? "active" : null ?>">
-                <span class="label">Data Organisasi Level #3</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataorgkpsatu') ?>" class="<?= $uri->getSegment(2) == "viewdataorgkpsatu" ? "active" : null ?>">
-                <span class="label">Data Organisasi KP #1</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataorgkpdua') ?>" class="<?= $uri->getSegment(2) == "viewdataorgkpdua" ? "active" : null ?>">
-                <span class="label">Data Organisasi KP #2</span>
-            </a>
-        </li>
-        <hr style="border-top: 1px solid white; margin: 5px 0;">
-        <li>
-            <a href="<?= site_url('masterdata/rjab') ?>" class="<?= $uri->getSegment(2) == "rjab" ? "active" : null ?>">
-                <span class="label">Data Riwayat Jabatan </span>
-            </a>
-        </li>
-        <!-- <li>
-            <a href="" class="">
-                <span class="label">Data Riwayat Pendidikan </span>
-            </a>
-        </li> -->
-        <li>
-            <a href="<?= site_url('masterdata/sertifikasi') ?>" class="<?= $uri->getSegment(2) == "sertifikasi" ? "active" : null ?>">
-                <span class="label">Data Riwayat Sertifikasi </span>
-            </a>
-        </li>
-        <hr style="border-top: 1px solid white; margin: 5px 0;">
-        <li>
-            <a href="<?= site_url('masterdata/data_ptb') ?>" class="<?= $uri->getSegment(2) == "data_ptb" ? "active" : null ?>">
-                <span class="label">Data PTB </span>
+  <a href="#miscellaneous2" class="<?= isActive([1=>'masterdata']) ?>">
+    <i data-cs-icon="database" class="icon" data-cs-size="15"></i>
+    <span class="label">Master Data</span>
+  </a>
 
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/data_pensiun_dini') ?>" class="<?= $uri->getSegment(2) == "data_pensiun_dini" ? "active" : null ?>">
-                <span class="label">Data Pensiun Dini </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/view_mpp') ?>" class="<?= $uri->getSegment(2) == "view_mpp" ? "active" : null ?>">
-                <span class="label">Data MPP </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewmutasi') ?>" class="<?= $uri->getSegment(2) == "viewmutasi" ? "active" : null ?>">
-                <span class="label">Data Mutasi </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewtk') ?>" class="<?= $uri->getSegment(2) == "viewtk" ? "active" : null ?>">
-                <span class="label">Data Tugas Karya </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewresign') ?>" class="<?= $uri->getSegment(2) == "viewresign" ? "active" : null ?>">
-                <span class="label">Data Resign </span>
-            </a>
-        </li>
+  <ul id="miscellaneous2">
+    <?php
+      // User (butuh role_user)
+      menuItem('User', 'masterdata/dapeghtd', 'role_user', 'circle', [1=>'masterdata',2=>'dapeghtd']);
 
-        <li>
-            <a href="<?= site_url('masterdata/viewojt') ?>" class="<?= $uri->getSegment(2) == "viewojt" ? "active" : null ?>">
-                <span class="label">Data OJT </span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewidt') ?>" class="<?= $uri->getSegment(2) == "viewidt" ? "active" : null ?>">
-                <span class="label">Data IDT</span>
-            </a>
-        </li>
-        <li>
-            <a href="<?= site_url('masterdata/viewdataaps') ?>" class="<?= $uri->getSegment(2) == "viewdataaps" ? "active" : null ?>">
-                <span class="label">Data APS </span>
-            </a>
-        </li>
-        <!-- <li>
-            <a href="<?= site_url('masterdata/datatk') ?>" class="<?= $uri->getSegment(2) == "datatk" ? "active" : null ?>">
-                <span class="label">Data Tugas Karya</span>
-            </a>
-        </li> -->
-    </ul>
+      // Data Pegawai (butuh role_dapeg)
+      menuItem('Data Pegawai', 'masterdata', 'role_dapeg', 'circle', [1=>'masterdata',2=>null]);
+
+      // Data Organisasi HTD (butuh role_organisasi)
+      menuItem('Data Organisasi HTD', 'masterdata/viewdataorghtd', 'role_organisasi', 'circle', [1=>'masterdata',2=>'viewdataorghtd']);
+      menuItem('Data Organisasi Level #1', 'masterdata/viewdataorgsatu', 'role_organisasi', 'circle', [1=>'masterdata',2=>'viewdataorgsatu']);
+      menuItem('Data Organisasi Level #2', 'masterdata/viewdataorgdua', 'role_organisasi', 'circle', [1=>'masterdata',2=>'viewdataorgdua']);
+      menuItem('Data Organisasi Level #3', 'masterdata/viewdataorgtiga', 'role_organisasi', 'circle', [1=>'masterdata',2=>'viewdataorgtiga']);
+
+      // Riwayat
+      menuItem('Data Riwayat Jabatan', 'masterdata/rjab', 'role_dapeg', 'circle', [1=>'masterdata',2=>'rjab']);
+      menuItem('Data Riwayat Sertifikasi', 'masterdata/sertifikasi', 'role_dapeg', 'circle', [1=>'masterdata',2=>'sertifikasi']);
+
+      // Lain-lain (role spesifik)
+      menuItem('Data PTB', 'masterdata/data_ptb', 'role_ptb', 'circle', [1=>'masterdata',2=>'data_ptb']);
+      menuItem('Data Pensiun Dini', 'masterdata/data_pensiun_dini', 'role_pensiun_dini', 'circle', [1=>'masterdata',2=>'data_pensiun_dini']);
+      menuItem('Data MPP', 'masterdata/view_mpp', 'role_mpp', 'circle', [1=>'masterdata',2=>'view_mpp']);
+      menuItem('Data Mutasi', 'masterdata/viewmutasi', 'role_mutasi', 'circle', [1=>'masterdata',2=>'viewmutasi']);
+      menuItem('Data Tugas Karya', 'masterdata/viewtk', 'role_tugas_karya', 'circle', [1=>'masterdata',2=>'viewtk']);
+      menuItem('Data Resign', 'masterdata/viewresign', 'role_resign', 'circle', [1=>'masterdata',2=>'viewresign']);
+      menuItem('Data OJT', 'masterdata/viewojt', 'role_ojt', 'circle', [1=>'masterdata',2=>'viewojt']);
+      menuItem('Data IDT', 'masterdata/viewidt', 'role_idt', 'circle', [1=>'masterdata',2=>'viewidt']);
+
+      // APS (bolehkan admin FNP juga? tinggal array)
+      menuItem('Data APS', 'masterdata/viewdataaps', ['role_aps','role_fnp_admin'], 'circle', [1=>'masterdata',2=>'viewdataaps']);
+    ?>
+  </ul>
 </li>
