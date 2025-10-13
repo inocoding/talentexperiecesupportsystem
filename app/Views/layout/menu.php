@@ -42,20 +42,45 @@
         </li>
     </ul>
 </li>
+
+<li>
+    <a href="#instructors" class="<?= isActive([1=>'career']) ?>">
+        <i data-cs-icon="startup" class="icon" data-cs-size="15"></i>
+        <span class="label">Evaluasi Mutasi</span>
+    </a>
+    <ul id="instructors">
+        <?php
+            menuItem('D-Evaluasi Mutasi', 'career/dashboardevalmutasi', 'role_mutasi', 'dashboard-1', [1=>'career',2=>'dashboardevalmutasi']);
+            menuItem('Draft Evaluasi', 'career/konsepeval', 'role_mutasi', 'book', [1=>'career',2=>'konsepeval']);
+            menuItem('Evaluasi Non APS', 'career/evaluasimutasi', 'role_mutasi', 'plane', [1=>'career',2=>'evaluasimutasi']);
+            menuItem('Evaluasi APS', 'career/evaluasimutasiaps', 'role_mutasi', 'flag', [1=>'career',2=>'evaluasimutasiaps']);
+            menuItem('Progess Evaluasi', 'career/telusurieval', 'role_mutasi', 'form-check', [1=>'pcs',2=>'telusurieval']);
+            menuItem('Evaluasi Selesai', 'career/selesaieval', 'role_mutasi', 'archive', [1=>'pcs',2=>'selesaieval']);
+        ?>
+        <li>
+            <a href="#dokumenPrint" class="<?= isActive([2=>'lampeval']) ?>">
+                <i data-cs-icon="print" class="icon" data-cs-size="12"></i>
+                <span class="label">File to Print</span>
+            </a>
+            <ul id="dokumenPrint">
+                <?php
+                    menuItem('D-Evaluasi Mutasi', 'career/dashboardevalmutasi', 'role_mutasi', 'dashboard-1', [1=>'career',2=>'dashboardevalmutasi']);
+                    
+                ?>
+            </ul>
+        </li>
+    </ul>
+</li>
+
 <li>
     <?php $uri = new \CodeIgniter\HTTP\URI(current_url(true));
     ?>
     <a href="#instructors" class="<?= $uri->getSegment(1) == "career" ? "active" : null ?>">
-        <i data-cs-icon="destination" class="icon" data-cs-size="15"></i>
+        <i data-cs-icon="startup" class="icon" data-cs-size="15"></i>
         <span class="label">Evaluasi Mutasi</span><span class="position-absolute notification-dot rounded-xl"></span>
     </a>
     <ul id="instructors" class="">
-        <li>
-            <a href="<?= site_url('career/dashboardevalmutasi') ?>" class="<?= $uri->getSegment(2) == "dashboardevalmutasi" ? "active" : null ?>">
-                <i data-cs-icon="dashboard-1" class="icon" data-cs-size="12"></i>
-                <span class="label">D-Eval</span>
-            </a>
-        </li>
+        
         <li>
             <a href="#interface" class="<?= $uri->getSegment(2) == "evaluasimutasi" ? "active" : null ?> <?= $uri->getSegment(2) == "evaluasimutasiaps" ? "active" : null ?>">
                 <i data-cs-icon="inbox" class="icon" data-cs-size="12"></i>
@@ -113,7 +138,20 @@
     </ul>
 </li>
 
-
+<li>
+    <a href="#instructors1" class="<?= isActive([1=>'career']) ?>">
+        <i data-cs-icon="destination" class="icon" data-cs-size="15"></i>
+        <span class="label">Career Management</span>
+    </a>
+    <ul id="instructors1">
+        <?php
+            menuItem('Cari Kandidat', 'career', 'role_mutasi', 'search', [1=>'career',2=>null]);
+            menuItem('FnP Test', 'career/fnp', 'role_mutasi', 'circle', [1=>'career',2=>'fnp']);
+            menuItem('Interview', 'career/interview', 'role_mutasi', 'circle', [1=>'career',2=>'interview']);
+            menuItem('Gerbong Suksesi', 'pcs/gerbong', 'role_mutasi', 'circle', [1=>'pcs',2=>'gerbong']);
+        ?>
+    </ul>
+</li>
 <!-- <li>
     <a href="#instructors">
         <i data-cs-icon="destination" class="icon" data-cs-size="18"></i>
@@ -213,14 +251,8 @@
             menuItem('D-Anggaran', 'anggaran', 'role_anggaran', 'dashboard-1', [1=>'anggaran',2=>null]);
             menuItem('Pos 52', 'anggaran', 'role_adm_anggaran', 'leaf', [1=>'anggaran',2=>'pos52']);
             menuItem('Pos 53', 'anggaran/pos53', 'role_adm_anggaran', 'leaf', [1=>'anggaran',2=>'pos53']);
+            menuItem('Pos 54', 'anggaran/pos54', 'role_adm_anggaran', 'leaf', [1=>'anggaran',2=>'pos54']);
         ?>
-        
-        <li>
-            <a href="<?= site_url('anggaran/pos54') ?>">
-                <i data-cs-icon="leaf" class="icon" data-cs-size="12"></i>
-                <span class="label">Pos 54</span>
-            </a>
-        </li>
     </ul>
 </li>
 
