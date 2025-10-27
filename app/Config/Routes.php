@@ -31,7 +31,7 @@ $routes->post('userimport/processChunk', 'UserImport::processChunk');
 
 $routes->get('/tb_mpp', 'tb_mpp::index');
 
-$routes->group('mutasiimport', static function($routes) {
+$routes->group('mutasiimport', ['filter' => 'auth|role:role_mutasi'], static function($routes) {
     $routes->post('upload', 'MutasiImport::upload');
     $routes->post('processChunk', 'MutasiImport::processChunk');
 });
