@@ -21,7 +21,12 @@
 <?= $this->section('content') ?>
 <div class="card shadow-lg">
     <div class="card-body">
-        <p>Upload data pegawai</p>
+        <div class="btn-group">
+            <a href="<?= site_url('masterdata') ?>" class="btn-link">
+                <i data-cs-icon="chevron-left" class="mt-2 me-2" data-cs-size="15"></i>
+            </a>
+            <h2 class="small-title mt-2">Upload Data Pegawai</h2>
+        </div>
         <div class="input-group">
             <input type="file" class="form-control" id="excel_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
             <button class="btn btn-outline-secondary" type="button" id="uploadBtn">Upload</button>
@@ -30,6 +35,9 @@
             <div id="progressBar" class="progress-bar" style="width: 0%;">0%</div>
         </div>
         <div id="status" class="mt-2"></div>
+    </div>
+    <div class="card-footer">
+      <a href="<?=base_url('template/files/template_dapeg_u8.xlsx')?>" target="_blank" >Download Template Upload</a>
     </div>
 </div>
 <?= $this->endSection() ?>
