@@ -39,11 +39,13 @@
           <ul class="nav nav-tabs nav-tabs-line card-header-tabs responsive-tabs" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#first" role="tab" type="button" aria-selected="true">
-                Bar Chart
+                Progres Penyerapan Anggaran Pos 52 Divisi HTD
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#second" role="tab" type="button" aria-selected="false">Doughnut Chart</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#second" role="tab" type="button" aria-selected="false">
+                Progres Penyerapan Per Pos Anggaran
+              </button>
             </li>
           </ul>
         </div>
@@ -51,35 +53,27 @@
           <div class="tab-content">
             <div class="tab-pane fade active show" id="first" role="tabpanel">
               <div class="sh-40">
-                <canvas id="roundedBarChart"></canvas>
+                <canvas id="lineChart"></canvas>
               </div>
             </div>
             <div class="tab-pane fade" id="second" role="tabpanel">
               <div class="sh-40">
                 <div class="row">
-                  <div class="col-2 sh-40">
+                  <div class="col-3 sh-40">
                     <h6 class="text-center" style="font-size: smaller;"><small>SPPD Mutasi</small></h6>
-                    <canvas id="doughnutChart"></canvas>
+                    <canvas id="lineChart2"></canvas>
                   </div>
-                  <div class="col-2 sh-40">
+                  <div class="col-3 sh-40">
                     <h6 class="text-center" style="font-size: smaller;"><small>Diklat Dikelola Unit - Kantor Pusat</small></h6>
-                    <canvas id="doughnutChart2"></canvas>
+                    <canvas id="lineChart3"></canvas>
                   </div>
-                  <div class="col-2 sh-40">
-                    <h6 class="text-center" style="font-size: smaller;"><small>Diklat Dikelola Unit - Unit Induk</small></h6>
-                    <canvas id="doughnutChart3"></canvas>
-                  </div>
-                  <div class="col-2 sh-40">
+                  <div class="col-3 sh-40">
                     <h6 class="text-center" style="font-size: smaller;"><small>Diklat Dikelola Pusat</small></h6>
-                    <canvas id="doughnutChart4"></canvas>
+                    <canvas id="lineChart4"></canvas>
                   </div>
-                  <div class="col-2 sh-40">
-                    <h6 class="text-center" style="font-size: smaller;"><small>SPPD Diklat</small></h6>
-                    <canvas id="doughnutChart5"></canvas>
-                  </div>
-                  <div class="col-2 sh-40">
-                    <h6 class="text-center" style="font-size: smaller;"><small>Diklat Jasdik Pusdiklat</small></h6>
-                    <canvas id="doughnutChart6"></canvas>
+                  <div class="col-3 sh-40">
+                    <h6 class="text-center" style="font-size: smaller;"><small>Beban Perjalanan Dinas Diklat</small></h6>
+                    <canvas id="lineChart5"></canvas>
                   </div>
                 </div>
               </div>
@@ -90,7 +84,7 @@
           <a class="mb-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Data Selengkapnya
           </a>
-          <div class="collapse" id="collapseExample">
+          <div class="collapse show" id="collapseExample">
             <div class="card card-body no-shadow border mt-1">
               <div class="table-responsive">
                 <table class="table table-hover">
@@ -101,7 +95,7 @@
                       <th scope="col">PAGU (Rp)</th>
                       <th scope="col">REALISASI (Rp)</th>
                       <th scope="col">% REALISASI</th>
-                      <th scope="col">SISA (Rp)</th>
+                      <th scope="col">SALDO ANGGARAN (Rp)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -109,81 +103,88 @@
                       <th scope="row">1</th>
                       <td>Perjalanan Dinas Mutasi Jabatan</td>
                       <td>9.776.550.000</td>
-                      <td>2.584.469.118</td>
-                      <td>26,44%</td>
-                      <td>7.192.080.882</td>
+                      <td>8.570.643.846</td>
+                      <td>87,67%</td>
+                      <td>1.205.906.154</td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
                       <td>Biaya Diklat Dikelola Unit (KP)</td>
                       <td>12.625.795.804</td>
-                      <td>1.020.109.013</td>
-                      <td>8,08%</td>
-                      <td>11.605.686.791</td>
+                      <td>2.124.669.105</td>
+                      <td>16,83%</td>
+                      <td>10.501.126.699</td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
                       <td>Biaya Diklat Jasdik Dikelola Pusat (total)</td>
                       <td>357.543.766.320</td>
-                      <td>95.695.128.814</td>
-                      <td>26,76%</td>
-                      <td>261.848.637.506</td>
+                      <td>186.410.466.829</td>
+                      <td>52,14%</td>
+                      <td>171.133.299.491</td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>a. Sub Bid Rekrutmen</td>
-                      <td>22.110.543.702</td>
-                      <td>49.344.400</td>
-                      <td>0,22%</td>
-                      <td>22.061.199.302</td>
+                      <td><em>a. Sub Bid Rekrutmen</em></td>
+                      <td><em>22.110.543.702</em></td>
+                      <td><em>2.110.409.476</em></td>
+                      <td><em>9,54%</em></td>
+                      <td><em>20.000.134.226</em></td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>b. Sub Bid Bang Keahlian</td>
-                      <td>13.024.589.834</td>
-                      <td>811.930.995</td>
-                      <td>6,23%</td>
-                      <td>12.212.658.839</td>
+                      <td><em>b. Sub Bid Bang Keahlian</em></td>
+                      <td><em>13.024.589.834</em></td>
+                      <td><em>3.608.961.897</em></td>
+                      <td><em>27,71%</em></td>
+                      <td><em>9.415.627.937</em></td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>c. Sub Bid Bang Manajemen</td>
-                      <td>14.070.731.402</td>
-                      <td>7.549.112.428</td>
-                      <td>53,65%</td>
-                      <td>6.521.618.974</td>
+                      <td><em>c. Sub Bid Bang Manajemen</em></td>
+                      <td><em>14.070.731.402</em></td>
+                      <td><em>9.448.397.272</em></td>
+                      <td><em>67,15%</em></td>
+                      <td><em>4.622.334.130</em></td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>d. Sub Bid Pendidikan Formal</td>
-                      <td>245.698.507.500</td>
-                      <td>86.378.166.326</td>
-                      <td>35,16%</td>
-                      <td>159.320.341.174</td>
+                      <td><em>d. Sub Bid Pendidikan Formal</em></td>
+                      <td><em>245.698.507.500</em></td>
+                      <td><em>160.647.883.708</em></td>
+                      <td><em>65,38%</em></td>
+                      <td><em>85.050.623.514</em></td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>e. Sub Bid Bang Korp</td>
-                      <td>32.000.000.000</td>
-                      <td>431.464.510</td>
-                      <td>1,35%</td>
-                      <td>31.568.535.490</td>
+                      <td><em>e. Sub Bid Bang Korp</em></td>
+                      <td><em>32.000.000.000</em></td>
+                      <td><em>9.699.163.708</em></td>
+                      <td><em>30,31%</em></td>
+                      <td><em>22.300.836.292</em></td>
                     </tr>
                     <tr>
                       <th scope="row"></th>
-                      <td>f. Talent Development</td>
-                      <td>30.639.393.882</td>
-                      <td>475.110.155</td>
-                      <td>1,55%</td>
-                      <td>30.164.283.727</td>
+                      <td><em>f. Talent Development</em></td>
+                      <td><em>30.639.393.882</em></td>
+                      <td><em>895.650.490</em></td>
+                      <td><em>2,92%</em></td>
+                      <td><em>29.743.743.392</em></td>
                     </tr>
                     <tr>
                       <th scope="row">4</th>
                       <td>Beban Perjalanan Dinas Diklat</td>
                       <td>78.321.540.506</td>
-                      <td>7.385.093.525</td>
-                      <td>9,43%</td>
-                      <td>70.936.446.981</td>
+                      <td>23.587.336.856</td>
+                      <td>30,12%</td>
+                      <td>54.734.203.650</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><strong>TOTAL</strong></td>
+                      <td><strong>458.267.652.630</strong></td>
+                      <td><strong>220.693.116.636</strong></td>
+                      <td><strong>48,16%</strong></td>
+                      <td><strong>237.574.535.994</strong></td>
                     </tr>
                   </tbody>
                 </table>
