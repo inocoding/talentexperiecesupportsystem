@@ -4,7 +4,7 @@
 <li>
     <a href="#dashboarrd" class="<?= isActive([1=>'dashboard']) ?>">
         <i data-cs-icon="dashboard-1" class="icon" data-cs-size="15"></i>
-        <span class="label">Dashboards</span>
+        <span class="label">Dashboard</span>
     </a>
     <ul id="dashboarrd">
         <?php

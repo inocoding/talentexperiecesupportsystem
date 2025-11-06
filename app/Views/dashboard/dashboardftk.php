@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('title') ?>
-<title>Dashboard FTK</title>
+<title>Talent Insight Dashboard</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('cssheader') ?>
@@ -39,10 +39,10 @@
     <div class="row">
         <!-- Title Start -->
         <div class="col-12 col-md-7">
-            <h4 class="mb-2 pb-0" id="title">Workforce Allocation Dashboard</h4>
+            <h4 class="mb-2 pb-0" id="title">Talent Insight Dashboard</h4>
             <blockquote class="blockquote">
                 <footer class="blockquote-footer">
-                    Daily Statistic of workforce allocation
+                    Real-time insight for strategic talent decision making
                     <cite title="Source Title"></cite>
                 </footer>
             </blockquote>
