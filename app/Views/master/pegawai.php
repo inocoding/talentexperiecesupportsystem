@@ -18,12 +18,13 @@
             <div class="row">
                 <!-- Title Start -->
                 <div class="col-12 col-md-7">
-                    <h2 class="mb-0 pb-0" id="title">Master Data Pegawai <?= userLogin()->nama_org_satu ?></h2>
+                    <h2 class="mb-0 pb-0" id="title">Master Data Pegawai</h2>
                 </div>
                 <!-- Title End -->
 
                 <!-- Top Buttons Start -->
                 <div class="col-12 col-md-5 d-flex align-items-start justify-content-end">
+
                 </div>
                 <!-- Top Buttons End -->
                 <?php if (session()->getFlashdata('error')) : ?>
@@ -73,6 +74,7 @@
                                 <i data-cs-icon="upload"></i>
                             </a>
                             <!-- Print Button End -->
+                            
 
                             <!-- Export Dropdown Start -->
                             <div class="d-inline-block datatable-export" data-datatable="#datatableRows">
@@ -90,6 +92,9 @@
                                         <i data-cs-icon="download"></i>
                                     </span>
                                 </a>
+                                <button id="btnResetDapeg" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-delay="0" title="Reset Staging Dapeg" type="button">
+                                    <i data-cs-icon="bin"></i>
+                                </button>
                             </div>
                             <!-- Export Dropdown End -->
                         </div>
@@ -259,6 +264,47 @@
 <script src="<?= base_url() ?>/template/js/plugins/datatable.editablerowspegawai.js"></script>
 <script src="<?= base_url() ?>/template/js/common.js"></script>
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
+<script>
+$(function () {
+    // CSRF name & value dari CI4
+    const csrfName = '<?= csrf_token() ?>';
+    let   csrfHash = '<?= csrf_hash() ?>';
+
+    $('#btnResetDapeg').on('click', function () {
+        if (!confirm('Yakin ingin me-reset DAPEG? Semua data staging terakhir akan dihapus?')) {
+            return;
+        }
+
+        // Kirim POST ke DapegImport/resetStaging
+        $.ajax({
+            url: "<?= site_url('DapegImport/resetStaging') ?>",
+            method: "POST",
+            dataType: "json",
+            data: {
+                [csrfName]: csrfHash
+            },
+            success: function (res) {
+                // update token jika server kirim token baru
+                if (res[csrfName]) {
+                    csrfHash = res[csrfName];
+                }
+
+                if (res.status === 'ok') {
+                    alert(res.message || 'Staging DAPEG berhasil di-reset.');
+                    // opsional: reload halaman supaya data di tabel juga update
+                    location.reload();
+                } else {
+                    alert(res.message || 'Gagal reset staging DAPEG.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Terjadi kesalahan saat reset staging DAPEG.');
+            }
+        });
+    });
+});
+</script>
 <!-- Page Specific Scripts End -->
 
 <?= $this->endSection() ?>

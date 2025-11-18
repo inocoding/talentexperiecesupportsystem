@@ -49,3 +49,8 @@ $routes->get('masterdata/users/(:segment)/edit', 'Masterdata::editUser/$1');
 $routes->post('masterdata/users/(:segment)', 'Masterdata::updateUser/$1');
 $routes->post('masterdata/users/(:segment)/delete', 'Masterdata::deleteUser/$1');
 
+$routes->post('DapegImport/resetStaging', 'DapegImport::resetStaging');
+$routes->get('etl', 'EtlController::index');
+$routes->post('etl/run', 'EtlController::run');
+
+

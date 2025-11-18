@@ -214,3 +214,17 @@
     ?>
   </ul>
 </li>
+
+<li>
+  <a href="#miscellaneous21" class="<?= isActive([1=>'etlcontroller']) ?>">
+    <i data-cs-icon="gear" class="icon" data-cs-size="15"></i>
+    <span class="label">Setting</span>
+  </a>
+
+  <ul id="miscellaneous21">
+    <?php
+      // User (butuh role_user)
+      menuItem('ETL Dapeg', 'EtlController', 'role_dapeg', 'circle', [1=>'masterdata']);
+    ?>
+  </ul>
+</li>

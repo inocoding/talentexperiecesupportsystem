@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const file = document.getElementById('excel_file').files[0];
     if(!file){ return alert('Pilih file terlebih dahulu'); }
 
+    
+
     const fd = new FormData();
     fd.append('excel_file', file);
     injectCSRF(fd);

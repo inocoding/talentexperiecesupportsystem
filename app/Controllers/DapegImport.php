@@ -292,4 +292,31 @@ class DapegImport extends BaseController
             ])->setStatusCode(500);
         }
     }
+
+    public function resetStaging()
+    {
+        try {
+        // 1) Truncate tabel staging lewat model
+        $dapegModel = new DapegModel();
+        $dapegModel->builder()->truncate();   // <— ini yang penting
+
+        // 2) Bersihkan sesi import supaya tidak nyangkut
+        session()->remove(['imp_file','imp_ext','imp_pointer','imp_total','imp_done']);
+
+        return $this->response->setJSON([
+            'status'  => 'ok',
+            'message' => 'Staging DAPEG berhasil di-reset (semua data upload lama dihapus).',
+        ]);
+    } catch (\Throwable $e) {
+        log_message('error', 'DapegImport::resetStaging - '.$e->getMessage()."\n".$e->getTraceAsString());
+
+        return $this->response
+            ->setStatusCode(500)
+            ->setJSON([
+                'status'  => 'error',
+                'message' => 'Reset gagal: '.$e->getMessage(),
+            ]);
+    }
+    }
+
 }
