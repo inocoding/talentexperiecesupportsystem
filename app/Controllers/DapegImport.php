@@ -116,7 +116,7 @@ class DapegImport extends BaseController
      */
     public function processChunk()
     {
-        try{
+        try {
             $file    = (string) session('imp_file');
             $ext     = (string) session('imp_ext');
             $pointer = (int) session('imp_pointer');
@@ -124,135 +124,294 @@ class DapegImport extends BaseController
             $done    = (int) session('imp_done');
 
             if (!$file || !is_file($file)) {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Session/file import tidak ditemukan']);
+                return $this->response->setJSON([
+                    'status'  => 'error',
+                    'message' => 'Session/file import tidak ditemukan',
+                ]);
             }
 
-            // selesai?
+            // Selesai?
             if ($pointer > ($total + 1)) {
                 @unlink($file);
                 session()->remove(['imp_file','imp_ext','imp_pointer','imp_total','imp_done']);
-                return $this->response->setJSON(['status' => 'ok', 'done' => true, 'progress' => 100]);
+
+                return $this->response->setJSON([
+                    'status'   => 'ok',
+                    'done'     => true,
+                    'progress' => 100,
+                ]);
             }
 
-            // Tentukan rentang baris chunk ini
+            // Rentang baris untuk chunk ini
             $start = $pointer;
-            $end   = min($pointer + $this->chunk - 1, $total + 1); // +1 karena header baris 1
+            $end   = min($pointer + $this->chunk - 1, $total + 1); // +1 karena baris 1 = header
 
-            // Siapkan reader + filter baris/kolom
+            // Filter baris, kolom biarkan null supaya semua kolom dibaca
             $filter = new ChunkReadFilter();
-            $filter->setRows($start, ($end - $start + 1), $this->cols);
+            $filter->setRows($start, ($end - $start + 1)); // TANPA $this->cols
 
+            // Siapkan reader
             $reader = ($ext === 'xls') ? new Xls() : new Xlsx();
             $reader->setReadDataOnly(true);
             $reader->setReadFilter($filter);
 
-            // Muat hanya range yang diperlukan
             $spreadsheet = $reader->load($file);
             $sheet       = $spreadsheet->getActiveSheet();
 
-            // Helper konversi tanggal
+            // Helper: konversi Excel date ke 'Y-m-d'
             $toYmd = static function ($cellVal) {
-                if ($cellVal === null || $cellVal === '') { return null; }
+                if ($cellVal === null || $cellVal === '') {
+                    return null;
+                }
                 if (is_numeric($cellVal)) {
                     try {
                         return ExcelDate::excelToDateTimeObject($cellVal)->format('Y-m-d');
                     } catch (\Throwable $e) {
-                        // fallback: treat as unix timestamp seconds?
-                        return date('Y-m-d', (int)$cellVal);
+                        return date('Y-m-d', (int) $cellVal);
                     }
                 }
-                $ts = strtotime((string)$cellVal);
+                $ts = strtotime((string) $cellVal);
                 return $ts ? date('Y-m-d', $ts) : null;
             };
 
-            // Helper ambil string
-            $val = static fn($sheet, $col, $row) => trim((string) $sheet->getCell("{$col}{$row}")->getValue());
+            // Urutan field sesuai urutan kolom di Excel (A = nip, B = nama_lengkap, dst)
+            $fieldOrder = [
+                'nip',
+                'nama_lengkap',
+                'cocd',
+                'company_code',
+                'busa',
+                'business_area',
+                'psubarea',
+                'personnel_subarea',
+                'org_unit',
+                'organizational_unit',
+                'eegrp',
+                'employee_group',
+                'esgrp',
+                'employee_subgroup',
+                'peg',
+                'level',
+                'skala_gaji_dasar',
+                'jenjang_main_grp_id',
+                'jenjang_main_grp_text',
+                'pog',
+                'jenjang_sub_grp_text',
+                'travel_priviledge_grup_sppd',
+                'kode_posisi',
+                'posisi',
+                'start_date_posisi',
+                'end_date_posisi',
+                'nama_panjang_posisi',
+                'pendidikan_terakhir',
+                'jurusan_pendidikan',
+                'birthplace',
+                'birth_date',
+                'tanggal_grade_terakhir',
+                'tanggal_masuk',
+                'tanggal_capeg',
+                'tanggal_pegawai_tetap',
+                'gen',
+                'jenis_kelamin',
+                'marst',
+                'status_pernikahan',
+                'rel',
+                'agama',
+                'parea',
+                'payroll_area',
+                'bank_payroll',
+                'no_rekening_bank_payroll',
+                'e_mail',
+                'pa',
+                'personnel_area',
+                'cost_ctr',
+                'cost_center',
+                'kode_posisi_atasan',
+                'posisi_atasan',
+                'jobcode',
+                'job',
+                'job_name',
+                'kode_jabatan',
+                'kelompok_jabatan',
+                'keterangan_jabatan',
+                'nomor_sk_basic_pay',
+                'tanggal_sk_for_basic_pay',
+                'no_sk_penugasan',                 // dari "no._sk_penugasan"
+                'tanggal_sk_penugasan',
+                'nama_panjang_posisi_simkp',
+                'golongan_darah',
+                'tipe_alamat',
+                'co_name',
+                'nama_jalan_dan_nomor_rumah',
+                'kota',
+                'district',
+                'kode_pos',
+                'no_telepon',
+                'second_address_line',             // dari "2nd_address_line"
+                'street_2',
+                'street_3',
+                'region_state_province_count',     // dari "region_(state,_province,_count"
+                'house_number',                    // dari "house#"
+                'legacy_code',
+                'married_for_tax_purposes',
+                'marital_status_of_the_employee',
+                'td',
+                'jumlah_tanggungan',
+                'res',
+                'sanksi_disiplin',
+                'nomor_sk_hukuman',
+                'tanggal_sk_hukuman',
+                'pasal_yang_dilanggar',
+                'hukuman_yang_diberikan',
+                'keterangan',
+                'zzskrelated',
+                'npwp',
+                'jenis_dplk',
+                'no_dplk',
+                'no_it0007',
+                'jadwal_kerja',
+                'no_ktp',
+                'kode_adt',
+                'text_adt',
+                'tgl_mulai_adt',
+                'tgl_selesai_adt',
+                'organisasi_1',
+                'organisasi_2',
+                'organisasi_3',
+                'organisasi_4',
+                'organisasi_5',
+                'organisasi_6',
+                'organisasi_7',
+                'organisasi_8',
+                'organisasi_9',
+                'organisasi_10',
+                'organisasi_11',
+                'organisasi_12',
+                'organisasi_13',
+                'kode_organisasi_1',
+                'kode_organisasi_2',
+                'kode_organisasi_3',
+                'kode_organisasi_4',
+                'kode_organisasi_5',
+                'kode_organisasi_6',
+                'kode_organisasi_7',
+                'kode_organisasi_8',
+                'kode_organisasi_9',
+                'kode_organisasi_10',
+                'kode_organisasi_11',
+                'kode_organisasi_12',
+                'kode_organisasi_13',
+                'tx_no',
+                'tdk_dihit',
+                'tgl_proses',
+                'tgl_data',
+                'thn_umur',
+                'bln_umur',
+                'profesi',
+            ];
+
+            // Field yang bertipe DATE
+            $dateFields = [
+                'birth_date',
+                'end_date_posisi',
+                'start_date_posisi',
+                'tanggal_capeg',
+                'tanggal_grade_terakhir',
+                'tanggal_masuk',
+                'tanggal_pegawai_tetap',
+                'tanggal_sk_for_basic_pay',
+                'tanggal_sk_hukuman',
+                'tanggal_sk_penugasan',
+                'tgl_data',
+                'tgl_mulai_adt',
+                'tgl_proses',
+                'tgl_selesai_adt',
+            ];
+
+            // Field numeric (INT / DECIMAL / TINYINT)
+            $numericFields = [
+                'skala_gaji_dasar',
+                'jumlah_tanggungan',
+                'thn_umur',
+                'bln_umur',
+                'tdk_dihit',
+            ];
+
+            // Helper: konversi index (1,2,3,...) ke kolom Excel (A,B,...,Z,AA,...)
+            $indexToCol = static function (int $index): string {
+                $index--; // ubah jadi 0-based
+                $letters = '';
+                while ($index >= 0) {
+                    $remainder = $index % 26;
+                    $letters   = chr(65 + $remainder) . $letters;
+                    $index     = intdiv($index, 26) - 1;
+                }
+                return $letters;
+            };
 
             $rows = [];
+
             for ($row = $start; $row <= $end; $row++) {
-                $nip = $val($sheet, 'A', $row);
-                if ($nip === '') {
-                    continue; // skip baris kosong
+                $rowData = [];
+
+                foreach ($fieldOrder as $i => $field) {
+                    $col     = $indexToCol($i + 1); // index array 0-based → kolom 1-based
+                    $cellVal = $sheet->getCell($col . $row)->getValue();
+
+                    if (in_array($field, $dateFields, true)) {
+                        // Tanggal
+                        $rowData[$field] = $toYmd($cellVal);
+                    } elseif (in_array($field, $numericFields, true)) {
+                        // Numerik
+                        if ($cellVal === null || $cellVal === '') {
+                            $rowData[$field] = null;
+                        } else {
+                            if ($field === 'tdk_dihit') {
+                                // TINYINT khusus, misal 'X' → 1, angka → cast ke int
+                                $v = strtoupper(trim((string) $cellVal));
+                                if ($v === '') {
+                                    $rowData[$field] = null;
+                                } elseif (is_numeric($v)) {
+                                    $rowData[$field] = (int) $v;
+                                } elseif ($v === 'X' || $v === 'Y') {
+                                    $rowData[$field] = 1;
+                                } else {
+                                    $rowData[$field] = null;
+                                }
+                            } elseif ($field === 'jumlah_tanggungan' ||
+                                    $field === 'thn_umur' ||
+                                    $field === 'bln_umur') {
+                                $v = trim((string) $cellVal);
+                                $rowData[$field] = is_numeric($v) ? (int) $v : null;
+                            } elseif ($field === 'skala_gaji_dasar') {
+                                if (is_numeric($cellVal)) {
+                                    $rowData[$field] = (float) $cellVal;
+                                } else {
+                                    $num = preg_replace('/[^\d\-.,]/', '', (string) $cellVal);
+                                    $num = str_replace(',', '.', $num);
+                                    $rowData[$field] = ($num === '' ? null : (float) $num);
+                                }
+                            } else {
+                                // fallback numeric umum
+                                $v = trim((string) $cellVal);
+                                $rowData[$field] = is_numeric($v) ? $v : null;
+                            }
+                        }
+                    } else {
+                        // String biasa
+                        $rowData[$field] = trim((string) $cellVal);
+                    }
                 }
 
-                // Tanggal-tanggal
-                $startdate        = $toYmd($sheet->getCell("P{$row}")->getValue());
-                $enddate          = $toYmd($sheet->getCell("Q{$row}")->getValue());
-                $birthdate        = $toYmd($sheet->getCell("V{$row}")->getValue());
-                $tglgradeterakhir = $toYmd($sheet->getCell("W{$row}")->getValue());
-                $tglmasuk         = $toYmd($sheet->getCell("X{$row}")->getValue());
-                $tglpegawaitetap  = $toYmd($sheet->getCell("Y{$row}")->getValue());
-                $tglskorgassg     = $toYmd($sheet->getCell("AH{$row}")->getValue());
-                $tgldata          = $toYmd($sheet->getCell("BK{$row}")->getValue());
+                // Skip baris kosong (tanpa NIP)
+                if ($rowData['nip'] === '') {
+                    continue;
+                }
 
-                $rows[] = [
-                    'nip'                   => $nip,
-                    'fullname'              => $val($sheet, 'B', $row),
-                    'org_satu'              => $val($sheet, 'C', $row),
-                    'org_dua'               => $val($sheet, 'D', $row),
-                    'org_tiga'              => $val($sheet, 'E', $row),
-                    'org_kp_satu'           => $val($sheet, 'F', $row),
-                    'org_kp_dua'            => $val($sheet, 'G', $row),
-                    'org_kp_tiga'           => $val($sheet, 'H', $row),
-                    'eegrp'                 => $val($sheet, 'I', $row),
-                    'esgrp'                 => $val($sheet, 'J', $row),
-                    'peg'                   => $val($sheet, 'K', $row),
-                    'jenjang_main_grp_id'   => $val($sheet, 'L', $row),
-                    'pog'                   => $val($sheet, 'M', $row),
-                    'grup_sppd'             => $val($sheet, 'N', $row),
-                    'kode_posisi'           => $val($sheet, 'O', $row),
-                    'start_date'            => $startdate,
-                    'end_date'              => $enddate,
-                    'nama_panjang_posisi'   => $val($sheet, 'R', $row),
-                    'pendidikan_terakhir'   => $val($sheet, 'S', $row),
-                    'jurusan_pendidikan'    => $val($sheet, 'T', $row),
-                    'birthplace'            => $val($sheet, 'U', $row),
-                    'birth_date'            => $birthdate,
-                    'tgl_grade_terakhir'    => $tglgradeterakhir,
-                    'tgl_masuk'             => $tglmasuk,
-                    'tgl_pegawai_tetap'     => $tglpegawaitetap,
-                    'gender'                => $val($sheet, 'Z',  $row),
-                    'marst'                 => $val($sheet, 'AA', $row),
-                    'religius'              => $val($sheet, 'AB', $row),
-                    'org_unit'              => $val($sheet, 'AC', $row),
-                    'org_unit_tx'           => $val($sheet, 'AD', $row),
-                    'kode_posisi_atasan'    => $val($sheet, 'AE', $row),
-                    'job_code'              => $val($sheet, 'AF', $row),
-                    'no_sk_org_assg'        => $val($sheet, 'AG', $row),
-                    'tgl_sk_org_assg'       => $tglskorgassg,
-                    'home_city'             => $val($sheet, 'AI', $row),
-                    'tx_org_01'             => $val($sheet, 'AJ', $row),
-                    'tx_org_02'             => $val($sheet, 'AK', $row),
-                    'tx_org_03'             => $val($sheet, 'AL', $row),
-                    'tx_org_04'             => $val($sheet, 'AM', $row),
-                    'tx_org_05'             => $val($sheet, 'AN', $row),
-                    'tx_org_06'             => $val($sheet, 'AO', $row),
-                    'tx_org_07'             => $val($sheet, 'AP', $row),
-                    'tx_org_08'             => $val($sheet, 'AQ', $row),
-                    'tx_org_09'             => $val($sheet, 'AR', $row),
-                    'tx_org_10'             => $val($sheet, 'AS', $row),
-                    'tx_org_11'             => $val($sheet, 'AT', $row),
-                    'tx_org_12'             => $val($sheet, 'AU', $row),
-                    'tx_org_13'             => $val($sheet, 'AV', $row),
-                    'kd_org_01'             => $val($sheet, 'AW', $row),
-                    'kd_org_02'             => $val($sheet, 'AX', $row),
-                    'kd_org_03'             => $val($sheet, 'AY', $row),
-                    'kd_org_04'             => $val($sheet, 'AZ', $row),
-                    'kd_org_05'             => $val($sheet, 'BA', $row),
-                    'kd_org_06'             => $val($sheet, 'BB', $row),
-                    'kd_org_07'             => $val($sheet, 'BC', $row),
-                    'kd_org_08'             => $val($sheet, 'BD', $row),
-                    'kd_org_09'             => $val($sheet, 'BE', $row),
-                    'kd_org_10'             => $val($sheet, 'BF', $row),
-                    'kd_org_11'             => $val($sheet, 'BG', $row),
-                    'kd_org_12'             => $val($sheet, 'BH', $row),
-                    'kd_org_13'             => $val($sheet, 'BI', $row),
-                    'profesi'               => $val($sheet, 'BJ', $row),
-                    'tgl_data'              => $tgldata,
-                ];
+                $rows[] = $rowData;
             }
 
-            // Bebaskan memori spreadsheet segera
+            // Bebaskan memori
             $spreadsheet->disconnectWorksheets();
             unset($spreadsheet);
 
@@ -270,9 +429,10 @@ class DapegImport extends BaseController
                 'imp_done'    => $done,
             ]);
 
-            $progress = ($total > 0) ? round(min(100, ($done / $total) * 100)) : 100;
+            $progress = ($total > 0)
+                ? round(min(100, ($done / $total) * 100))
+                : 100;
 
-            // Selesai?
             $isDone = ($pointer > ($total + 1));
             if ($isDone) {
                 @unlink($file);
@@ -292,6 +452,7 @@ class DapegImport extends BaseController
             ])->setStatusCode(500);
         }
     }
+
 
     public function resetStaging()
     {

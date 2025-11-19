@@ -13,26 +13,138 @@ class DapegModel extends Model
 
     // Tidak perlu memasukkan primary key AUTO_INCREMENT ke allowedFields
     protected $allowedFields    = [
-        'fullname', 'nip',
-        'org_satu', 'org_dua', 'org_tiga',
-        'org_kp_satu', 'org_kp_dua', 'org_kp_tiga',
-        'eegrp', 'esgrp',
-        'peg', 'jenjang_main_grp_id', 'pog',
-        'grup_sppd', 'kode_posisi',
-        'start_date', 'end_date',
-        'nama_panjang_posisi',
-        'pendidikan_terakhir', 'jurusan_pendidikan',
-        'birthplace', 'birth_date',
-        'tgl_grade_terakhir', 'tgl_masuk', 'tgl_pegawai_tetap',
-        'gender', 'marst', 'religius',
-        'org_unit', 'org_unit_tx', 'kode_posisi_atasan', 'job_code',
-        'no_sk_org_assg', 'tgl_sk_org_assg', 'home_city',
-        'tx_org_01','tx_org_02','tx_org_03','tx_org_04','tx_org_05','tx_org_06',
-        'tx_org_07','tx_org_08','tx_org_09','tx_org_10','tx_org_11','tx_org_12','tx_org_13',
-        'kd_org_01','kd_org_02','kd_org_03','kd_org_04','kd_org_05','kd_org_06',
-        'kd_org_07','kd_org_08','kd_org_09','kd_org_10','kd_org_11','kd_org_12','kd_org_13',
-        'profesi',
-        'tgl_data',
+    'nip',
+    'nama_lengkap',
+    'cocd',
+    'company_code',
+    'busa',
+    'business_area',
+    'psubarea',
+    'personnel_subarea',
+    'org_unit',
+    'organizational_unit',
+    'eegrp',
+    'employee_group',
+    'esgrp',
+    'employee_subgroup',
+    'peg',
+    'level',
+    'skala_gaji_dasar',
+    'jenjang_main_grp_id',
+    'jenjang_main_grp_text',
+    'pog',
+    'jenjang_sub_grp_text',
+    'travel_priviledge_grup_sppd',
+    'kode_posisi',
+    'posisi',
+    'start_date_posisi',
+    'end_date_posisi',
+    'nama_panjang_posisi',
+    'pendidikan_terakhir',
+    'jurusan_pendidikan',
+    'birthplace',
+    'birth_date',
+    'tanggal_grade_terakhir',
+    'tanggal_masuk',
+    'tanggal_capeg',
+    'tanggal_pegawai_tetap',
+    'gen',
+    'jenis_kelamin',
+    'marst',
+    'status_pernikahan',
+    'rel',
+    'agama',
+    'parea',
+    'payroll_area',
+    'bank_payroll',
+    'no_rekening_bank_payroll',
+    'e_mail',
+    'pa',
+    'personnel_area',
+    'cost_ctr',
+    'cost_center',
+    'kode_posisi_atasan',
+    'posisi_atasan',
+    'jobcode',
+    'job',
+    'job_name',
+    'kode_jabatan',
+    'kelompok_jabatan',
+    'keterangan_jabatan',
+    'nomor_sk_basic_pay',
+    'tanggal_sk_for_basic_pay',
+    'no_sk_penugasan',
+    'tanggal_sk_penugasan',
+    'nama_panjang_posisi_simkp',
+    'golongan_darah',
+    'tipe_alamat',
+    'co_name',
+    'nama_jalan_dan_nomor_rumah',
+    'kota',
+    'district',
+    'kode_pos',
+    'no_telepon',
+    'second_address_line',
+    'street_2',
+    'street_3',
+    'region_state_province_count',
+    'house_number',
+    'legacy_code',
+    'married_for_tax_purposes',
+    'marital_status_of_the_employee',
+    'td',
+    'jumlah_tanggungan',
+    'res',
+    'sanksi_disiplin',
+    'nomor_sk_hukuman',
+    'tanggal_sk_hukuman',
+    'pasal_yang_dilanggar',
+    'hukuman_yang_diberikan',
+    'keterangan',
+    'zzskrelated',
+    'npwp',
+    'jenis_dplk',
+    'no_dplk',
+    'no_it0007',
+    'jadwal_kerja',
+    'no_ktp',
+    'kode_adt',
+    'text_adt',
+    'tgl_mulai_adt',
+    'tgl_selesai_adt',
+    'organisasi_1',
+    'organisasi_2',
+    'organisasi_3',
+    'organisasi_4',
+    'organisasi_5',
+    'organisasi_6',
+    'organisasi_7',
+    'organisasi_8',
+    'organisasi_9',
+    'organisasi_10',
+    'organisasi_11',
+    'organisasi_12',
+    'organisasi_13',
+    'kode_organisasi_1',
+    'kode_organisasi_2',
+    'kode_organisasi_3',
+    'kode_organisasi_4',
+    'kode_organisasi_5',
+    'kode_organisasi_6',
+    'kode_organisasi_7',
+    'kode_organisasi_8',
+    'kode_organisasi_9',
+    'kode_organisasi_10',
+    'kode_organisasi_11',
+    'kode_organisasi_12',
+    'kode_organisasi_13',
+    'tx_no',
+    'tdk_dihit',
+    'tgl_proses',
+    'tgl_data',
+    'thn_umur',
+    'bln_umur',
+    'profesi',
     ];
 
     // Tidak memakai created_at / updated_at / deleted_at
@@ -71,22 +183,22 @@ class DapegModel extends Model
         ];
     }
 
-    public function getLatestOrgSatuByNip(string $nip): ?string
-    {
-        // Jika MySQL 5.x: pakai subquery MAX(tgl_data)
-        $row = $this->db->query("
-            SELECT d.org_satu
-            FROM tb_dapeg d
-            JOIN (
-            SELECT nip, MAX(tgl_data) AS max_tgl
-            FROM tb_dapeg
-            WHERE nip = :nip:
-            ) last ON last.nip = d.nip AND last.max_tgl = d.tgl_data
-            ORDER BY d.id_peg DESC
-            LIMIT 1
-        ", ['nip' => $nip])->getFirstRow();
+    // public function getLatestOrgSatuByNip(string $nip): ?string
+    // {
+    //     // Jika MySQL 5.x: pakai subquery MAX(tgl_data)
+    //     $row = $this->db->query("
+    //         SELECT d.org_satu
+    //         FROM tb_dapeg d
+    //         JOIN (
+    //         SELECT nip, MAX(tgl_data) AS max_tgl
+    //         FROM tb_dapeg
+    //         WHERE nip = :nip:
+    //         ) last ON last.nip = d.nip AND last.max_tgl = d.tgl_data
+    //         ORDER BY d.id_peg DESC
+    //         LIMIT 1
+    //     ", ['nip' => $nip])->getFirstRow();
 
-        return $row->org_satu ?? null;
-    }
+    //     return $row->org_satu ?? null;
+    // }
 
 }

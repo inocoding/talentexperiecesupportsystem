@@ -129,13 +129,13 @@
                                 <td>
                                     <a href="<?= site_url('masterdata/detaildapeg/' . $value->nip) ?>"><?= $value->nip ?></a>
                                 </td>
-                                <td><?= $value->fullname ?></td>
+                                <td><?= $value->nama_lengkap ?></td>
                                 <td><?= $value->nama_panjang_posisi ?></td>
                                 <td><?= $value->peg ?></td>
                                 <td><?= $value->pog ?></td>
-                                <td><?= $value->org_satu ?></td>
-                                <td><?= date("d.m.Y", strtotime($value->start_date)); ?></td>
-                                <td><?= date("d.m.Y", strtotime($value->end_date)); ?></td>
+                                <td><?= $value->company_code ?></td>
+                                <td><?= date("d.m.Y", strtotime($value->start_date_posisi)); ?></td>
+                                <td><?= date("d.m.Y", strtotime($value->end_date_posisi)); ?></td>
                                 <td>
                                     <div class="d-inline-block">
                                         <a href="<?= site_url('masterdata/editdapeg/' . $value->nip) ?>" class="btn btn-icon btn-icon-only btn-foreground-alternate " data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" type="button" data-bs-delay="0">

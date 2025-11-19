@@ -35,7 +35,7 @@ class Auth extends BaseController
 
         // Ambil org_satu terbaru dari tb_dapeg
         $dapegModel = new \App\Models\DapegModel();
-        $orgSatu = $dapegModel->getLatestOrgSatuByNip($user->nip);
+        // $orgSatu = $dapegModel->getLatestOrgSatuByNip($user->nip);
 
         // Helper kecil untuk normalisasi 0/1 dari properti user
         $f = fn($k) => (int)($user->$k ?? 0);
@@ -45,7 +45,6 @@ class Auth extends BaseController
             'user_id'           => $user->nip,
             'nama'              => $user->nama_user,
             'role_htd'          => (string)$user->role_htd,   // biarkan string '0'..'5' jika dipakai di UI
-            'org_satu'          => $orgSatu,
             'foto_profile'      => $user->foto_profile,
 
             // === FLAG ROLE (0/1) ===

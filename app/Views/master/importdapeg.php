@@ -37,7 +37,7 @@
         <div id="status" class="mt-2"></div>
     </div>
     <div class="card-footer">
-      <a href="<?=base_url('template/files/template_dapeg_u8.xlsx')?>" target="_blank" >Download Template Upload</a>
+      <a href="<?=base_url('template/files/template_dapeg.xlsx')?>" target="_blank" >Download Template Upload</a>
     </div>
 </div>
 <?= $this->endSection() ?>
